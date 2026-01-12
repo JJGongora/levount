@@ -1,0 +1,10 @@
+.env
+*.log
+*.tmp
+*.sh
+
+/.wwebjs_auth
+/.wwebjs_cache
+/node_modules
+
+/public/images
