@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="/LeVount/styles/errors.css">
+
+<div class="imgContainer">
+    <img src="/LeVount/images/errors/err-<%- error?.code %>-001.webp" alt="">
+</div>
+<section class="Description">
+    <h2><%- error?.code + " ERROR" || "err" %></h2>
+    <h1><%- error?.title || "err" %></h1>
+    <hr>
+    <p><%- error?.description || "err" %></p>
+    <% if(userSession?.accessLevel> 8) { %>
+        <p class="errorDetails">
+            <%= err || "err" %>
+        </p>
+        <% } %>
+            <div class="buttonsContainer">
+                <button type="button" class="button1" onclick="window.location.href=`/`">Back home</button>
+                <button type="button" class="button2" onclick="window.location.href=`/contact`">Contact
+                    concierge</button>
+            </div>
+</section>

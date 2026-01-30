@@ -1,0 +1,196 @@
+{
+    "createTime": "2026-01-22T15:57:57Z",
+    "updateTime": "2026-01-22T15:58:09Z",
+    "id": "1X899505GX794930M",
+    "paymentSource": {
+        "paypal": {
+            "emailAddress": "paypal-test-client@levount.com",
+            "accountId": "4MQAFEB34JRNL",
+            "accountStatus": "VERIFIED",
+            "name": {
+                "givenName": "Le Vount",
+                "surname": "Jewelry"
+            },
+            "address": {
+                "countryCode": "MX"
+            }
+        }
+    },
+    "intent": "CAPTURE",
+    "payer": {
+        "emailAddress": "paypal-test-client@levount.com",
+        "payerId": "4MQAFEB34JRNL",
+        "name": {
+            "givenName": "Le Vount",
+            "surname": "Jewelry"
+        },
+        "address": {
+            "countryCode": "MX"
+        }
+    },
+    "purchaseUnits": [
+        {
+            "referenceId": "695850d8-c352-4752-9ce9-df6d5f9e5c5d",
+            "amount": {
+                "currencyCode": "USD",
+                "value": "22232.00",
+                "breakdown": {
+                    "itemTotal": {
+                        "currencyCode": "USD",
+                        "value": "22232.00"
+                    },
+                    "shipping": {
+                        "currencyCode": "USD",
+                        "value": "0.00"
+                    },
+                    "handling": {
+                        "currencyCode": "USD",
+                        "value": "0.00"
+                    },
+                    "insurance": {
+                        "currencyCode": "USD",
+                        "value": "0.00"
+                    },
+                    "shippingDiscount": {
+                        "currencyCode": "USD",
+                        "value": "0.00"
+                    }
+                }
+            },
+            "payee": {
+                "emailAddress": "paypal-test@levount.com",
+                "merchantId": "QHCKPEW4YBTWW"
+            },
+            "description": "Le Vount Jewelry Purchase",
+            "softDescriptor": "PAYPAL *TEST STORE",
+            "items": [
+                {
+                    "name": ".925 silver choker custom made paraiba",
+                    "unitAmount": {
+                        "currencyCode": "USD",
+                        "value": "1179.15"
+                    },
+                    "tax": {
+                        "currencyCode": "USD",
+                        "value": "0.00"
+                    },
+                    "quantity": "1",
+                    "sku": "0012E",
+                    "category": "PHYSICAL_GOODS"
+                },
+                {
+                    "name": ".925 silver ring with semi-precious stones of amethyst, pink topaz, cultured ruby, garnet, cultured sapphire and white zirc...",
+                    "unitAmount": {
+                        "currencyCode": "USD",
+                        "value": "202.65"
+                    },
+                    "tax": {
+                        "currencyCode": "USD",
+                        "value": "0.00"
+                    },
+                    "quantity": "1",
+                    "sku": "0116A",
+                    "category": "PHYSICAL_GOODS"
+                },
+                {
+                    "name": "14k gold bracelet with lab-grown rubies and diamonds",
+                    "unitAmount": {
+                        "currencyCode": "USD",
+                        "value": "10425.10"
+                    },
+                    "tax": {
+                        "currencyCode": "USD",
+                        "value": "0.00"
+                    },
+                    "quantity": "2",
+                    "sku": "65-121-21RD24",
+                    "category": "PHYSICAL_GOODS"
+                }
+            ],
+            "shipping": {
+                "name": {
+                    "fullName": "Le Vount Jewelry"
+                },
+                "address": {
+                    "addressLine1": "Calle Juarez 1",
+                    "addressLine2": "Col. Cuauhtemoc",
+                    "adminArea2": "Miguel Hidalgo",
+                    "adminArea1": "Ciudad de Mexico",
+                    "postalCode": "11580",
+                    "countryCode": "MX"
+                }
+            },
+            "supplementaryData": {},
+            "payments": {
+                "captures": [
+                    {
+                        "status": "COMPLETED",
+                        "id": "9SJ814366K667870F",
+                        "amount": {
+                            "currencyCode": "USD",
+                            "value": "22232.00"
+                        },
+                        "sellerProtection": {
+                            "status": "ELIGIBLE",
+                            "disputeCategories": [
+                                "ITEM_NOT_RECEIVED",
+                                "UNAUTHORIZED_TRANSACTION"
+                            ]
+                        },
+                        "finalCapture": true,
+                        "sellerReceivableBreakdown": {
+                            "grossAmount": {
+                                "currencyCode": "USD",
+                                "value": "22232.00"
+                            },
+                            "paypalFee": {
+                                "currencyCode": "USD",
+                                "value": "1018.58"
+                            },
+                            "netAmount": {
+                                "currencyCode": "USD",
+                                "value": "21213.42"
+                            },
+                            "receivableAmount": {
+                                "currencyCode": "MXN",
+                                "value": "360237.49"
+                            },
+                            "exchangeRate": {
+                                "sourceCurrency": "USD",
+                                "targetCurrency": "MXN",
+                                "value": "16.98158475"
+                            }
+                        },
+                        "links": [
+                            {
+                                "href": "https://api.sandbox.paypal.com/v2/payments/captures/9SJ814366K667870F",
+                                "rel": "self",
+                                "method": "GET"
+                            },
+                            {
+                                "href": "https://api.sandbox.paypal.com/v2/payments/captures/9SJ814366K667870F/refund",
+                                "rel": "refund",
+                                "method": "POST"
+                            },
+                            {
+                                "href": "https://api.sandbox.paypal.com/v2/checkout/orders/1X899505GX794930M",
+                                "rel": "up",
+                                "method": "GET"
+                            }
+                        ],
+                        "createTime": "2026-01-22T15:58:09Z",
+                        "updateTime": "2026-01-22T15:58:09Z"
+                    }
+                ]
+            }
+        }
+    ],
+    "status": "COMPLETED",
+    "links": [
+        {
+            "href": "https://api.sandbox.paypal.com/v2/checkout/orders/1X899505GX794930M",
+            "rel": "self",
+            "method": "GET"
+        }
+    ]
+}

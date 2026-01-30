@@ -1,0 +1,296 @@
+    <style>
+        /* --- VARIABLES & RESET --- */
+        :root {
+            --bg-color: #FAF9F6; /* Alabastro */
+            --card-bg: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-muted: #666666;
+            --gold: #C5A059;
+            --border: #EEEEEE;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            & i {
+                font-family: "LeVountIcons";
+                font-style: normal;
+                font-weight: 400;
+            }
+        }
+
+        /* --- LAYOUT CONTAINER --- */
+        .confirmation-wrapper {
+            width: 100%;
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        /* --- SUCCESS HEADER --- */
+        .success-header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 1s ease;
+            padding: 20px;
+        }
+
+        .check-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            color: var(--gold);
+            font-size: 80px;
+            background-color: #fff;
+        }
+
+        h1 {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            margin: 0 0 15px 0;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* --- ORDER CARD --- */
+        .order-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            margin-bottom: 30px;
+        }
+
+        /* --- PROGRESS TRACKER --- */
+        .tracker {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .tracker::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #f0f0f0;
+            z-index: 1;
+        }
+
+        .step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 33%;
+        }
+
+        .step-dot {
+            width: 32px;
+            height: 32px;
+            font-size: 20px;
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .step.active .step-dot {
+            border-color: var(--gold);
+            background: var(--gold);
+            color: #fff;
+        }
+
+        .step.completed .step-dot {
+            border-color: var(--gold);
+            background: #fff;
+            color: var(--gold);
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #999;
+            font-weight: 600;
+        }
+        
+        .step.active .step-label { color: var(--text-main); }
+
+        /* --- INFO GRID --- */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            border-top: 1px solid var(--border);
+            padding-top: 40px;
+        }
+
+        .info-block h3 {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 1.2rem;
+            margin: 0 0 15px 0;
+        }
+
+        .info-block p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .order-number-box {
+            background: var(--bg-color);
+            padding: 15px;
+            display: inline-block;
+            margin-top: 10px;
+            border: 1px dashed #ccc;
+            font-family: 'Bodoni Moda', serif;
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        /* --- MAP PLACEHOLDER (CSS Art) --- */
+        .map-preview {
+            width: 100%;
+            height: 150px;
+            background-color: #f4f4f4;
+            background-image: radial-gradient(#ddd 1px, transparent 1px);
+            background-size: 20px 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        /* --- CTA BUTTONS --- */
+        .actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn-black {
+            background-color: var(--text-main);
+            color: #fff;
+            text-decoration: none;
+            padding: 18px 40px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .btn-black:hover {
+            background-color: var(--gold);
+        }
+
+        .link-secondary {
+            display: block;
+            margin-top: 20px;
+            color: var(--text-muted);
+            text-decoration: underline;
+            font-size: 0.9rem;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- MOBILE --- */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .info-grid { grid-template-columns: 1fr; gap: 30px; }
+            .order-card { padding: 25px; }
+            .check-circle { width: 60px; height: 60px; font-size: 24px; }
+        }
+    </style>
+
+    <div class="confirmation-wrapper">
+        
+        <header class="success-header">
+            <div class="check-circle">
+                <i class="fas fa-check">&#xe1062;</i>
+            </div>
+            <h1>Splendid.</h1>
+            <p class="subtitle">
+                Your acquisition is confirmed.<br>
+                A confirmation email has been sent to <strong><%- orderData?.clientEmail %></strong>
+            </p>
+        </header>
+            
+            <div class="tracker">
+                <div class="step active"> <div class="step-dot"><i class="fas fa-check">&#xe108e;</i></div>
+                    <div class="step-label">Confirmed</div>
+                </div>
+                <div class="step">
+                    <div class="step-dot"><i class="fas fa-gem">&#xe106d;</i></div>
+                    <div class="step-label">Preparing</div>
+                </div>
+                <div class="step">
+                    <div class="step-dot"><i class="fas fa-truck">&#xe1067;</i></div>
+                    <div class="step-label">Shipped</div>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                
+                <div class="info-block">
+                    <h3>Order Reference</h3>
+                    <p>Keep this number for your records.</p>
+                    <div class="order-number-box">
+                        #<%- orderData?.id %>
+                    </div>
+                    <br><br>
+                    <h3>Payment Method</h3>
+                    <p>
+                        <i class="fab fa-cc-visa"></i><strong><%- orderData?.paymentMethod?.toUpperCase() %></strong><br>
+                        Total Paid: <strong>$<%- `${utils.toCurrency(orderData?.total)} ${orderData?.curency || 'USD'}` %></strong>
+                    </p>
+                </div>
+
+                <div class="info-block">
+                    <h3>Shipping To</h3>
+                    <p>
+                        <strong><%- `${orderData?.name} ${orderData?.lastName?.charAt(0)}*` %></strong><br>
+                        <%- `${orderData?.address?.slice(0, 20)}...` %>
+                    </p>
+                </div>
+
+            </div>
+
+        <div class="actions">
+            <a href="/" class="btn-black">Continue Shopping</a>
+        </div>
+        
+        <p style="text-align:center; font-size: 0.8rem; color: #aaa; margin-top: 40px;">
+            Need assistance? <a href="#" style="color:#aaa;">Contact Concierge</a>
+        </p>
+
+    </div>

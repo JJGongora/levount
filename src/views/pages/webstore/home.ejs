@@ -1,0 +1,1396 @@
+<style>
+    body {
+        & header {
+            box-shadow: none;
+
+            & nav {
+                & .upperContainer {}
+            }
+        }
+
+        & main {
+            padding: 0 !important;
+            position: relative;
+            margin-top: 0 !important;
+
+            & .frontPage {
+                /*width: calc(100dvw - 50px);*/
+                margin: auto;
+                /*border-radius: 7px;*/
+                background-repeat: no-repeat;
+                background-size: cover;
+                /*background-attachment: fixed;*/
+                height: calc(80dvh - 95px);
+                background-position: 20% 20%;
+                background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('/LeVount/images/frontpages/2026-01-001.webp');
+                display: flex;
+                align-items: center;
+                box-sizing: border-box;
+                padding: 30px;
+                overflow: hidden;
+                background-position: 70% 80%;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.2);
+                    /* Filtro negro suave al 20% */
+                    z-index: 0;
+                }
+
+                & .container {
+                    max-width: 500px;
+                    z-index: 1;
+
+                    & h1 {
+                        font-family: "Bodoni Moda", sans-serif;
+                        margin: 0;
+                        font-size: 4rem;
+                        color: var(--font-light);
+                        margin-bottom: 20px;
+                        line-height: 110%;
+                    }
+
+                    & p {
+                        font-family: "Montserrat", serif;
+                        font-size: 1.2rem;
+                        font-weight: 300;
+                        margin-bottom: 30px;
+                        color: white;
+                    }
+
+                    & button {
+                        font-family: "Montserrat", serif;
+                        display: inline-block;
+                        padding: 15px 30px;
+                        background-color: #FFFFFF;
+                        color: #1A1A1A;
+                        font-family: 'Montserrat', sans-serif;
+                        text-transform: uppercase;
+                        letter-spacing: 2px;
+                        font-size: 0.9rem;
+                        font-weight: 600;
+                        text-decoration: none;
+                        transition: all 0.3s ease;
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: #C5A059;
+                            /* Tu Muted Gold al pasar el mouse */
+                            color: #FFFFFF;
+                        }
+                    }
+                }
+            }
+
+            & .trustBar {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+                background-color: var(--bg-alabaster);
+                padding: 40px;
+
+                & .container {
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    gap: 20px;
+
+                    & .item {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        text-align: center;
+                        width: 22%;
+
+                        & i {
+                            font-family: "LeVountIcons";
+                            font-size: 32px;
+                            font-style: normal;
+                            color: var(--text-dark);
+                            margin-bottom: 12px;
+                            opacity: 0.8;
+                            transition: all 0.3s ease;
+                        }
+
+                        & span {
+                            font-family: 'Montserrat', sans-serif;
+                            font-size: 0.75rem;
+                            font-weight: 500;
+                            text-transform: uppercase;
+                            letter-spacing: 1.5px;
+                            color: #555;
+                        }
+
+                        &:hover i {
+                            transform: translateY(-3px);
+                            color: var(--accent-gold);
+                        }
+                    }
+                }
+            }
+
+            & .presentation {
+                margin: 20px auto;
+                padding: 20px;
+                max-width: 600px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Montserrat', sans-serif;
+
+                & h3 {
+                    margin: 0;
+                    font-family: "Playfair Display", serif;
+                    color: var(--text-dark);
+                }
+
+                & hr {
+                    width: 80px;
+                    margin: 5px 0px;
+                }
+
+                & p {
+                    margin: 0;
+                    text-align: justify;
+                    font-family: "Nunito Sans", sans-serif;
+                }
+            }
+
+            & .productsCategories {
+                margin: 35px 0;
+                padding: 30px 15px;
+                display: block;
+                justify-content: center;
+                gap: 50px;
+                background-color: var(--bg-alabaster);
+
+                & h2 {
+                    margin: 0;
+                    text-align: center;
+                    font-family: "Cormorant Garamond", serif;
+                    letter-spacing: 2px;
+                    color: var(--text-dark);
+                    line-height: 100%;
+                }
+
+                & hr {
+                    max-width: 200px;
+                    border-width: 1px;
+                }
+
+                & .categories {
+                    margin: auto;
+                    margin-top: 20px;
+                    width: 100%;
+                    box-sizing: border-box;
+                    border-radius: 7px;
+
+                    & ul {
+                        list-style: none;
+                        display: flex;
+                        justify-content: center;
+                        flex-wrap: wrap;
+                        gap: 20px;
+                        padding: 0;
+                        margin: 0;
+
+                        & li {
+                            display: grid;
+                            cursor: pointer;
+                            text-align: center;
+                            font-family: "Montserrat", sans-serif;
+                            color: #6e6e6e;
+                            font-weight: 600;
+                            font-size: 0.8rem;
+                            transition: all 0.3s ease;
+                            position: relative;
+                            width: calc(100% / 5 - 16px);
+                            min-width: 140px;
+
+                            & img {
+                                height: 300px;
+                                width: 100%;
+                                border-radius: 3px;
+                                transition: all 0.3s ease-in-out;
+                                box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+                                background-size: cover;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                filter: saturate(0%);
+                                object-fit: cover;
+                            }
+
+                            & p {
+                                margin: 0;
+                                bottom: 0px;
+                                position: absolute;
+                                width: 100%;
+                                text-align: center;
+                                transition: all 0.3s ease-in-out;
+                                height: 50px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                border-radius: 0 0 5px 5px;
+                                color: transparent;
+                            }
+
+                            &:hover {
+                                text-decoration: underline;
+                                color: #c0a700;
+
+                                & {
+                                    & img {
+                                        /*transform: scale(1.05);*/
+                                        filter: saturate(100%);
+                                    }
+
+                                    & p {
+                                        background-image: linear-gradient(to top, var(--text-dark), transparent);
+                                        color: white;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            & h2 {
+                margin: 0;
+                text-align: center;
+                font-family: "Cormorant Garamond", serif;
+                letter-spacing: 2px;
+                color: var(--text-dark);
+                padding: 0 15px;
+                line-height: 100%;
+            }
+
+            & hr {
+                max-width: 200px;
+                border-width: 1px;
+            }
+
+            & .outstandingProducts {
+                margin: 0 auto;
+                padding: 20px 0;
+                padding-bottom: 40px;
+                max-width: calc(100dvw - 40px);
+                overflow: hidden;
+                flex: 0 0 100%;
+                display: flex;
+                position: relative;
+
+                &:hover {
+                    & .carouselTrack {
+                        animation-play-state: paused !important;
+                    }
+
+                    & button {
+                        opacity: 1;
+                    }
+                }
+
+                & button {
+                    font-family: "LeVountIcons";
+                    font-size: 50px;
+                    position: absolute;
+                    font-weight: 500;
+                    font-style: normal;
+                    top: 0;
+                    bottom: 0;
+                    z-index: 10;
+                    display: flex;
+                    align-self: center;
+                    cursor: pointer;
+                    color: var(--text-dark);
+                    background-color: rgba(255, 255, 255, 0.9);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    border: 1px solid rgba(0, 0, 0, 0.05);
+                    transition: all 0.3s ease;
+                    opacity: 0;
+
+                    &:hover {
+                        background-color: #1A1A1A;
+                        color: #C5A059;
+                        transform: translateY(-10px) scale(1.1);
+                    }
+
+                    &.btn-next {
+                        right: 0px;
+                    }
+                }
+
+                & .scrollContainer {
+                    overflow: hidden;
+                    flex: 0 0 100%;
+                    display: flex;
+                    position: relative;
+                    scroll-behavior: smooth;
+                    gap: 0;
+                    scrollbar-width: none;
+                    -ms-overflow-style: none;
+
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+
+                    & .carouselTrack {
+                        display: flex;
+                        gap: 30px;
+                        flex-shrink: 0;
+                        padding-right: 20px;
+                        will-change: transform;
+                        animation: scrolling 40s linear infinite;
+
+                        & .productCard {
+                            cursor: pointer;
+                            flex-shrink: 0;
+                            width: 250px;
+                            display: grid;
+                            grid-template-rows: max-content auto max-content max-content;
+
+                            & .imgContainer {
+                                margin-bottom: 10px;
+
+                                & img {
+                                    width: 100%;
+                                    height: 300px;
+                                    object-fit: cover;
+                                    border-radius: 5px;
+                                    transition: all 0.3s ease-in-out;
+                                }
+                            }
+
+                            &:hover {
+                                & img {
+                                    transform: scale(1.05);
+                                }
+                            }
+
+                            & h5,
+                            & h3,
+                            & h6 {
+                                margin: 0;
+                                line-height: 100%;
+                                padding: 0 10px;
+                            }
+
+                            & h6 {
+                                margin-bottom: 8px;
+                                font-weight: 500;
+                                font-size: 0.8rem;
+                                font-family: 'Bodoni Moda', serif;
+                            }
+
+                            & h5 {
+                                text-decoration: line-through;
+                                font-weight: 400;
+                                font-family: "Montserrat", sans-serif;
+                                color: var(--gray-60);
+                            }
+
+                            & h3 {
+                                font-family: "Montserrat", sans-serif;
+                                font-weight: 400;
+                                letter-spacing: 1px;
+                                color: var(--accent-gold);
+                            }
+                        }
+                    }
+                }
+            }
+
+            & .editorial {
+                padding: 100px 0;
+                background-color: var(--bg-stone);
+                overflow: hidden;
+
+                & .container {
+                    display: flex;
+                    align-items: center;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 0 5%;
+                    gap: 80px;
+
+                    & .visual {
+                        flex: 1;
+                        position: relative;
+
+                        & .parallax-mask {
+                            width: 100%;
+                            height: 600px;
+                            overflow: hidden;
+                            position: relative;
+
+                            & img {
+                                width: 100%;
+                                height: 120%;
+                                object-fit: cover;
+                                position: absolute;
+                                top: -10%;
+                                transition: transform 0.1s linear;
+                                will-change: transform;
+                            }
+
+
+                        }
+                    }
+
+                    & .content {
+                        flex: 1;
+                        padding-right: 20px;
+
+                        & h4 {
+                            font-family: 'Montserrat', sans-serif;
+                            font-size: 0.8rem;
+                            letter-spacing: 2px;
+                            text-transform: uppercase;
+                            color: #888;
+                            display: block;
+                            margin-bottom: 20px;
+                            font-weight: 400;
+                        }
+
+                        & h2 {
+                            font-family: 'Bodoni Moda', serif;
+                            font-size: 3.5rem;
+                            line-height: 1.1;
+                            color: #1A1A1A;
+                            margin-bottom: 30px;
+                        }
+
+                        & p {
+                            font-family: 'Nunito Sans', sans-serif;
+                            font-size: 1.05rem;
+                            line-height: 1.8;
+                            color: #555;
+                            margin-bottom: 40px;
+                            max-width: 450px;
+                        }
+                    }
+                }
+            }
+
+            & .giftGuide {
+                padding: 50px 0;
+                background-color: white;
+
+                & .container {
+                    & .title {
+                        padding: 0 25px;
+
+                        & h2 {
+                            font-family: "Cormorant Garamont", serif;
+                        }
+
+                        & p {
+                            margin: 0;
+                            font-family: "Nunito Sans", sans-serif;
+                            text-align: center;
+                        }
+                    }
+
+                    & .giftGrid {
+                        display: grid;
+                        margin-top: 30px;
+                        grid-template-columns: 2fr 1fr 1fr;
+                        grid-template-rows: 300px;
+                        overflow: hidden;
+                        max-width: 100dvw;
+                        box-sizing: border-box;
+
+                        & .giftCard {
+                            &:hover .imgWrapper img {
+                                transform: scale(1.05);
+                            }
+
+                            & .imgWrapper {
+                                width: 100%;
+                                height: 100%;
+                                position: relative;
+                                overflow: hidden;
+
+                                & img {
+                                    width: 100%;
+                                    height: 100%;
+                                    transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+                                    object-fit: cover;
+                                }
+
+                                & .overlay {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 60%);
+                                    z-index: 1;
+                                }
+                            }
+
+                            & .giftContent {
+                                position: absolute;
+                                bottom: 30px;
+                                left: 30px;
+                                z-index: 2;
+                                color: #FFFFFF;
+
+                                & .label {
+                                    font-family: 'Montserrat', sans-serif;
+                                    font-size: 0.75rem;
+                                    text-transform: uppercase;
+                                    letter-spacing: 2px;
+                                    margin-bottom: 10px;
+                                    display: block;
+                                    opacity: 0.9;
+                                }
+
+                                & h3 {
+                                    font-family: 'Bodoni Moda', serif;
+                                    font-size: 2rem;
+                                    font-weight: 400;
+                                    font-style: italic;
+                                    margin: 0 0 15px 0;
+                                }
+
+                                & .falseButton {
+                                    font-family: 'Montserrat', sans-serif;
+                                    font-size: 0.8rem;
+                                    text-transform: uppercase;
+                                    letter-spacing: 1.5px;
+                                    border-bottom: 1px solid #FFFFFF;
+                                    padding-bottom: 3px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            & .testimonials {
+                background-color: var(--bg-alabaster);
+                /* Alabastro */
+                padding: 60px 20px;
+                text-align: center;
+                position: relative;
+                min-height: fit-content !important;
+                box-sizing: border-box;
+
+                & i {
+                    font-family: "LeVountIcons" !important;
+                    font-size: 20px;
+                    font-style: normal !important;
+                    font-weight: normal !important;
+                }
+
+                & .container {
+                    & .header {
+                        margin-bottom: 15px;
+
+                        & p {
+                            font-family: "Playfair Display", serif;
+                            font-size: 1.8rem;
+                            margin: 0;
+                        }
+                    }
+
+                    & .slider {
+                        position: relative;
+                        max-width: 800px;
+                        margin: auto;
+                        min-height: 250px;
+
+                        & .slide {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            opacity: 0;
+                            visibility: hidden;
+                            transition: all 0.8s ease-in-out;
+                            transform: translateY(20px);
+
+                            &.active {
+                                opacity: 1;
+                                visibility: visible;
+                                transform: translateY(0);
+                            }
+
+                            & .stars {
+                                color: var(--accent-gold);
+                                font-size: 14px;
+                                letter-spacing: 5px;
+                                margin-bottom: 15px;
+
+                                & i {}
+                            }
+
+                            & .review {
+                                font-family: 'Bodoni Moda', serif;
+                                font-size: 1.8rem;
+                                font-style: italic;
+                                font-weight: 400;
+                                line-height: 1.4;
+                                color: #1A1A1A;
+                                margin: 0 0 30px 0;
+                                line-height: 100%;
+                            }
+
+                            & .reviewAuthor {
+                                font-family: 'Montserrat', sans-serif;
+                                font-size: 0.85rem;
+                                color: #555;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 5px;
+                                align-items: center;
+
+                                & .name {
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    letter-spacing: 1px;
+                                }
+
+                                & .verified {
+                                    font-size: 0.7rem;
+                                    color: var(--accent-gold);
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.5px;
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 10px;
+
+                                    & i {}
+                                }
+                            }
+                        }
+                    }
+
+                    & .sliderDots {
+                        margin-top: 20px;
+
+                        & .dot {
+                            display: inline-block;
+                            width: 8px;
+                            height: 8px;
+                            background-color: #DDD;
+                            border-radius: 50%;
+                            margin: 0 6px;
+                            cursor: pointer;
+                            transition: background-color 0.3s;
+
+                            &.active {
+                                background-color: var(--text-dark);
+                            }
+                        }
+                    }
+                }
+            }
+
+            & .newsletter {
+                background-color: var(--text-dark);
+                padding: 50px 20px;
+                text-align: center;
+                color: var(--font-light);
+                box-sizing: border-box;
+
+                & .container {
+                    & .content {
+                        max-width: 600px;
+                        margin: 0 auto;
+
+                        & .label {
+                            font-family: 'Montserrat', sans-serif;
+                            font-size: 0.75rem;
+                            text-transform: uppercase;
+                            letter-spacing: 2px;
+                            color: var(--accent-gold);
+                            display: block;
+                            margin-bottom: 15px;
+                        }
+
+                        & h2 {
+                            font-family: 'Bodoni Moda', serif;
+                            font-size: 3rem;
+                            font-weight: 400;
+                            margin-bottom: 20px;
+                            color: #FFFFFF;
+                            line-height: 100%;
+                        }
+
+                        & p {
+                            font-family: 'Mulish', sans-serif;
+                            font-size: 1rem;
+                            line-height: 1.6;
+                            color: #AAAAAA;
+                            margin-bottom: 40px;
+                            line-height: 100%;
+                        }
+
+                        & form {
+                            margin-bottom: 20px;
+
+                            & .inputGroup {
+                                position: relative;
+                                display: flex;
+                                align-items: center;
+                                border-bottom: 1px solid #555;
+                                transition: border-color 0.3s;
+
+                                &:focus-within {
+                                    border-bottom: 1px solid var(--accent-gold);
+                                }
+
+                                & input {
+                                    background: transparent;
+                                    border: none;
+                                    color: #FFFFFF;
+                                    font-family: 'Montserrat', sans-serif;
+                                    font-size: 1rem;
+                                    width: 100%;
+                                    outline: none;
+                                    padding: 10px;
+
+                                    &::placeholder {
+                                        color: #666;
+                                        font-style: italic;
+                                    }
+                                }
+
+                                & button {
+                                    background: transparent;
+                                    border: none;
+                                    color: #FFFFFF;
+                                    font-family: 'Montserrat', sans-serif;
+                                    font-size: 0.8rem;
+                                    text-transform: uppercase;
+                                    letter-spacing: 1.5px;
+                                    font-weight: 600;
+                                    cursor: pointer;
+                                    transition: color 0.3s;
+                                    padding: 10px;
+                                    min-height: 35px;
+                                    /*height: 100%;*/
+
+                                    &:hover {
+                                        color: var(--font-light);
+                                        background-color: var(--gray-60);
+                                    }
+                                }
+                            }
+                        }
+
+                        & .privacyNote {
+                            font-family: 'Montserrat', sans-serif;
+                            font-size: 0.7rem;
+                            color: #444;
+                            margin-top: 20px;
+
+                            & a {
+                                color: #666;
+                                text-decoration: underline;
+                                transition: color 0.3s;
+
+                                &:hover {
+                                    color: #888;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                & .feedback-container {
+                    min-height: 60px;
+                    /* Reserva espacio para evitar saltos bruscos */
+                    display: none;
+                    opacity: 0;
+                }
+
+                & .feedback-success {
+                    font-family: 'Bodoni Moda', serif;
+                    font-size: 1.8rem;
+                    font-style: italic;
+                    color: #C5A059;
+                    /* Tu Muted Gold */
+                    line-height: 1.4;
+                    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                    /* Sutil brillo */
+                }
+
+                & .feedback-error {
+                    font-family: 'Montserrat', sans-serif;
+                    font-size: 0.9rem;
+                    color: #E57373;
+                    /* Rojo coral suave, elegante pero legible sobre negro */
+                    margin-top: 15px;
+                    background: rgba(229, 115, 115, 0.1);
+                    /* Fondo muy sutil */
+                    padding: 10px;
+                    border-radius: 4px;
+                    display: inline-block;
+                }
+            }
+
+
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeOutDown {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        to {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+    }
+
+    .animate-in {
+        display: block !important;
+        animation: fadeInUp 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+    }
+
+    .animate-out {
+        animation: fadeOutDown 0.5s ease forwards;
+        pointer-events: none;
+    }
+
+    @media only screen and (max-width: 560px) {
+
+        body {
+            & main {
+                & .frontPage {
+                    & .container {
+                        & h1 {
+                            font-size: 2.8rem;
+                        }
+
+                        & p {
+                            font-size: 1rem;
+                        }
+                    }
+                }
+
+                & .productsCategories {
+                    & .categories {
+                        padding: 0 !important;
+
+                        & ul {
+                            gap: 15px !important;
+
+                            & li {
+                                width: calc(50% - 7.5px);
+
+                                & img {
+                                    width: 100% !important;
+                                    height: 200px !important;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                & .trustBar {
+                    padding: 20px;
+
+                    & .container {
+                        & .item {
+                            width: 45% !important;
+                            margin-bottom: 20px;
+                        }
+                    }
+                }
+
+                & .outstandingProducts {
+                    & .carouselTrack {
+                        gap: 20px;
+
+                        & .productCard {
+                            width: 180px;
+
+                            & .imgContainer {
+                                & img {
+                                    height: 200px;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                & .editorial {
+                    padding: 50px 0 !important;
+
+                    & .container {
+                        flex-direction: column !important;
+                        gap: 20px !important;
+
+                        & .visual {
+                            & .parallax-mask {
+                                height: 400px !important;
+
+                                & img {
+                                    position: relative !important;
+                                    top: none !important;
+                                }
+                            }
+                        }
+
+                        & .content {
+                            & p {
+                                margin-bottom: 0 !important;
+                            }
+                        }
+
+                        & h2 {
+                            font-size: 2.5rem !important;
+                        }
+                    }
+                }
+
+                & .giftGuide {
+                    & .container {
+                        & .giftGrid {
+                            display: flex !important;
+                            flex-direction: column;
+                            gap: 15px;
+
+                            & .giftCard {
+                                height: 200px;
+                            }
+                        }
+                    }
+                }
+
+                & .testimonials {
+                    max-width: 100dvw;
+
+                    & .container {
+                        max-width: 90dvw;
+
+                        & .slider {
+                            & .slide {
+                                & .review {
+                                    font-size: 1.2rem;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                & .newsletter {
+                    & .container {
+                        & .content {
+                            & h2 {
+                                font-size: 2rem !important;
+                            }
+
+                            & form {
+                                & .inputGroup {
+                                    display: grid !important;
+                                    box-sizing: border-box !important;
+
+                                    & input {
+                                        font-size: 0.9rem !important;
+                                    }
+
+                                    & button {
+                                        font-size: 0.8rem !important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    .reveal-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        will-change: opacity, transform;
+    }
+
+    .reveal-on-scroll.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .text-soft-rise {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 1s ease-out, transform 1s cubic-bezier(0.2, 1, 0.3, 1);
+        will-change: opacity, transform;
+    }
+
+    .text-soft-rise.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .highlight-gold {
+        font-family: 'Bodoni Moda', serif;
+        font-style: italic;
+        font-weight: 500;
+        color: var(--accent-gold);
+        font-size: 1.1em;
+    }
+
+    .highlight-silver {
+        font-family: 'Bodoni Moda', serif;
+        font-style: italic;
+        font-weight: 500;
+        color: var(--accent-silver);
+        font-size: 1.1em;
+    }
+
+    @keyframes scrolling {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+</style>
+
+<section class="frontPage reveal-on-scroll">
+    <div class="container">
+        <h1>THE JANUARY RESET</h1>
+        <p>Clean lines, 18k Gold, and zero clutter. Elevate your daily uniform for the year ahead.</p>
+        <button type="button" onclick="window.location.href=`/products`">EXPLORE ESSENTIALS</button>
+    </div>
+</section>
+
+<section class="trustBar reveal-on-scroll">
+    <div class="container">
+
+        <div class="item">
+            <i>&#xe1065;</i>
+            <span>Certified authenticity</span>
+        </div>
+
+        <div class="item">
+            <i>&#xe1067;</i>
+            <span>Complimentary shipping</span>
+        </div>
+
+        <div class="item">
+            <i>&#xe1066;</i>
+            <span>Ethically sourced</span>
+        </div>
+
+    </div>
+</section>
+
+<div class="presentation">
+    <h3 class="animatedTitle">About</h3>
+    <hr>
+    <p class="text-soft-rise">Since 1997, <span class="highlight-gold">Le Vount’s</span> innovative workshop has crafted
+        timeless fine jewelry for life's priceless moments. We believe jewelry is more than an accessory; it's an
+        emotion that makes you feel truly unique. We dream in jewelry and make it happen for you.</p>
+</div>
+
+<section class="productsCategories">
+    <h2 class="animatedTitle">OUR CATEGORIES</h2>
+    <hr>
+    <div class="categories reveal-on-scroll">
+        <ul>
+            <li onclick="window.location.href=`/products/rings`"><img src="/LeVount/images/categories/ring-thumb.webp">
+                <p>RINGS</p>
+            </li>
+            <li onclick="window.location.href=`/products/earrings`"><img src="/LeVount/images/categories/earring-thumb.webp"
+                    alt="">
+                <p>EARRINGS</p>
+            </li>
+            <li onclick="window.location.href=`/products/necklaces`"><img src="/LeVount/images/categories/necklace-thumb.webp"
+                    alt="">
+                <p>NECKLACES</p>
+            </li>
+            <li onclick="window.location.href=`/products/bracelets`"><img src="/LeVount/images/categories/bracelet-thumb.webp"
+                    alt="">
+                <p>BRACELETS</p>
+            </li>
+            <li onclick="window.location.href=`/products/pendants`"><img src="/LeVount/images/categories/pendant-thumb.webp"
+                    alt="">
+                <p>PENDANTS</p>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<h2 class="animatedTitle">THE LE VOUNT CLASSICS</h2>
+<hr>
+<section class="outstandingProducts" id="outstandingProducts">
+    <button class="btn-prev">&#xe1015;</button>
+    <div class="scrollContainer" id="scrollContainer">
+        <% for(let j=0; j < 2; j++) { %>
+            <div class="carouselTrack">
+                <% for(let i=0; i < outstProducts?.products?.length; i++) { %>
+                    <a class="productCard"
+                        href="/products/<%- outstProducts?.products?.[i]?.category + '/' + outstProducts?.products?.[i]?.sku %>">
+                        <div class="imgContainer">
+                            <img src="/images/products/<%- `${outstProducts?.products?.[i]?.material}/${outstProducts?.products?.[i]?.category}/${outstProducts?.products?.[i]?.sku}/${outstProducts?.products?.[i]?.sku?.toLowerCase()}-thumb.webp` %>"
+                                alt="<%= outstProducts?.products?.[i]?.shortProductName %>" loading="lazy">
+                        </div>
+                        <h6 class="product-name"><%- utils.capitalize(outstProducts?.products?.[i]?.shortName) || utils.capitalize(outstProducts?.products?.[i]?.name) %>
+                        </h6>
+                        <h5 class="old-price"><%- `${utils.toCurrency(outstProducts?.products?.[i]?.tagPrice)}` %></h5>
+                        <h3 class="current-price"><%-
+                                `${utils.toCurrency(outstProducts?.products?.[i]?.discountPrice)} USD` %></h3>
+                    </a>
+                    <% } %>
+            </div>
+            <% } %>
+    </div>
+    <button class="btn-next">&#xe1016;</button>
+</section>
+
+<section class="editorial">
+    <div class="container">
+        <div class="visual">
+            <div class="parallax-mask">
+                <img class="parallax-img" src="/LeVount/images/frontpages/editorial-2025-12-001.webp"
+                    alt="Le Vount's jewelry manufacturing.">
+            </div>
+        </div>
+
+        <div class="content">
+            <h4 class="reveal-on-scroll">The Atelier</h4>
+            <h2>The Art of Detail</h2>
+            <p class="reveal-on-scroll">
+                We believe that true luxury lies in the details you can't see at first glance.
+                Each Le Vount piece is handcrafted by master artisans using <span class="highlight-gold">14k/16k solid
+                    gold</span>
+                or <span class="highlight-silver">.925/.950 silver</span> and ethically sourced stones, ensuring that
+                your jewelry is not just an accessory,
+                but a modern heirloom.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="giftGuide">
+    <div class="container">
+        <div class="title">
+            <h2>The Art of Gifting</h2>
+            <hr>
+            <p>Curated collections for every occasion</p>
+        </div>
+
+        <div class="giftGrid">
+            <a href="" class="giftCard cardLarge reveal-on-scroll">
+                <div class="imgWrapper">
+                    <img src="/LeVount/images/gifts/for-her-001.webp" alt="Gifts for Her">
+                    <div class="overlay"></div>
+                </div>
+
+                <div class="giftContent">
+                    <span class="label">The Collection</span>
+                    <h3 class="title">For Her</h3>
+                    <span class="falseButton">Shop Now</span>
+                </div>
+            </a>
+
+            <a href="" class="giftCard reveal-on-scroll">
+                <div class="imgWrapper">
+                    <img src="/LeVount/images/gifts/for-him-001.webp" alt="Gifts for Him">
+                    <div class="overlay"></div>
+                </div>
+                <div class="giftContent">
+                    <h3 class="title">For Him</h3>
+                </div>
+            </a>
+
+            <a href="" class="giftCard reveal-on-scroll">
+                <div class="imgWrapper">
+                    <img src="/LeVount/images/gifts/under-500-001.webp" alt="Luxury Under $500">
+                    <div class="overlay"></div>
+                </div>
+                <div class="giftContent">
+                    <h3 class="title">Luxury Under $500</h3>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials">
+    <div class="container">
+        <div class="header">
+            <p>Client Love</p>
+            <hr>
+        </div>
+
+        <div class="slider">
+            <div class="slide active">
+                <div class="stars">
+                    <i>&#xe1068;</i>
+                    <i>&#xe1068;</i>
+                    <i>&#xe1068;</i>
+                    <i>&#xe1068;</i>
+                    <i>&#xe1068;</i>
+                </div>
+                <blockquote class="review">
+                    When I thought about a nice bracelet for my wife, I thought of you for going above and beyond good
+                    customer service. It turned out beautiful and my wife loves it!
+                </blockquote>
+                <div class="reviewAuthor">
+                    <span class="name">Brent Jones</span>
+                    <span class="verified"><i>&#xe1062;</i> Verified</span>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="stars">
+                    <i>&#xe1068;</i>
+                    <i>&#xe1068;</i>
+                    <i>&#xe1068;</i>
+                    <i>&#xe1068;</i>
+                    <i>&#xe1068;</i>
+                </div>
+                <blockquote class="review">
+                    Finally, a brand that combines modern design with ethical sourcing.
+                    Knowing my piece was crafted responsibly makes it shine even brighter.
+                </blockquote>
+                <div class="reviewAuthor">
+                    <span class="name">Sophia Marx</span>
+                    <span class="verified"><i>&#xe1062;</i> Verified</span>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="stars">
+                    <i>&#xe1068;</i>
+                    <i>&#xe1068;</i>
+                    <i>&#xe1068;</i>
+                    <i>&#xe1068;</i>
+                    <i>&#xe1068;</i>
+                </div>
+                <blockquote class="review">
+                    Pictures truly do not do it justice. The brilliance of the diamonds
+                    in the afternoon light is breathtaking. It feels substantial, heavy,
+                    and incredibly well-made.
+                </blockquote>
+                <div class="reviewAuthor">
+                    <span class="name">Katherine Pearson</span>
+                    <span class="verified"><i>&#xe1062;</i> Verified</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="sliderDots">
+            <span class="dot active" onclick="showSlide(0)"></span>
+            <span class="dot" onclick="showSlide(1)"></span>
+            <span class="dot" onclick="showSlide(2)"></span>
+        </div>
+    </div>
+</section>
+
+<section class="newsletter">
+    <div class="container">
+        <div class="content reveal-on-scroll">
+            <span class="label">Become an insider</span>
+            <h2>Join the Le Vount list</h2>
+            <p>
+                Be the first to receive updates on new collections, style inspiration,
+                and exclusive access to private sales.
+            </p>
+
+            <form id="newsletterSubscription">
+                <div class="inputGroup">
+                    <input type="email" name="email" id="email" placeholder="Enter your email address">
+                    <button type="button" id="subscribeButton" onclick="subscribeNews(event)">Subscribe</button>
+                </div>
+                <div class="cf-turnstile" data-sitekey="<%= Turnstile %>"></div>
+            </form>
+
+            <div id="newsletterFeedback" class="feedback-container">
+
+            </div>
+
+            <p class="privacyNote">
+                By signing up, you agree to our <a href="/privacy">Privacy Policy</a>. Unsubscribe at any time.
+            </p>
+        </div>
+    </div>
+</section>
+
+<script src="/LeVount/js/home.js" defer></script>
+<script>
+    async function subscribeNews(event) {
+        event.preventDefault();
+        const button = document.getElementById("subscribeButton");
+
+        try {
+            button.setAttribute("disabled", "true");
+            const form = document.getElementById("newsletterSubscription");
+            const feedback = document.getElementById("newsletterFeedback");
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            const res = await fetch('/api/newsletter/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', 'Accept': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const resJson = await res.json();
+            if (resJson.success) {
+                showSuccess(form, feedback);
+            } else {
+                showError(form, feedback, resJson.message);
+            }
+            console.log(resJson.message);
+        } catch (error) {
+            console.error(error);
+        }
+
+        button.removeAttribute("disabled");
+    }
+
+    function showSuccess(form, feedback) {
+        form.classList.add('animate-out');
+        setTimeout(() => {
+            form.style.display = 'none';
+            feedback.innerHTML = `
+                <div class="feedback-success">
+                    <span style="display:block; font-size: 2rem; margin-bottom: 10px;">&#10024;</span> Welcome to the Inner Circle.
+                </div>
+                `;
+            feedback.classList.add('animate-in');
+        }, 450);
+    }
+
+    function showError(form, feedback, msg) {
+        feedback.innerHTML = `<div class="feedback-error">${msg}</div>`;
+        feedback.classList.add('animate-in');
+        setTimeout(() => {
+            feedback.classList.remove('animate-in');
+            feedback.style.opacity = '0';
+        }, 4000);
+    }
+</script>

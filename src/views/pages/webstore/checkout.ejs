@@ -1,0 +1,737 @@
+<style>
+    /* --- VARIABLES & RESET --- */
+    :root {
+        --color-bg: #FFFFFF;
+        --color-summary: #FAF9F6;
+        /* Alabastro */
+        --color-text: #1A1A1A;
+        --color-gold: #C5A059;
+        --color-border: #E0E0E0;
+        --font-serif: 'Bodoni Moda', serif;
+        --font-sans: 'Montserrat', sans-serif;
+    }
+
+    .iti__search-input {
+        padding: 10px;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: var(--font-sans);
+        color: var(--color-text);
+        background-color: var(--color-bg);
+    }
+
+    /* --- LAYOUT --- */
+    .checkout-layout {
+        display: flex;
+        flex-wrap: wrap;
+        min-height: 100vh;
+    }
+
+    .main-content {
+        flex: 1 1 55%;
+        /* 55% ancho */
+        padding: 50px 5%;
+        border-right: 1px solid var(--color-border);
+    }
+
+    .order-summary {
+        flex: 1 1 45%;
+        /* 45% ancho */
+        padding: 50px 5%;
+        background-color: var(--color-summary);
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    /* --- HEADER (Solo Logo) --- */
+    .checkout-header {
+        margin-bottom: 40px;
+        text-align: center;
+        /* En móvil centrado, desktop izq */
+    }
+
+    .logo {
+        font-family: var(--font-serif);
+        font-size: 1.8rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--color-text);
+        font-weight: 600;
+    }
+
+    /* --- BREADCRUMBS --- */
+    .breadcrumbs {
+        font-size: 0.8rem;
+        color: #888;
+        margin-bottom: 30px;
+    }
+
+    .breadcrumbs span.active {
+        color: var(--color-text);
+        font-weight: 600;
+    }
+
+    .breadcrumbs i {
+        margin: 0 10px;
+        font-size: 0.6rem;
+    }
+
+    /* --- FORMS --- */
+    .section-title {
+        font-family: var(--font-serif);
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        margin-top: 30px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        width: 100%;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 14px;
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        font-family: var(--font-sans);
+        font-size: 0.9rem;
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-input:focus {
+        border-color: var(--color-gold);
+        box-shadow: 0 0 0 1px var(--color-gold);
+        /* Efecto focus */
+    }
+
+    .form-label {
+        font-size: 0.75rem;
+        color: #666;
+        margin-bottom: 5px;
+        display: block;
+        margin-left: 2px;
+    }
+
+    /* --- EXPRESS CHECKOUT (Optional) --- */
+    .express-checkout {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 40px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .express-btn {
+        flex: 1;
+        padding: 12px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        color: white;
+        font-weight: 600;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1rem;
+    }
+
+    .bg-black {
+        background-color: #000;
+    }
+
+    /* Apple Pay style */
+    .bg-purple {
+        background-color: #5A31F4;
+    }
+
+    /* Shop Pay style */
+
+    /* --- SUMMARY ITEMS --- */
+    .product-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .product-img-wrapper {
+        position: relative;
+        width: 70px;
+        height: 70px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+        background: #fff;
+        margin-right: 15px;
+    }
+
+    .product-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 6px;
+        aspect-ratio: 1 / 1;
+    }
+
+    
+
+    .product-info h4 {
+        margin: 0;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .product-info p {
+        margin: 3px 0 0;
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .product-price {
+        margin-left: auto;
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    /* --- TOTALS --- */
+    .totals-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+    .totals-final {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        font-family: var(--font-serif);
+        font-size: 1.3rem;
+        color: var(--color-text);
+    }
+
+    .usd-tag {
+        font-size: 0.8rem;
+        color: #888;
+        font-family: var(--font-sans);
+        margin-left: 5px;
+    }
+
+    /* --- BUTTON --- */
+    .btn-pay {
+        width: 100%;
+        padding: 18px;
+        background-color: var(--color-text);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        margin-top: 30px;
+        transition: opacity 0.3s;
+    }
+
+    .btn-pay:hover {
+        opacity: 0.9;
+    }
+
+    /* --- MOBILE --- */
+    @media (max-width: 900px) {
+        .checkout-layout {
+            flex-direction: column-reverse;
+        }
+
+        /* Resumen arriba en móvil es opcional, aquí lo pongo abajo o viceversa */
+
+        /* En este diseño, es común poner el resumen arriba o colapsable. 
+               Para simplificar, pondremos el resumen PRIMERO en móvil. */
+        .checkout-layout {
+            flex-direction: column;
+        }
+
+        .order-summary {
+            height: auto;
+            border-bottom: 1px solid var(--color-border);
+            padding: 30px 20px;
+        }
+
+        .main-content {
+            padding: 30px 20px;
+            border-right: none;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+        }
+    }
+
+    .checkout {
+        margin: 15px auto;
+    }
+
+    & .messageError {
+        display: flex;
+        background-color: var(--custom-back);
+        color: var(--custom-text);
+        align-items: center;
+        border-radius: 5px;
+        font-family: "Nunito Sans", sans-serif;
+        max-height: 0px;
+        overflow: hidden;
+        transition: max-height 0.5s;
+        margin-top: 10px;
+
+        & p {
+            margin: 0;
+            padding: 10px 0;
+            padding-right: 10px;
+            line-height: 100%;
+            font-size: 0.9rem;
+        }
+        & i {
+            margin-right: 5px;
+            font-size: 25px;
+            padding: 10px 0;
+            padding-left: 10px;
+            font-family: "LeVountIcons";
+            font-style: normal;
+        }
+
+        &.active {
+            max-height: 500px;
+        }
+    }
+
+    .loadingOverlay {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(4px);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #333;
+        font-family: sans-serif;
+        font-weight: 300;
+        letter-spacing: 1px;
+        
+        & .loader {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 4px solid #D4AF37; 
+            box-shadow: 
+                inset 0 0 10px rgba(212, 175, 55, 0.2), 
+                0 0 10px rgba(212, 175, 55, 0.4);
+            animation: rotateRing 2s linear infinite;
+            
+            &::after {
+                content: '';
+                position: absolute;
+                top: -8px;
+                left: 50%;
+                transform: translateX(-50%) rotate(45deg);
+                width: 14px;
+                height: 14px;
+                background: white;
+                border: 1px solid #e0e0e0;
+                box-shadow: 
+                    0 0 5px #fff, 
+                    0 0 15px #b9f2ff,
+                    0 0 25px #b9f2ff;
+            }
+            
+            & .diamond {
+                position: absolute;
+                top: -16px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 20px;
+                height: 20px;
+                z-index: 10;
+                animation: sparkle 2s ease-in-out infinite;
+            }
+        }
+
+        &.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+    
+    body {
+        & main {
+            padding: 0;
+
+            & .quantityEdit {
+                display: flex;
+
+                & .product-badge {
+                    background: #666;
+                    color: white;
+                    font-size: 0.7rem;
+                    width: 20px;
+                    height: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                & button {
+                    padding: 0;
+                    height: 20px;
+                    width: 20px;
+                    box-sizing: border-box;
+                    border-radius: 0;
+                    border: 1px var(--color-text);
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    font-weight: 600;
+                    font-family: "Nunito Sans", sans-serif;
+
+                    &:hover {
+                        color: white;
+                        background-color: var(--accent-gold);
+                    }
+                }
+            }
+        }
+    }
+
+    @keyframes rotateRing {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    @keyframes sparkle {
+        0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(0.8); }
+        50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+    }
+</style>
+<link rel="stylesheet" href="/intl-input/build/css/intlTelInput.css">
+
+<div class="checkout-layout">
+
+    <main class="main-content">
+        <div id="loadingOverlay" class="loadingOverlay">
+            <div class="loader"><div class="diamond"></div></div>
+            <p>Polishing your payment...</p>
+        </div>
+
+        <div class="checkout-section">
+            <h2 class="section-title">Shipping Address</h2>
+
+            <form id="shippingForm">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <select class="form-input" name="country">
+                        <option value="CA">Canada</option>
+                        <option value="MX">Mexico</option>
+                        <option value="US" selected>United States of America</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" class="form-input" placeholder="*First name" name="firstName">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-input" placeholder="*Last name" name="lastName">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <input type="text" class="form-input" placeholder="*Address" name="address">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <input type="text" class="form-input" placeholder="Apartment, suite, etc. (optional)" name="apartment">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" class="form-input" placeholder="*City" name="city">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-input" placeholder="*State" name="state">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-input" placeholder="*ZIP code" name="zipCode">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                    <input type="tel" id="phoneInput" class="form-input" name="phone">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="email" class="form-input"  name="email" placeholder="Email (for purchase receipt)">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </main>
+
+    <aside class="order-summary">
+        <div class="product-list" id="productList">
+        <% items?.items?.forEach(item => { %>            
+            
+                <div class="product-item">
+                    <div class="product-img-wrapper">
+                        <img src="https://assets.levount.com/products/<%- `${item?.material}/${item?.category}/${item?.sku}/${item?.sku?.toLowerCase()}-thumb.webp` %>" alt="Hera Ring" class="product-img">
+                    </div>
+                    <div class="product-info">
+                        <h4><%- utils.toTitleCase(item?.shortName || item?.name) %></h4>
+                        <p><%- `${item?.purity} ${utils?.toTitleCase(item?.material)}` %></p>
+                        <div class="quantityEdit">
+                            <button type="button" onclick="refreshCart('delete', `<%- item?.sku %>`, 1)">-</button>
+                            <span class="product-badge"><%- item?.quantity %></span>
+                            <button type="button" onclick="refreshCart('add', `<%- item?.sku %>`, 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="product-price"><%- utils.toCurrency(item?.rowTotal) %></div>
+                </div>           
+
+        <% }); %> 
+         </div>       
+
+        <div
+            style="display:flex; gap:10px; margin: 30px 0; padding-bottom: 30px; border-bottom: 1px solid rgba(0,0,0,0.1);">
+            <input type="text" class="form-input" placeholder="Gift card or discount code">
+            <button
+                style="background: #E0E0E0; border: none; padding: 0 20px; border-radius: 4px; color: #888; font-weight: 600; cursor: pointer;">Apply</button>
+        </div>
+
+        <div class="totals">
+            <div class="totals-row">
+                <span>Subtotal</span>
+                <span id="subtotalSpan"><%- utils.toCurrency(items?.subtotal) %></span>
+            </div>
+            <div class="totals-row">
+                <span>Shipping</span>
+                <span style="font-size: 0.8rem; color: #666;">Free</span>
+            </div>
+
+            <div class="totals-final">
+                <span>Total</span>
+                <span id="totalSpan"><%- utils.toCurrency(items?.subtotal) %> <span class="usd-tag">USD</span></span>
+            </div>
+        </div>
+
+        <div class="messageError" id="messageError">
+            <i>&#xe1050;</i>
+            <p>"Este es un mensaje de prueba."</p>
+        </div>
+
+        <div class="checkout">
+            <div id="paypal-button-container"></div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #888;">
+            <i class="fas fa-lock" style="margin-right: 8px;"></i> Secure SSL Encryption
+        </div>
+
+    </aside>
+
+</div>
+
+<script
+    src="https://www.paypal.com/sdk/js?client-id=<%- ppClient %>&currency=USD">
+</script>
+<script src="/intl-input/build/js/intlTelInput.js"></script>
+<script>
+    const input = document.querySelector("#phoneInput");
+    const iti = window.intlTelInput(input, {
+        initialCountry: "us",
+        separateDialCode: false,
+        strictMode: true,
+        loadUtils: () => import('/intl-input/build/js/utils.js'),
+    });
+
+    paypal.Buttons({
+
+        createOrder: function (data, actions) {
+            const form = document.getElementById("shippingForm");
+            const formData = new FormData(form);
+
+            if(
+                !formData.get('country') || !formData.get('firstName') || !formData.get('lastName')
+                || !formData.get('address') || !formData.get('apartment') || !formData.get('city')
+                || !formData.get('state') || !formData.get('zipCode')
+            ) {
+                showMessageError('messageError', "Please, provide all required shipping information (*).", false);
+            } else {
+                
+                return fetch('/api/payments/paypal/create-order', {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        cartId: "<%- cartId %>",
+                        ppClient: "<%- ppClient %>"
+                    })
+                }).then(async response => {
+
+                    const resJson = await response.json();
+                    if (resJson.success == false) {
+                        showMessageError('messageError', resJson.message, false);
+                        throw new Error(resJson.message);
+                    }
+                    return resJson.id;                    
+                }).catch(error => {
+                    showMessageError('messageError', error, false);
+                });
+            }
+        },
+
+        onApprove: function (data, actions) {
+            toggleLoader();
+            const form = document.getElementById("shippingForm");
+            const formData = new FormData(form);
+            const plainFormData = Object.fromEntries(formData);
+            plainFormData.userId = '<%- userSession?.Id %>';
+
+            const payload = {
+                orderId: data.orderID,
+                ppClient: "<%- ppClient %>",
+                cartId: "<%- cartId %>",
+                clientInfo: plainFormData
+            };
+
+            return fetch('/api/payments/paypal/capture', {
+                method: 'post',
+                headers: {
+                    'content-type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            }).then(async response => {
+                const resJson = await response.json();
+                if (resJson?.success == false) {
+                    toggleLoader();
+                    showMessageError('messageError', resJson.message, false);
+                    throw new Error(resJson.message);
+                } else {
+                    window.location.href = `/thanks/${resJson.purchaseId}`;
+                }
+            }).catch(error => {
+                toggleLoader();
+                showMessageError('messageError', error, false);
+            }).finally(() => {
+                toggleLoader();
+            });
+        }
+    }).render('#paypal-button-container');
+
+    function showMessageError(messageDivId, message, success) {
+        const messageDiv = document.getElementById(messageDivId);
+
+        let backColor = ""; let fontColor = ""; let icon = "";
+        if (success == true) {
+            backColor = "#c6dfc7"; fontColor = "#416b4b;"; icon = "&#xe1062;";
+        } else {
+            backColor = "#E9ADAD"; fontColor = "#881414;"; icon = "&#xe1064;";
+        }
+        messageDiv.style = `--custom-back: ${backColor}; --custom-text: ${fontColor}`;
+        messageDiv.innerHTML = `
+            <i>${icon}</i>
+            <p>${message}</p>
+        `;
+        messageDiv.classList.toggle('active', true);
+        setTimeout(() => hideMessage(messageDiv), 6000);
+    }
+
+    function hideMessage(messageDiv) {
+        messageDiv.classList.toggle('active', false);
+    }
+
+    function toggleLoader() {
+        document.getElementById('loadingOverlay').classList.toggle('active');
+    }
+
+    async function refreshCart(action, sku, quantity) {
+        let fetchUrl = (!quantity)
+            ? `https://core.levount.com/api/cart`
+            : `https://core.levount.com/api/cart/${quantity}`;
+        const method = (action == 'add') ? 'POST' : 'DELETE';
+        const res = await fetch(fetchUrl, {
+            method: method,
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json'  },
+            body: JSON.stringify({ productSku: sku, quantity, cartSession: CART_ID })
+        });
+        const resJson = await res.json();
+
+        if (resJson.success == true) {
+            const cartQuery = await fetch(`https://core.levount.com/api/cart?cartSession=${CART_ID}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+            });
+            const cartQueryRes = await cartQuery.json(); 
+
+            if(cartQueryRes.items.length > 0) {
+                const subtotal = document.getElementById("subtotalSpan");
+                const total = document.getElementById("totalSpan");
+                const itemsDiv = document.getElementById("productList");
+
+                subtotal.innerHTML = `$${toCurrency(cartQueryRes?.subtotal)}`;
+                total.innerHTML = `$${toCurrency(cartQueryRes?.subtotal)} <span class="usd-tag">USD</span>`;
+
+                let itemsDivContent = ``; itemsDiv.innerHTML = "";
+                cartQueryRes?.items?.forEach(item => {
+                    itemsDivContent += `
+                        <div class="product-item">
+                            <div class="product-img-wrapper">
+                                <img src="https://assets.levount.com/products/${item?.material}/${item?.category}/${item?.sku}/${item?.sku?.toLowerCase()}-thumb.webp" alt="Hera Ring" class="product-img">
+                            </div>
+                            <div class="product-info">
+                                <h4>${toTitleCase(item?.shortName || item?.name) }</h4>
+                                <p>${item?.purity} ${toTitleCase(item?.material)}</p>
+                                <div class="quantityEdit">
+                                    <button type="button" onclick="refreshCart('delete', '${item?.sku}', 1)">-</button>
+                                    <span class="product-badge">${item?.quantity}</span>
+                                    <button type="button" onclick="refreshCart('add', '${item?.sku}', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="product-price">$${toCurrency(item?.rowTotal)}</div>
+                        </div>                 
+                    `;
+                });
+
+                itemsDiv.innerHTML = itemsDivContent;
+            } else {
+                window.location.href = "/products";
+            }
+        }
+    }
+</script>

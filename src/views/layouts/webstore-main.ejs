@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- title %></title>
+
+    <%- include ('../partials/webstore/global-tags.ejs') %>
+
+    <% if (typeof useTurnstile !== 'undefined' && useTurnstile) { %>
+        <%- include('../partials/scripts/turnstile') %>
+    <% } %>
+
+    <%- style %>
+</head>
+<body>
+    <%- include ('../partials/webstore/nav.ejs') %>
+
+    <main><%- body %></main>
+
+    <%- include ('../partials/webstore/footer.ejs') %>
+
+    <%- script %>
+    <script>
+        const CART_ID = "<%- cartId %>"; 
+    </script>
+</body>
+</html>

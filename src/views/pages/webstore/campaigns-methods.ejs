@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campañas de WhatsApp | LeVount Jewelry</title>
+
+    <%- include ('templates/global-tags.ejs') %>
+
+    <style>
+        body {
+
+            min-height: 100dvh;
+            display: grid;
+            grid-template-rows: max-content auto max-content;
+
+            & header {
+                position: relative;
+                box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
+            }
+
+            & main {
+                height: auto;
+                margin-top: 0;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                padding: 20px;
+                background-color: var(--gray-10);
+
+                & aside {
+                    flex: 1 1 250px;
+                    padding: 20px;
+                    background-color: white;
+                    border-radius: 5px;
+                    box-sizing: border-box;
+                    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+
+                    & ul {
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+                        row-gap: 5px;
+                        display: grid;
+
+                        & li {
+                            display: flex;
+                            align-items: center;
+                            padding: 5px;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                            border-radius: 5px;
+
+                            & i {
+                                margin-right: 10px;
+                                font-family: "LeVountIcons";
+                                font-size: 25px;
+                                font-style: normal;
+                                transition: all 0.5s;
+                            }
+
+                            &:hover {
+                                background-color: var(--gray-20);
+                                color: var(--contrast-50);
+
+                                & i {
+                                    transform: translateX(5px);
+                                }
+                            }
+                        }
+                    }
+
+                    & #newSessionResponse {
+                        display: grid;
+
+                        & img {
+                            width: 200px;
+                            height: 200px;
+                            margin: auto;
+                        }
+
+                        & p {
+                            background-color: var(--gray-10);
+                            padding: 5px;
+                            border-radius: 5px;
+                            margin: 0;
+                        }
+                    }                    
+
+                    & .WhatsAppStatus {                       
+
+                        & .status {
+                            margin-top: 10px;
+
+                            & h6 {
+                                margin: 0;
+                                font-size: 0.9rem;
+                                margin-bottom: 3px;
+                            }
+
+                            & p {
+                                background-color: var(--custombackground);
+                                color: var(--customtextcolor);
+                                padding: 5px;
+                                margin: 0;
+                                border-radius: 5px;
+
+                                & i {
+                                    margin-right: 10px;
+                                    font-family: "LeVountIcons";
+                                    font-size: 25px;
+                                    font-style: normal;
+                                    transition: all 0.5s;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                & .Content {
+                    background-color: white;
+                    border-radius: 5px;
+                    padding: 25px;
+                    box-sizing: border-box;
+                    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+                    flex: 999 1 400px;
+
+                    & h1 {
+                        margin: 0;
+                    }
+
+                    & .subContainer {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 20px;
+                        box-sizing: border-box;
+                        margin-top: 30px;
+
+                        & form {
+                            display: block;
+                            flex: 1 1 300px;
+
+                            & h3 {
+                                margin: 0;
+                            }
+
+                            & .inputContainer {
+                                display: grid;
+                                flex-grow: 1;
+
+                                & label {
+                                    margin-bottom: 3px;
+                                    font-weight: 600;
+                                    font-size: 0.8rem;
+                                    color: var(--gray-80);
+                                }
+
+                                & input, & select, & textarea {
+                                    min-height: 30px;
+                                    border: 1px var(--gray-50) solid;
+                                    border-radius: 5px;
+                                    padding: 5px;
+                                    font-family: "Lato";
+                                    resize: vertical;
+                                }
+                            }
+
+                            & .responseMessage {
+                                border-radius: 5px;
+                                margin: 10px 0;
+                                transition: all 0.3s;
+                                max-height: 0;
+                                overflow: hidden;
+
+                                & p {
+                                    padding: 0;
+                                    line-height: 100%;
+                                    font-size: 0.9rem;
+                                    color: var(--gray-80);
+                                    margin: 0;
+                                    font-weight: 600;
+                                    border-radius: 5px;
+                                    background-color: var(--gray-10);
+                                    overflow: hidden;
+
+                                    & i {
+                                        font-family: "LeVountIcons";
+                                        font-style: normal;
+                                        font-size: 25px;
+                                        font-weight: normal;
+                                        margin-right: 5px;
+                                    }
+
+                                    &.Active {
+                                        padding: 10px;
+                                    }
+
+                                    &.backendResponse {
+                                        color: var(--customtextcolor);
+                                        background-color: var(--custombackground);
+                                        padding: 0;
+                                        max-height: 0;
+                                        transition: all 0.3s fade-in-out;
+
+                                        &.Active {
+                                            padding: 10px;
+                                            max-height: 1000px;
+                                        }
+                                    }
+
+                                    & + p {
+                                        margin-top: 8px;
+                                    }
+                                }
+
+                                &.Active {
+                                    max-height: 1000px;
+                                }
+                            }
+
+                            & button {
+                                cursor: pointer;
+                                height: 30px;
+                                font-weight: 600;
+                                border-radius: 5px;
+                                border: 1px var(--gray-50) solid;
+                                transition: all 0.3s;
+
+                                & i {
+                                    font-family: "LeVountIcons";
+                                    font-size: 20px;
+                                    font-style: normal;
+                                    transition: all 0.5s;
+                                }
+
+                                &:hover {
+                                    background-color: var(--contrast-50);
+                                    color: white;
+                                }
+                            }
+                        }
+
+                        & .clientList {
+                            padding: 0;
+                            list-style: none;
+                            column-width: 17rem;
+                            gap: 10px;
+                            row-gap: 10px;
+                            column-gap: 10px;
+                            margin: 0;
+                            flex: 999 1 400px;
+
+                            & li {
+                                min-height: 30px;
+                                padding: 8px;
+                                background-color: var(--gray-10);
+                                transition: all 0.3s;
+                                cursor: pointer;
+                                border-radius: 5px;
+                                margin-bottom: 10px;
+                                break-inside: avoid;
+
+                                &:hover {
+                                    background-color: var(--gray-20);
+                                }
+
+                                &.emptyList {
+                                    background-color: #fac3c3;
+                                    color: #971a1a;
+                                    cursor: auto;
+
+                                    &:hover {
+
+                                    }
+                                }
+
+                                &.counter {
+                                    background-color: #fff7d3;
+                                    cursor: auto;
+                                    color: var(--gray-70);
+                                }
+
+                                & h5, & h3, & h6, & h2 {
+                                    margin: 0;
+                                }
+
+                                & h3 {
+                                    font-size: 1rem;
+                                    font-weight: 500;
+                                }
+
+                                & h5 {
+                                    font-size: 0.8rem;
+                                    font-weight: 400;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include ('templates/nav.ejs') %>
+
+    <main>
+
+        <aside>
+            <ul>
+                <% if(methodData?.deliveryMethod == "WhatsApp") { %>
+                <li onclick="window.location.href='email'"><i>&#xe103C;</i>Correo</li>
+
+                <% } else { %>
+
+                <li onclick="window.location.href='whatsapp'"><i>&#xe1060;</i>WhatsApp</li>
+
+                <% } %>
+            </ul>
+
+            <hr>
+
+            <div id="newSessionResponse">
+                
+            </div>
+
+            <% if(methodData?.deliveryMethod == "WhatsApp") { %>
+                <div class="WhatsAppStatus">                    
+
+                    <div class="status">
+                        <h6>Estado de la conexión</h6>
+                        <p style="<%- methodData?.WhatsApp?.linkStatus?.details?.colorsStatus %>">
+                            <i><%- methodData?.WhatsApp?.linkStatus?.details?.statusIcon %></i>
+                            <%- methodData?.WhatsApp?.linkStatus?.status %>
+                        </p>
+                        <% if (methodData?.WhatsApp?.linkStatus?.status != "Desconectado") { %>
+                        <p style="font-size: 0.8rem;">
+                            <b>Número:</b> <%- methodData?.WhatsApp?.linkStatus?.session?.phone %>
+                            <br>
+                            <b>Usuario:</b> <%- methodData?.WhatsApp?.linkStatus?.session?.name %>
+                            <br>
+                            <b>Últ. con.:</b> <%- methodData?.WhatsApp?.linkStatus?.session?.lastConnection %>
+                        </p>
+                        <% } %>
+
+                        <ul style="margin-top: 10px;">
+                        <% if (methodData?.WhatsApp?.linkStatus?.status == "Conectado") { %>                          
+                            <li onclick="stopService(event)"><i>&#xe1064;</i>Detener servicio</li>
+                            <li onclick="closeSession(event)"><i>&#xe104b;</i>Cerrar sesión</li>
+                        <% } else if (methodData?.WhatsApp?.linkStatus?.status == "Desconectado") { %>                            
+                            <li id="connectButton" onclick="connectSession(event)"><i>&#xe1060;</i>Conectar</li>
+                            <li onclick="reloadPage()" style="display: none;" id="reloadButton"><i>&#xe105e;</i>Actualizar</li>
+                        <% } else if (methodData?.WhatsApp?.linkStatus?.status == "Inactivo") { %>
+                            <li onclick=""><i>&#xe1040;</i>Reconectar</li>
+                            <li onclick="closeSession(event)"><i>&#xe104b;</i>Cerrar sesión</li>
+                        <% } %>
+                        </ul>
+                    </div>
+                </div>
+            <% } %>
+
+        </aside>
+
+        <section class="Content">
+            <h1>Campañas de <%- methodData?.deliveryMethod || "<i>err</i>" %></h1>
+           
+            <div class="subContainer">
+                <ul class="clientList" id="clientList">
+                    <% for (let i=0; i < marketingCampaigns?.length; i++) { %>
+                    <li onclick="window.location.href=`/campaign/<%- marketingCampaigns?.[i]?.campaignId %>`">
+                        <h3><%- marketingCampaigns?.[i]?.campaignId %></h3>
+                        <h5><%- marketingCampaigns?.[i]?.campaignName %></h5>
+                    </li>
+                    <% } %>
+                </ul>
+
+                <form id="newCampaign">
+                    <h3>Crear nueva campaña</h3>
+                    <div class="inputContainer">
+                        <label for="">*Nombre</label>
+                        <input type="text">
+                    </div>
+                    <div class="inputContainer">
+                        <label for="">*Descripción</label>
+                        <textarea name="" id=""></textarea>
+                    </div>
+                    <input type="hidden" name="deliveryMethod" value="<%- methodData?.method %>">
+                    <div class="inputContainer">
+                        <label for="">*Mensaje predeterminado</label>
+                        <textarea name="" id=""></textarea>
+                    </div>
+                    <div class="inputContainer">
+                        <label for="">Ruta de la imagen</label>
+                        <input type="text">
+                    </div>
+
+                    <div class="responseMessage Active" id="responseMessage">
+                        <p class="Active">
+                            <% if (methodData?.method == "email") { %>
+                                <i>&#xe105c;</i> Recuerde usar formato HTML para la plantilla del mensaje. No añada el tag 'img', este será añadido automáticamente si ingresa la ruta de imagen.
+                            <% } else { %>
+                                <i>&#xe105c;</i> Puede usar <b>'\n'</b> para los saltos de línea.
+                            <% } %>
+                        </p>
+                        <p id="backendResponse" class="backendResponse"></p>
+                    </div>
+
+                    <button onclick="saveCampaign(event)" id="registerButton"><i>&#xe1053;</i>Registrar</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <%- include ('templates/footer.ejs') %>
+
+    <script>
+        async function saveCampaign(event) {
+            event.preventDefault();
+
+            try {
+                let form = document.getElementById("newCampaign");
+                let button = document.getElementById("registerButton");
+
+                let campaignName = form?.[0]?.value || null;
+                let description = form?.[1]?.value || null;
+                let deliveryMethod = form?.[2]?.value || null;
+                let messageTemplate = form?.[3]?.value || null;
+                let imagePath = form?.[4]?.value || null;
+
+                if (!campaignName || !description || !deliveryMethod || !messageTemplate) {
+
+                    if (!responseMessage.classList.contains("Active")) {
+                        responseMessage.classList.toggle("Active", true);
+                    }
+
+                    backendResponse.innerHTML = `<i>&#xe1063;</i> Por favor, ingrese los campos obligatorios (*).`;
+                    backendResponse.style = `--customtextcolor: #e87c2c; --custombackground: #f8e3af;`;
+                    backendResponse.classList.toggle("Active", true);
+                    setTimeout(hideResMessage, 8000);
+                } else {
+                    button.disabled = true;
+                    const res = await fetch("/api/register-campaign", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ 
+                            campaignName, description, deliveryMethod, messageTemplate, imagePath
+                        })
+                    })
+
+                    const resJson = await res.json();
+                    console.log(resJson);
+
+                    if (resJson.success) {
+                        backendResponse.innerHTML = `<i>&#xe1062;</i> ${ resJson.message }`;
+                        backendResponse.style = `--customtextcolor: #4ca03a; --custombackground: #bde1af;`;
+                        form.reset();
+                        backendResponse.classList.toggle("Active", true);
+                        setTimeout(reloadPage, 2000);
+                    } else {      
+                        backendResponse.innerHTML = `<i>&#xe1064;</i> ${ resJson.message }`;
+                        backendResponse.style = `--customtextcolor: #b41a1e; --custombackground: #f1bab5;`;
+                        backendResponse.classList.toggle("Active", true);
+                        setTimeout(hideResMessage, 8000);
+                    }
+                    button.disabled = false;
+                }              
+
+            } catch (error) {
+                backendResponse.innerHTML = `<i>&#xe1064;</i> ${ error }`;
+                backendResponse.style = `--customtextcolor: #b41a1e; --custombackground: #f1bab5;`;
+                backendResponse.classList.toggle("Active", true);
+                setTimeout(hideResMessage, 8000);
+                button.disabled = true;
+            }
+        }
+
+        async function sendCampaign(event) {
+            event.preventDefault();
+
+            try {
+                const res = await fetch("/api/whatsapp/campaign-sending", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                    })
+                })
+
+                const resJson = await res.json();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function connectSession(event) {
+            event.preventDefault();
+
+            try {
+                let connectButton = document.getElementById("connectButton");
+                let reloadButton = document.getElementById("reloadButton");
+                let messageContainer = document.getElementById("newSessionResponse");
+
+                connectButton.style="pointer-events: none;"
+
+                const res = await fetch("/api/whatsapp/new-session", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                    })
+                })
+
+                const resJson = await res.json();
+
+                if (resJson.success) {
+                    connectButton.style="display: none;"
+                    reloadButton.style="display: flex;"
+                    messageContainer.innerHTML = 
+                    `
+                    <img src="${ resJson.qrImage }">
+                    <p>${ resJson.message }</p>
+                    <hr>
+                    `;
+                } else {
+                    connectButton.style="pointer-events: auto;"
+                    backendResponse.innerHTML = `<i>&#xe1062;</i> Error ejecutando la solicitud.`;
+                    backendResponse.style = `--customtextcolor: #4ca03a; --custombackground: #bde1af;`;
+                    backendResponse.classList.toggle("Active", true);
+                    setTimeout(hideResMessage, 6000);
+                }
+            } catch (error) {
+                backendResponse.innerHTML = `<i>&#xe1062;</i> ${ error }`;
+                backendResponse.style = `--customtextcolor: #4ca03a; --custombackground: #bde1af;`;
+                backendResponse.classList.toggle("Active", true);
+                setTimeout(hideResMessage, 6000);
+            }
+        }
+
+        async function stopService(event) {
+            event.preventDefault();
+
+            try {
+                const res = await fetch("/api/whatsapp/stop", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                    })
+                })
+
+                const resJson = await res.json();
+
+                if(resJson.success) {
+                    backendResponse.innerHTML = `<i>&#xe1062;</i> ${ resJson.message }`;
+                    backendResponse.style = `--customtextcolor: #4ca03a; --custombackground: #bde1af;`;
+                    backendResponse.classList.toggle("Active", true);
+                    setTimeout(reloadPage, 2000);
+                } else {
+                    backendResponse.innerHTML = `<i>&#xe1062;</i> Error ejecutando la solicitud.`;
+                    backendResponse.style = `--customtextcolor: #4ca03a; --custombackground: #bde1af;`;
+                    backendResponse.classList.toggle("Active", true);
+                    setTimeout(hideResMessage, 6000);
+                }
+            } catch (error) {
+                backendResponse.innerHTML = `<i>&#xe1062;</i> ${ error }`;
+                backendResponse.style = `--customtextcolor: #4ca03a; --custombackground: #bde1af;`;
+                backendResponse.classList.toggle("Active", true);
+                setTimeout(hideResMessage, 6000);
+            }
+        }
+
+        async function closeSession(event) {
+            event.preventDefault();
+
+            try {
+                const res = await fetch("/api/whatsapp/close-session", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                    })
+                })
+
+                const resJson = await res.json();
+
+                if(resJson.success) {
+                    backendResponse.innerHTML = `<i>&#xe1062;</i> ${ resJson.message }`;
+                    backendResponse.style = `--customtextcolor: #4ca03a; --custombackground: #bde1af;`;
+                    backendResponse.classList.toggle("Active", true);
+                    setTimeout(reloadPage, 2000);
+                } else {
+                    backendResponse.innerHTML = `<i>&#xe1062;</i> Error ejecutando la solicitud.`;
+                    backendResponse.style = `--customtextcolor: #4ca03a; --custombackground: #bde1af;`;
+                    backendResponse.classList.toggle("Active", true);
+                    setTimeout(hideResMessage, 6000);
+                }
+            } catch (error) {
+                backendResponse.innerHTML = `<i>&#xe1062;</i> ${ error }`;
+                backendResponse.style = `--customtextcolor: #4ca03a; --custombackground: #bde1af;`;
+                backendResponse.classList.toggle("Active", true);
+                setTimeout(hideResMessage, 6000);
+            }
+        }
+        
+        let responseMessage = document.getElementById("responseMessage");
+        let backendResponse = document.getElementById("backendResponse");
+
+        async function reloadPage() {
+            location.reload();
+        }
+        async function hideResMessage() {
+            backendResponse.classList.toggle("Active", false);
+        }
+    </script>
+</body>
+</html>

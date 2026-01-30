@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notas de venta | LeVount Jewelry</title>
+
+    <%- include ('templates/global-tags.ejs') %>
+
+    <style>
+        body {
+
+            min-height: 100dvh;
+            display: grid;
+            grid-template-rows: max-content auto max-content;
+
+            & header {
+                position: relative;
+                box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
+            }
+
+            & main {
+                height: auto;
+                margin-top: 0;
+                display: flex;
+                gap: 20px;
+                padding: 20px;
+                background-color: var(--gray-10);
+
+                & aside {
+                    min-width: 150px;
+                    max-width: 200px;
+                    width: 30%;
+                    padding: 20px;
+                    background-color: white;
+                    border-radius: 5px;
+                    box-sizing: border-box;
+
+                    & ul {
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+                        row-gap: 5px;
+                        display: grid;
+
+                        & li {
+                            display: flex;
+                            align-items: center;
+                            padding: 5px;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                            border-radius: 5px;
+
+                            & img {
+                                margin-right: 8px;
+                                width: 20px;
+                            }
+
+                            &:hover {
+                                background-color: var(--gray-20);
+                            }
+                        }
+                    }
+
+                    & form {
+                        margin-top: 15px;
+
+                        & h3 {
+                            margin: 0;
+                            margin-bottom: 8px;
+                            font-size: 0.9rem;
+                            line-height: 100%;
+                        }
+
+                        & .inputContainer {
+                            display: grid;
+
+                            & label {
+                                cursor: pointer;
+                                background-color: var(--gray-20);
+                                padding: 8px;
+                                border-radius: 5px;
+                                transition: all 0.3s;
+                                text-align: center;
+
+                                &:hover {
+                                    background-color: var(--gray-40);
+                                }
+
+                                & i {
+                                    font-family: "LeVountIcons";
+                                    font-style: normal;
+                                    font-weight: normal;
+                                    font-size: 20px;
+                                    margin-right: 5px;
+                                }
+
+                                &.Closed {
+                                    display: none;
+                                }
+                            }
+                        }
+
+                        & button {
+                            background-color: #7bbd61;
+                            border: none;
+                            padding: 8px;
+                            color: white;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            display: none;
+                            align-items: center;
+                            font-size: 1rem;
+                            transition: all 0.3s;
+                            width: 100%;
+                            box-sizing: border-box;
+                            justify-content: center;
+                            gap: 8px;
+
+                            &.Open {
+                                display: flex;
+                            }
+
+                            &:hover {
+                                background-color: #598647;
+                            }
+
+                            & i {
+                                font-family: "LeVountIcons";
+                                font-style: normal;
+                                font-weight: 500;
+                                font-size: 20px;
+                            }
+                        }
+                    }
+                }
+
+                & .Content {
+                    background-color: white;
+                    border-radius: 5px;
+                    padding: 25px;
+                    flex-grow: 1;
+                    box-sizing: border-box;
+
+                    & h1 {
+                        margin: 0;
+                    }
+
+                    & form {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 15px;
+                        align-items: end;
+
+                        & .inputContainer {
+                            display: grid;
+                            flex-grow: 1;
+
+                            & label {
+                                margin-bottom: 3px;
+                                font-weight: 600;
+                                font-size: 0.8rem;
+                                color: var(--gray-80);
+                            }
+
+                            & input, & select {
+                                min-height: 30px;
+                                border: 1px var(--gray-50) solid;
+                                border-radius: 5px;
+                                padding: 0 5px;
+                                font-family: "Lato";
+                            }
+                        }
+
+                        & button {
+                            cursor: pointer;
+                            height: 30px;
+                            font-weight: 600;
+                            border-radius: 5px;
+                            border: 1px var(--gray-50) solid;
+                            transition: all 0.3s;
+
+                            & i {
+                                font-family: "LeVountIcons";
+                                font-size: 20px;
+                                font-style: normal;
+                                transition: all 0.5s;
+                            }
+
+                            &:hover {
+                                background-color: var(--contrast-50);
+                                color: white;
+                            }
+                        }
+                    }
+
+                    & .ticketsList {
+                        padding: 0;
+                        list-style: none;
+                        column-width: 17rem;
+                        gap: 10px;
+                        row-gap: 10px;
+                        column-gap: 10px;
+
+                        & li {
+                            min-height: 30px;
+                            padding: 8px;
+                            background-color: var(--gray-10);
+                            transition: all 0.3s;
+                            cursor: pointer;
+                            border-radius: 5px;
+                            margin-bottom: 10px;
+                            break-inside: avoid;
+                            border-left: 5px var(--material-tag) solid;
+
+                            &:hover {
+                                background-color: var(--gray-20);
+                            }
+
+                            &.emptyList {
+                                background-color: #fac3c3;
+                                color: #971a1a;
+                                cursor: auto;
+
+                                &:hover {
+
+                                }
+                            }
+
+                            &.counter {
+                                background-color: #fff7d3;
+                                cursor: auto;
+                                color: var(--gray-70);
+                                border-left: none !important;
+                            }
+
+                            & h5, & h3, & h6, & h2 {
+                                margin: 0;
+                            }
+
+                            & h3 {
+                                font-size: 1rem;
+                                font-weight: 500;
+                            }
+
+                            & .liBottom {
+                                display: flex;
+                                justify-content: space-between;
+
+                                & h4, & h5 {
+                                    margin: 0;
+                                    font-weight: 500;
+                                    font-size: 0.8rem;
+                                }
+
+                                & h4 {
+                                    color: var(--gray-60);
+                                }
+
+                                & h5 {
+                                    color: var(--contrast-50);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /* Contenedor de carga */
+            /* El contenedor que cubre toda la pantalla */
+            .overlay-loader {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                z-index: 9999; /* Asegura que esté encima de todo */
+                
+                /* El efecto Glassmorphism */
+                background: rgba(255, 255, 255, 0.65); /* Blanco con transparencia */
+                backdrop-filter: blur(10px); /* El desenfoque mágico */
+                -webkit-backdrop-filter: blur(10px); /* Soporte para Safari */
+                
+                /* Centrado perfecto */
+                display: none; /* Oculto por defecto */
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                
+                /* Transición suave al aparecer */
+                transition: opacity 0.3s ease;
+            }
+
+            /* El spinner (anillo giratorio) */
+            .spinner-fino {
+                width: 60px;
+                height: 60px;
+                border: 3px solid rgba(0, 0, 0, 0.1); /* Círculo base gris muy claro */
+                border-top: 3px solid #1a1a1a; /* Color principal (Casi negro elegante) */
+                border-radius: 50%;
+                animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite; /* Girar */
+                margin-bottom: 20px;
+            }
+
+            /* El texto de estado */
+            .loader-text {
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-weight: 300;
+                font-size: 1.1rem;
+                letter-spacing: 1px;
+                color: #333;
+                
+                /* LA MAGIA: Transiciones suaves */
+                opacity: 1;
+                transform: translateY(0);
+                transition: opacity 0.5s ease, transform 0.5s ease;
+            }
+
+            .text-hidden {
+                opacity: 0;
+                transform: translateY(10px); /* El texto baja un poco al desaparecer */
+            }
+
+            /* Animaciones */
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            @keyframes textPulse {
+                0% { opacity: 0.6; }
+                50% { opacity: 1; }
+                100% { opacity: 0.6; }
+            }
+
+    </style>
+</head>
+<body>
+    <%- include ('templates/nav.ejs') %>
+
+    <main>
+        <aside>
+            <ul>
+                <li><i></i>Resumen</li>
+            </ul>
+
+            <form action="">
+                <h3>Actualizar desde Excel</h3>
+                <div class="inputContainer">
+                    <label for="excelInventory" id="excelFileLabel"><i>&#xe1059;</i>Subir</label>
+                    <input type="file" style="display: none;" name="excelInventory" id="excelInventory">
+                </div>
+                <button type="button" id="importButton" onclick="importInventory(event)"><i>&#xe1043;</i>Importar</button>
+                <div id="loader-container" style="display: none; margin-top: 20px;">
+                    <p class="loading-text">Importando inventario...</p>
+                    <div class="progress-bar-infinite"></div>
+                </div>
+            </form>
+
+            <div id="loadingOverlay" class="overlay-loader">
+                <div class="spinner-fino"></div>
+                <div class="loader-text" id="loaderMessage">Iniciando importación...</div>
+            </div>
+        </aside>
+        <section class="Content">
+            <h1>Notas de venta</h1>
+
+            <form action="" onsubmit="searchSales(event)" id="searchFilters">
+                <div class="inputContainer">
+                    <label for="">Folio</label>
+                    <input type="number">
+                </div>
+                <div class="inputContainer">
+                    <label for="">Sucursal</label>
+                    <select name="" id="">
+                        <option value="" selected></option>
+                        <% for (let n=0; n < branches?.length; n++) { %>
+                            <option value="<%- branches?.[n]?.Id %>"><%- branches?.[n]?.name %></option>
+                        <% } %>
+                    </select>
+                </div>
+                <div class="inputContainer">
+                    <label for="">Fecha del documento</label>
+                    <input onchange="searchSales(event)" type="date" value="" max="<%- utils.dateToInputDate(Today) %>">
+                </div>
+                <div class="inputContainer">
+                    <label for="">Fecha de registro</label>
+                    <input onchange="searchSales(event)" type="date" value="" max="<%- utils.dateToInputDate(Today) %>">
+                </div>
+                <button onclick="searchSales(event)"><i>&#xe1002;</i>Buscar</button>
+            </form>
+
+            <ul class="ticketsList" id="ticketsList">
+                <li id="counter" class="counter">
+                    <h2><%- saleTickets?.data?.length %></h2>
+                    <h6>Resultados</h6>
+                </li>
+                <% for (let i=0; i < saleTickets?.data?.length; i++) { %>
+                <li onclick="window.location.href='saleTicket?Id=<%- saleTickets?.data?.[i]?.Id %>'" <%- (saleTickets?.data?.[i]?.containsGold) ? "style='--material-tag: #AE7C2B;'" : "style='--material-tag: #545353;'" %>>
+                    <h3># <%- saleTickets?.data?.[i]?.documentNumber %></h3>
+                    <div class="liBottom">
+                        <h5><%- utils.toTitleCase(saleTickets?.data?.[i]?.branch) %></h5>
+                        <h4><%- saleTickets?.data?.[i]?.docDate?.toLocaleDateString("es-MX", { weekday: "short", day: "numeric", month: "short", year: "numeric" }); %></h4>
+                    </div>
+                </li>
+                <% } %>
+            </ul>
+        </section>
+    </main>
+
+    <%- include ('templates/footer.ejs') %>
+
+    <script>
+        let fileInput = document.getElementById("excelInventory");
+        let fileLabel = document.getElementById("excelFileLabel");
+        let importButton = document.getElementById("importButton");
+        const overlay = document.getElementById('loadingOverlay');
+        const message = document.getElementById('loaderMessage');
+        
+        fileInput.addEventListener("change", function() {          
+            let fileName = this.files[0].name;
+            importButton.classList.toggle("Open", true);
+            fileLabel.classList.toggle("Closed", true);
+        });
+
+        // Función auxiliar para animar el cambio de texto
+        async function actualizarMensaje(elemento, nuevoTexto) {
+            // 1. Ocultar (Fade out + bajar)
+            elemento.classList.add('text-hidden');
+
+            // 2. Esperar a que termine la animación de salida (500ms según el CSS)
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // 3. Cambiar el texto real
+            elemento.innerText = nuevoTexto;
+
+            // 4. Mostrar (Fade in + subir)
+            elemento.classList.remove('text-hidden');
+            
+            // Esperar un poco para que el usuario lea antes de permitir otro cambio
+            await new Promise(resolve => setTimeout(resolve, 1200)); 
+        }
+
+        async function importInventory(event) {
+            event.preventDefault();
+
+            try {
+                if (fileInput.files.length == 0) {
+                    console.error("No hay un archivo seleccionado.")
+                } else {
+                    overlay.style.display = 'flex';
+                    message.innerText = "Iniciando importación.";
+                    
+                    const file = fileInput.files[0];
+                    const formData = new FormData();
+
+                    formData.append("excelFile", file);                    
+
+                    const res = await fetch("/api/import-excel-inventory", {
+                        method: 'POST',
+                        body: formData,
+                        credentials: 'include'
+                    });
+
+                    // Secuencia de mensajes bonitos
+                    await actualizarMensaje(message, "Leyendo archivo Excel...");
+                    await actualizarMensaje(message, "Validando códigos LeVount...");
+                    await actualizarMensaje(message, "Guardando en Base de Datos...");
+
+                    const resJson = await res.json();
+
+                    if (resJson.success) {
+                       await actualizarMensaje(message, `¡Importación exitosa! Se han procesado ${resJson.totalTickets.toLocaleString('es-MX')} notas.`);
+            
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function searchSales(event) {
+            event.preventDefault();
+
+            try {
+                let form = document.getElementById("searchFilters");
+                let ticketsList = document.getElementById("ticketsList");
+                let counter = document.getElementById("counter");
+
+                let documentNumber = form?.[0]?.value || null;
+                let branch = form?.[1]?.value || null;
+                let docDate = form?.[2]?.value || null;
+                let registeredDate = form?.[3]?.value || null;
+
+                const res = await fetch("/api/search-docs", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        documentNumber, branch, docDate, registeredDate
+                    })
+                })
+
+                const resJson = await res.json();
+                ticketsList.innerHTML = ""; //Se vacía la lista de clientes.
+
+                if (resJson.message) {
+                    //Si el query falla y hay un mensaje como respuesta...
+                    let NewTicketLi = document.createElement("li");
+                    NewTicketLi.classList = `emptyList`;
+                    NewTicketLi.innerHTML = `No se han encontrado coincidencias.`;
+                    ticketsList.appendChild(NewTicketLi);
+                } else {      
+                    let newCounter = document.createElement("li");
+                    newCounter.classList = `counter`;
+                    newCounter.innerHTML = `<h2>${ resJson?.data?.length || 0 }</h2><h6>Resultados</h6>`;
+                    ticketsList.appendChild(newCounter);     
+
+                    console.log(resJson.clientName);
+                    for (let j=0; j < resJson?.data?.length; j++) {
+                        let NewTicketLi = document.createElement("li");
+                        NewTicketLi.setAttribute('onclick', `window.location.href='saleTicket?Id=${ resJson?.data?.[j]?.Id }'`);
+                        NewTicketLi.innerHTML = 
+                        `                        
+                        <h3>#${ resJson?.data?.[j]?.documentNumber || "err" }</h3>
+                        <div class="liBottom">
+                            <h5>${ toTitleCase(resJson?.data?.[j]?.branch) || "" }</h5> 
+                            <h4>${ new Date(resJson?.data?.[j]?.docDate).toLocaleDateString("es-MX", { weekday: "short", day: "numeric", month: "short", year: "numeric" }) }</h4> 
+                        </div                      
+                        `;
+                        NewTicketLi.style = (resJson?.data?.[j]?.containsGold) ? "--material-tag: #AE7C2B;" : "--material-tag: #545353;";
+                        ticketsList.appendChild(NewTicketLi);
+                    }
+                }
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function toTitleCase(input) {
+            if (!input) return "";
+            return input.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+        }
+    </script>
+</body>
+</html>

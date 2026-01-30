@@ -1,0 +1,153 @@
+<link rel="stylesheet" href="/styles/admin-forms.css">
+
+<aside>
+    <ul>
+        <li><a href="clients/create"><i>&#xe1032;</i>Nuevo cliente</a></li>
+        <li><a href="campaigns"><i>&#xe1061;</i>Campañas</a></li>
+    </ul>
+</aside>
+<section class="Content">
+    <h1><%- "Clientes" //t("pageTitle") %></h1>
+
+    <form action="" onsubmit="searchClient(event)" id="searchFilters" style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <div class="inputContainer">
+            <label for="">Nombre</label>
+            <input type="text">
+        </div>
+        <div class="inputContainer">
+            <label for="">Correo</label>
+            <input type="email">
+        </div>
+        <div class="inputContainer">
+            <label for="">Fecha de compra</label>
+            <input onchange="searchClient(event)" type="date" max="<%- utils.dateToInputDate(Today) %>">
+        </div>
+        <div class="inputContainer">
+            <label for="">Fecha de captura</label>
+            <input onchange="searchClient(event)" type="date" value="<%- utils.dateToInputDate(Today) %>"
+                max="<%- utils.dateToInputDate(Today) %>">
+        </div>
+        <button onclick="searchClient(event)"><i>&#xe1002;</i>Buscar</button>
+    </form>
+
+    <ul class="clientList" id="clientList">
+        <li id="counter" class="counter">
+            <h2><%- clients?.length %></h2>
+            <h6>Resultados</h6>
+        </li>
+        <% for (let i=0; i < clients?.length; i++) { %>
+            <li onclick="">
+                <h3><%- clients?.[i]?.clientName %></h3>
+                <h5><%- clients?.[i]?.clientEmail %></h5>
+            </li>
+            <% } %>
+    </ul>
+</section>
+
+
+<script>
+    async function searchClient(event) {
+        event.preventDefault();
+
+        try {
+            let form = document.getElementById("searchFilters");
+            let clientList = document.getElementById("clientList");
+            let counter = document.getElementById("counter");
+
+            let clientName = form?.[0]?.value || null;
+            let registeredDate = form?.[3]?.value || null;
+            let clientEmail = form?.[1]?.value || null;
+            let acquisitionDate = form?.[2]?.value || null;
+
+            const res = await fetch("/api/search-client", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    clientName, registeredDate, clientEmail, acquisitionDate
+                })
+            })
+
+            const resJson = await res.json();
+            clientList.innerHTML = ""; //Se vacía la lista de clientes.
+
+            if (resJson.message) {
+                //Si el query falla y hay un mensaje como respuesta...
+                let newClientLi = document.createElement("li");
+                newClientLi.classList = `emptyList`;
+                newClientLi.innerHTML = `No se han encontrado coincidencias.`;
+                clientList.appendChild(newClientLi);
+            } else {
+                let newCounter = document.createElement("li");
+                newCounter.classList = `counter`;
+                newCounter.innerHTML = `<h2>${resJson?.length || 0}</h2><h6>Resultados</h6>`;
+                clientList.appendChild(newCounter);
+
+                //console.log(resJson[0].clientName);
+                for (let j = 0; j < resJson.length; j++) {
+                    let newClientLi = document.createElement("li");
+                    newClientLi.setAttribute('onclick', `window.location.href='client?Id=${resJson?.[j]?.Id}'`);
+                    newClientLi.innerHTML =
+                        `
+                        <h3>${resJson?.[j]?.clientName || "err"}</h3>
+                        <h5>${resJson?.[j]?.clientEmail || ""}</h5>                        
+                        `;
+                    clientList.appendChild(newClientLi);
+                }
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function sendCampaign(event) {
+        event.preventDefault();
+
+        try {
+            const res = await fetch("/api/whatsapp/campaign-sending", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
+                body: JSON.stringify({
+                })
+            })
+
+            const resJson = await res.json();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function stopService(event) {
+        event.preventDefault();
+
+        try {
+            const res = await fetch("/api/whatsapp/stop", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
+                body: JSON.stringify({
+                })
+            })
+
+            const resJson = await res.json();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function closeSession(event) {
+        event.preventDefault();
+
+        try {
+            const res = await fetch("/api/whatsapp/close-session", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
+                body: JSON.stringify({
+                })
+            })
+
+            const resJson = await res.json();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+</script>

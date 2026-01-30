@@ -1,0 +1,508 @@
+<style>
+    body {
+        & main {
+            & .dashboard-container {
+                padding: 20px 30px;
+                max-width: 1600px;
+                margin: 0 auto;
+
+                /* --- HEADER DEL DASHBOARD --- */
+                & .dash-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    padding-bottom: 1rem;
+                    border-bottom: 1px solid var(--lv-border);
+
+                    & .dash-title {
+                        font-size: 2.2rem;
+                        color: var(--lv-obsidian);
+                        margin: 0;
+                        line-height: 100%;
+                    }
+
+                    & .dash-subtitle {
+                        color: var(--lv-slate);
+                        margin: 0;
+                        font-size: 1rem;
+
+                        & .store-badge {
+                            background-color: var(--lv-gold-light);
+                            color: #856404;
+                            padding: 2px 8px;
+                            border-radius: 4px;
+                            font-size: 0.75rem;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            margin-left: 10px;
+                            border: 1px solid rgba(197, 160, 89, 0.2);
+                        }
+                    }
+
+                    & .header-actions {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-end;
+                        gap: 10px;
+
+                        & .current-date {
+                            font-size: 0.85rem;
+                            color: #94a3b8;
+                        }
+
+                        & button {
+                            border-radius: 5px;
+                            background-color: var(--lv-slate);
+                            border: 1px var(--lv-border) solid;
+                            color: var(--lv-white);
+                            display: flex;
+                            align-items: center;
+                            padding: 5px 8px;
+                            min-height: 35px;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                            font: "Nunito Sans", sans-serif;
+                            font-size: 0.9rem;
+
+                            &:hover {
+                                background-color: var(--lv-obsidian);
+                            }
+
+                            & i, & svg {
+                                margin-right: 6px;
+                            }
+                        }
+                    }
+
+                    & .header-text {
+                        & form {
+                            display: grid;
+                            margin-top: 20px;
+
+                            & label {
+                                font-size: 0.8rem;
+                                color: var(--gray-80);
+                                font-weight: 500;
+                            }
+
+                            & select {
+                                min-height: 35px;
+                                border-radius: 5px;
+                                border: 1px var(--gray-50) solid;
+                            }
+                        }
+                    }
+                }
+
+                & .kpi-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                    gap: 1.5rem;
+                    margin-bottom: 3rem;
+
+                    & .kpi-card {
+                        background: white;
+                        padding: 1.5rem;
+                        border-radius: 12px;
+                        border: 1px solid var(--lv-border);
+                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 1rem;
+                        transition: transform 0.2s, box-shadow 0.2s;
+
+                        &:hover {
+                            transform: translateY(-2px);
+                            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+                        }
+
+                        /* Modificador: Tarjeta Destacada */
+                        &.highlight-card {
+                            border-left: 4px solid var(--lv-gold);
+                        }
+
+                        /* --- Elementos Internos de la Card --- */
+                        & .kpi-icon-wrapper {
+                            width: 48px;
+                            height: 48px;
+                            border-radius: 10px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-shrink: 0;
+
+                            &.gold {
+                                background: var(--lv-gold-light);
+                                color: var(--lv-gold);
+                            }
+
+                            &.slate {
+                                background: #f1f5f9;
+                                color: var(--lv-slate);
+                            }
+
+                            &.blue {
+                                background: #eff6ff;
+                                color: #3b82f6;
+                            }
+
+                            &.dark {
+                                background: var(--lv-obsidian);
+                                color: white;
+                            }
+                        }
+
+                        & .kpi-content {
+                            flex: 1;
+
+                            & .kpi-label {
+                                display: block;
+                                font-size: 0.8rem;
+                                font-weight: 600;
+                                color: #64748b;
+                                text-transform: uppercase;
+                                letter-spacing: 0.05em;
+                                margin-bottom: 0.25rem;
+                            }
+
+                            & .kpi-value {
+                                font-size: 1.8rem;
+                                font-weight: 700;
+                                color: var(--lv-obsidian);
+                                margin: 0 0 0.25rem 0;
+                                line-height: 1;
+                            }
+
+                            & .kpi-trend {
+                                font-size: 0.8rem;
+                                display: flex;
+                                align-items: center;
+                                gap: 4px;
+                                font-weight: 500;
+
+                                &.positive {
+                                    color: var(--lv-green);
+                                }
+
+                                &.negative {
+                                    color: var(--lv-red);
+                                }
+
+                                &.neutral {
+                                    color: #94a3b8;
+                                }
+                            }
+
+                            & .kpi-subtext {
+                                font-size: 0.8rem;
+                                color: #94a3b8;
+                            }
+                        }
+                    }
+                }
+
+                & .section-container {
+                    background: white;
+                    border: 1px solid var(--lv-border);
+                    border-radius: 12px;
+                    overflow: hidden;
+
+                    & .section-header {
+                        padding: 1.5rem;
+                        border-bottom: 1px solid var(--lv-border);
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        & h3 {
+                            margin: 0;
+                            font-size: 1.1rem;
+                            color: var(--lv-obsidian);
+                        }
+
+                        & .link-muted {
+                            color: var(--lv-slate);
+                            text-decoration: none;
+                            font-size: 0.9rem;
+
+                            &:hover {
+                                text-decoration: underline;
+                            }
+                        }
+                    }
+
+                    & .admin-table {
+                        width: 100%;
+                        border-collapse: collapse;
+
+                        & th {
+                            background: #f8fafc;
+                            text-align: left;
+                            padding: 1rem 1.5rem;
+                            font-size: 0.75rem;
+                            text-transform: uppercase;
+                            color: #64748b;
+                            font-weight: 600;
+                            border-bottom: 1px solid var(--lv-border);
+                        }
+
+                        & td {
+                            padding: 1rem 1.5rem;
+                            border-bottom: 1px solid var(--lv-border);
+                            color: var(--lv-slate);
+                            font-size: 0.95rem;
+                        }
+
+                        & tr {
+                            &:last-child td {
+                                border-bottom: none;
+                            }
+
+                            &:hover {
+                                background-color: #fcfcfc;
+                            }
+                        }
+
+                        /* --- Celdas y Utilidades de Tabla --- */
+                        & .font-mono {
+                            font-family: 'Consolas', monospace;
+                            color: var(--lv-obsidian);
+                        }
+
+                        & .text-right {
+                            text-align: right;
+                        }
+
+                        & .text-muted {
+                            color: #94a3b8;
+                            font-size: 0.85rem;
+                        }
+
+                        & .font-bold {
+                            font-weight: 600;
+                            color: var(--lv-obsidian);
+                        }
+
+                        & .user-cell {
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+
+                            & .avatar-circle {
+                                width: 30px;
+                                height: 30px;
+                                background: var(--lv-obsidian);
+                                color: white;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 0.75rem;
+                                font-weight: 600;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @media only screen and (max-width: 560px) {
+    
+        body {
+            & main {
+                & .dashboard-container {
+                    padding: 20px;
+
+                    & .dash-header {
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 15px;
+
+                        & .dash-title {
+                            font-size: 1.8rem;
+                        }
+
+                        & .header-actions {
+                            align-items: flex-start;
+                        }
+                    }
+
+                    & .kpi-grid {
+                        gap: 15px;
+                    }
+                }
+            }
+        }
+    
+    }
+</style>
+
+<div class="dashboard-container">
+
+    <section class="dash-header">
+
+        <div class="header-text">
+
+            <h1 class="dash-title">Panel de control</h1>
+            <p class="dash-subtitle">
+                Bienvenido de nuevo, <strong><%= userSession.name %></strong>.
+            </p>
+            <% if (userSession?.isGlobal || userSession?.allowedStores?.length> 1) { %>
+
+                <form class="store-switcher-form">
+                    <label for="">Tenda seleccionada</label>
+                    <select name="target_store_id" class="store-select">
+
+                        <% stores?.forEach(store=> { %>
+                            <% if (userSession?.isGlobal || userSession?.allowedStores?.includes(store?.id)) { %>
+                                <option value="<%= store?.id %>" <%=userSession?.currentStoreId==store?.id
+                                    ? 'selected' : '' %>>
+                                    📍 <%= store?.name %>
+                                </option>
+                                <% } %>
+                                    <% }) %>
+
+                    </select>
+                </form>
+
+            <% } else { %>
+                <span class="store-badge">📍 <%= currentStoreName %></span>
+            <% } %>
+            
+        </div>
+
+        <div class="header-actions">
+            <span class="current-date" id="dateDisplay">Cargando fecha...</span>
+            <button class="btn btn-primary">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                Nueva venta
+            </button>
+        </div>
+    </section>
+
+    <div class="kpi-grid">
+
+        <div class="kpi-card highlight-card">
+            <div class="kpi-icon-wrapper gold">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                    </path>
+                </svg>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-label">Ventas del Día</span>
+                <h2 class="kpi-value">$14,250.00</h2>
+                <span class="kpi-trend positive">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                    +12% vs ayer
+                </span>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon-wrapper slate">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                    </path>
+                </svg>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-label">Clientes Nuevos</span>
+                <h2 class="kpi-value">8</h2>
+                <span class="kpi-trend neutral">Normal</span>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon-wrapper blue">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-label">Stock Total</span>
+                <h2 class="kpi-value">1,240</h2>
+                <span class="kpi-trend negative">
+                    ⚠️ 5 piezas bajas
+                </span>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon-wrapper dark">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                    </path>
+                </svg>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-label">Catálogo Activo</span>
+                <h2 class="kpi-value">345</h2>
+                <span class="kpi-subtext">SKUs únicos</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-container">
+        <div class="section-header">
+            <h3>Movimientos Recientes</h3>
+            <a href="/admin/sales" class="link-muted">Ver todo &rarr;</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID Venta</th>
+                        <th>Cliente</th>
+                        <th>Estado</th>
+                        <th>Total</th>
+                        <th>Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-mono">#VN-8832</td>
+                        <td>
+                            <div class="user-cell">
+                                <div class="avatar-circle">LP</div>
+                                <span>Luisa Pérez</span>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-success">Pagado</span></td>
+                        <td class="text-right font-bold">$4,500.00</td>
+                        <td class="text-muted">10:42 AM</td>
+                    </tr>
+                    <tr>
+                        <td class="font-mono">#VN-8831</td>
+                        <td>
+                            <div class="user-cell">
+                                <div class="avatar-circle">PG</div>
+                                <span>Pedro Gómez</span>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-warning">Apartado</span></td>
+                        <td class="text-right font-bold">$1,200.00</td>
+                        <td class="text-muted">09:15 AM</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('dateDisplay').innerText = new Date().toLocaleDateString('es-ES', options);
+</script>

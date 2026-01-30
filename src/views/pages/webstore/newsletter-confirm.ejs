@@ -1,0 +1,219 @@
+    <style>
+        /* --- BASE STYLES --- */
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            margin: auto;
+            box-sizing: border-box;
+        }
+
+        /* --- THE CARD --- */
+        .confirmation-card {
+            background: #FFFFFF;
+            padding: 60px 40px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+            opacity: 0;
+            /* Para animación de entrada */
+            transform: translateY(30px);
+            animation: slideUpFade 1s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+        }
+
+        /* --- ICON ANIMATION --- */
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid #C5A059;
+            /* Dorado */
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: pulseGold 2s infinite;
+        }
+
+        .check {
+            font-size: 30px;
+            color: #C5A059;
+            line-height: 80px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease 0.8s forwards;
+            /* Aparece tarde */
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1 {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin: 0 0 15px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        /* --- THE VOUCHER BOX (Optional) --- */
+        .voucher-box {
+            background: #FAFAFA;
+            border: 1px dashed #CCCCCC;
+            padding: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            cursor: pointer;
+            /* Indica que es clicable */
+            transition: all 0.3s ease;
+        }
+
+        .voucher-box:hover {
+            border-color: #C5A059;
+            background: #FFF;
+        }
+
+        .voucher-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #999;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .voucher-code {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 1.5rem;
+            color: #1A1A1A;
+            letter-spacing: 1px;
+        }
+
+        .copy-hint {
+            font-size: 0.7rem;
+            color: #C5A059;
+            margin-top: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .voucher-box:hover .copy-hint {
+            opacity: 1;
+        }
+
+        /* --- CTA BUTTON --- */
+        .btn-home {
+            background-color: #1A1A1A;
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 18px 40px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-home:hover {
+            background-color: #C5A059;
+            transform: translateY(-2px);
+        }
+
+        /* --- KEYFRAMES --- */
+        @keyframes slideUpFade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulseGold {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.4);
+            }
+
+            70% {
+                transform: scale(1.1);
+                box-shadow: 0 0 0 10px rgba(197, 160, 89, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(197, 160, 89, 0);
+            }
+        }
+
+        /* --- MOBILE --- */
+        @media (max-width: 600px) {
+            .confirmation-card {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+
+    <div class="container">
+        <div class="confirmation-card">
+
+            <div class="icon-wrapper">
+                <div class="circle"></div>
+                <div class="check">&#10003;</div>
+            </div>
+
+            <h1>You Are In.</h1>
+            <p class="subtitle">
+                Your subscription has been confirmed. Welcome to the Inner Circle. <br>
+                As a token of our appreciation, please enjoy complimentary shipping on your next acquisition.
+            </p>
+
+            <div class="voucher-box" onclick="copyToClipboard('FREESHIP25')">
+                <span class="voucher-label">Your Welcome Code</span>
+                <span class="voucher-code" id="codeText">FREESHIP25</span>
+                <div class="copy-hint" id="copyMsg">Click to Copy</div>
+            </div>
+
+            <a href="/products" class="btn-home">Enter The Boutique</a>
+
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const msg = document.getElementById('copyMsg');
+                const originalText = msg.innerText;
+
+                msg.innerText = "Copied to clipboard";
+                msg.style.opacity = '1';
+                msg.style.color = '#1A1A1A'; // Se pone negro para confirmar
+
+                setTimeout(() => {
+                    msg.innerText = originalText;
+                    msg.style.color = '#C5A059';
+                    msg.style.opacity = '0'; // Vuelve a ocultarse (o al estado hover)
+                }, 2000);
+            });
+        }
+    </script>

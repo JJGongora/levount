@@ -2,9 +2,14 @@
 *.log
 *.tmp
 *.sh
+*.jpg
+*.jpeg
+*.webp
+*.png
+*.svg
 
 /.wwebjs_auth
 /.wwebjs_cache
 /node_modules
-
-/public/images
+/public/images/products/*
+/public/LeVount/images

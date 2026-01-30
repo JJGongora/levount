@@ -1,0 +1,348 @@
+<style>
+    body {
+        & main {
+            & .content {
+                display: flex;
+                gap: 20px;
+                position: relative;
+                align-items: flex-start;
+
+                & .filters {
+                    flex: 1 1 250px;
+                    box-sizing: border-box;
+                    position: sticky;
+                    height: fit-content;
+                    max-height: calc(100dvh - 70px);
+                    top: 80px;
+                    padding: 10px;
+
+                    & form {
+                        & .inputContainer {
+                            display: grid;
+
+                            & label {
+                                font-size: 0.9rem;
+                                color: var(--gray-60);
+                                margin-bottom: 3px;
+                                font-family: "Nunito Sans", sans-serif;
+                                font-weight: 600;
+                            }
+
+                            & input,
+                            & select {
+                                height: 35px;
+                                padding: 5px;
+                                border: 1px var(--gray-40) solid;
+                                font-family: "Nunito Sans", sans-serif;
+                            }
+
+                            &+.inputContainer {
+                                margin-top: 8px;
+                            }
+                        }
+
+                        & button {
+                            background-color: var(--gray-40);
+                            font-family: "Nunito Sans", sans-serif;
+                            border: 1px var(--gray-60) solid;
+                            height: 35px;
+                            width: 100%;
+                            margin-top: 15px;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                            font-size: 0.9rem;
+                            font-weight: 600;
+
+                            &:hover {
+                                background-color: var(--gray-80);
+                                color: var(--font-light);
+                                border-color: var(--gray-40);
+                            }
+                        }
+                    }
+                }
+
+                & .resultsContainer {
+                    position: relative;
+                    flex: 999 1 400px;
+
+                    & .info {
+                        position: sticky;
+                    }
+
+                    & .products {
+                        display: flex;
+                        gap: 20px;
+                        flex-wrap: wrap;
+                        transition: all 0.3s;
+
+                        & .productCard {
+                            width: calc(20% - 16px);
+                            min-width: 180px;
+                            max-width: 350px;
+                            /*max-width: 250px;*/
+                            aspect-ratio: 1 / 1;
+                            cursor: pointer;
+
+                            &:hover {
+                                box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 2px 2px -1px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.03) 0px 5px 5px -2.5px, rgba(42, 51, 70, 0.03) 0px 10px 10px -5px, rgba(42, 51, 70, 0.03) 0px 24px 24px -8px;
+
+                                & .imgContainer img {
+                                    transform: scale(1.05);
+                                }
+                            }
+
+                            & .imgContainer {
+                                overflow: hidden;
+
+                                & img {
+                                    width: 100%;
+                                    border-radius: 5px;
+                                    aspect-ratio: 1 / 1;
+                                    object-fit: cover;
+                                    margin-bottom: 8px;
+                                    transition: all 0.3s;
+                                }
+                            }
+
+                            & .price {
+                                display: grid;
+                                grid-template-rows: auto max-content max-content;
+                                padding: 8px;
+
+                                & h6,
+                                & h5,
+                                & h4,
+                                & h3,
+                                & h2 {
+                                    margin: 0;
+                                    line-height: 100%;
+                                }
+
+                                & h6 {
+                                    font-weight: 500;
+                                    font-size: 0.8rem;
+                                    font-family: "Playfair Display", serif;
+                                    text-overflow: ellipsis
+                                }
+
+                                & .middleCard {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 4px;
+                                    justify-content: left;
+                                    color: var(--gray-80);
+                                    margin: 4px 0;
+
+                                    & h4,
+                                    & h5 {
+                                        font-size: 0.8rem !important;
+                                        font-weight: 400;
+                                        font-family: "Montserrat", sans-serif;
+                                    }
+
+                                    & h4 {
+                                        color: var(--gray-60);
+                                        text-decoration: line-through;
+                                    }
+                                }
+
+                                & h2 {
+                                    font-weight: 500;
+                                    color: var(--accent-gold);
+                                    font-size: 0.95rem;
+                                    font-family: "Montserrat", sans-serif;
+                                    letter-spacing: 0.5px;
+                                }
+                            }
+                        }
+                    }
+
+                    & .navButtons {
+                        display: flex;
+                        justify-content: center;
+                        margin-top: 20px;
+
+                        & button {
+                            outline: none;
+                            border: 1px var(--gray-50) solid;
+                            cursor: pointer;
+                            height: 35px;
+                            font-family: "Nunito Sans", sans-serif;
+                            aspect-ratio: 1 / 1;
+
+                            &.selected {
+                                background-color: var(--accent-gold);
+                                color: var(--font-light);
+                            }
+
+                            &.inactive {
+                                pointer-events: none;
+                                opacity: 0.5;
+                            }
+
+                            &+button {
+                                border-left: 0px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @media only screen and (max-width: 560px) {
+        body {
+            & main {
+                & .content {
+                    display: block;
+
+                    & .filters {
+                        position: unset;
+                        padding: 0;
+                        margin-bottom: 20px;
+                    }
+
+                    & .resultsContainer {
+                        & .products {
+                            & .productCard {
+                                width: calc(50% - 10px);
+                                min-width: 100px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<section class="frontPage">
+    <div class="routePath">
+    </div>
+</section>
+
+<section class="content">
+    <aside class="filters">
+        <form action="" method="get" id="filtersForm">
+            <div class="inputContainer">
+                <label for="">Sort by</label>
+                <select name="sort" id="" onchange="submit()">
+                    <option value="<%- sorting?.sort || 'priceLow' %>" selected hidden><%- sorting?.stringSort
+                            || 'Price (low to high)' %></option>
+                    <option value="priceLow">Price (low to high)</option>
+                    <option value="priceHigh">Price (high to low)</option>
+                    <option value="material">Material</option>
+                    <option value="latest">Latest</option>
+                </select>
+            </div>
+
+            <div class="inputContainer">
+                <label for="">Material</label>
+                <select name="material" id="" onchange="submit()">
+                    <option value="<%- filters?.material%>" selected hidden><%- utils.toTitleCase(filters?.material)
+                            || "Select" %></option>
+                    <% availableParams?.materials?.forEach(material => { %>
+                        <option value="<%- material %>"><%- utils.toTitleCase(material) %></option>
+                    <% }); %>
+                </select>
+            </div>
+
+            <div class="inputContainer">
+                <label for="">Stone color</label>
+                <select name="stoneColor" id="" onchange="submit()">
+                    <option value="<%- filters?.stoneColor %>" selected hidden>
+                        <%- utils.capitalize(filters?.stoneColor) || "Select" %>
+                    </option>
+                    <% availableParams?.colors?.forEach(color => { %>
+                        <option value="<%- color %>"><%- utils.toTitleCase(color) %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <input type="hidden" name="page" id="pageInput">
+            <button type="button" onclick="window.location.href = window.location.pathname">Reset</button>
+        </form>
+    </aside>
+
+    <section class="resultsContainer">
+        <div class="info">
+
+        </div>
+
+        <section class="products">
+            <% for (let i=0; i < products?.products?.length; i++) { %>
+                <a class="productCard"
+                    href="/products/<%- `${products?.products?.[i]?.category}/${products?.products?.[i]?.sku}` %>">
+                    <div class="imgContainer">
+                        <img src="/images/products/<%- `${products?.products?.[i]?.material}/${products?.products?.[i]?.category}/${products?.products?.[i]?.sku}/${products?.products?.[i]?.sku?.toLowerCase()}-thumb.webp` %>"
+                            onerror="this.parentElement.parentElement.remove()" alt="">
+                    </div>
+                    <div class="price">
+                        <h6><%- utils.capitalizeFirstLetter(products?.products?.[i]?.shortName) ||
+                                utils.capitalizeFirstLetter(products?.products?.[i]?.name) %></h6>
+                        <div class="middleCard">
+                            <h5><%- `${products?.products?.[i]?.purity} ${utils.capitalizeFirstLetter(products?.products?.[i]?.material)}` %></h5>
+                            <% if(products?.products?.[i]?.discountPrice) { %>
+                                <span>|</span>
+                                <h4><%- utils.toCurrency(products?.products?.[i]?.tagPrice) %></h4>
+                                <% } %>
+                        </div>
+                        <h2><%- utils.toCurrency(products?.products?.[i]?.finalUnitPrice) %> USD</h2>
+                    </div>
+                </a>
+                <% } %>
+        </section>
+
+        <% if (products?.pagination?.totalPages> 1) { %>
+            <section class="navButtons">
+                <% if (products?.pagination?.page> 1) { %>
+                    <button type="button"
+                        onclick="filterProducts(event, '<%- products?.pagination?.page - 1 %>')">&lt;</button>
+                    <% } else { %>
+                        <button type="button" class="inactive">&lt;</button>
+                        <% } %>
+
+                            <% let current=parseInt(products?.pagination?.page); let
+                                total=parseInt(products?.pagination?.totalPages); let range=1; %>
+
+                                <% for(let j=1; j <=total; j++) { %>
+
+                                    <% if (j===1 || j===total || (j>= current - range && j <= current + range)) { %>
+
+                                            <button type="button" class="<%= j === current ? 'selected' : '' %>"
+                                                onclick="filterProducts(event, '<%- j %>')">
+                                                <%= j %>
+                                            </button>
+
+                                            <% } else if (j===current - range - 1 || j===current + range + 1) { %>
+                                                <button type="button" class="inactive">...</button>
+                                                <% } %>
+
+                                                    <% } %>
+
+                                                        <% if (products?.pagination?.page <
+                                                            products?.pagination?.totalPages) { %>
+                                                            <button type="button"
+                                                                onclick="filterProducts(event, '<%- products?.pagination?.page + 1 %>')">&gt;</button>
+                                                            <% } else { %>
+                                                                <button type="button" class="inactive">&gt;</button>
+                                                                <% } %>
+            </section>
+            <% } %>
+    </section>
+</section>
+
+<script>
+    function filterProducts(event, page) {
+        event.preventDefault();
+        try {
+            const form = document.getElementById("filtersForm");
+            const pageInput = document.getElementById("pageInput");
+
+            pageInput.value = page;
+            form.submit();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+</script>

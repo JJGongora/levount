@@ -1,0 +1,168 @@
+<style>
+    body {
+        & header {
+            position: sticky;
+            z-index: 999;
+
+            & nav {
+                box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.5);
+
+                & .upperBar {
+                    padding: 10px 20px;
+                    display: flex;
+                    justify-content: space-between;
+
+                    & .logoContainer {
+                        display: block;
+                        min-width: 200px;
+                        width: fit-content;
+                        height: 50px;
+                        background-color: var(--text-dark);
+                        text-align: left;
+                        -webkit-mask-image: url('/LeVount/images/logos/LeVount_Logo.svg') !important;
+                        -webkit-mask-size: contain;
+                        -webkit-mask-repeat: no-repeat;
+                        -webkit-mask-position: center;
+                        mask-image: url('/LeVount/images/logos/LeVount_Logo.svg') !important;
+                        mask-size: contain;
+                        mask-repeat: no-repeat;
+                        mask-position: center;
+                        color: transparent;            
+                    }
+
+                    & .leftIcons, & .rightIcons {
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+
+                        & i {
+                            font-size: 35px;
+                            color: var(--text-dark);
+                            cursor: pointer;
+                            transition: all 0.3s;
+
+                            &:hover {
+                                color: var(--lv-gold);
+                            }
+                        }
+                    }
+                }
+
+                & .menuDrawer {
+                    & ul {
+                        list-style: none;
+                        display: flex;
+                        gap: 25px;
+                        justify-content: center;
+                        padding: 0;
+                        margin: 0;
+
+                        & li {
+                            min-height: 30px;
+                            display: flex;
+                            align-items: center;
+                            text-transform: uppercase;
+                            font-weight: 500;
+                            font-size: 0.9rem;
+
+                            & a {
+                                color: var(--text-dark);
+                                text-decoration: none;
+                                transition: all 0.3s;
+                            }
+
+                            & .subMenu {
+                                position: absolute;
+                                background-color: var(--lv-gold);
+                                top: 100%;
+                                left: 0;
+                                right: 0;
+                                box-sizing: border-box;
+                                opacity: 0;
+                                visibility: hidden;
+                                transform: translateY(10px);
+                                transition: all 0.3s ease-in-out;
+                                overflow: hidden;
+                                display: flex;
+
+                                & ul {
+                                    display: block;
+
+                                    & h4 {
+                                        margin: 0;
+                                    }
+
+                                    & li {
+                                        min-height: 0;
+                                    }
+                                }
+                            }
+
+                            &:hover {
+                                &>div {
+                                    opacity: 1;
+                                    visibility: visible;
+                                    transform: translateY(0);
+                                }
+
+                                & a {
+                                    color: var(--lv-gold);
+                                }
+
+                                border-bottom: 2px var(--lv-gold) solid;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<header>
+    <nav>
+        <section class="upperBar">
+            <div class="leftIcons">
+                <i>&#xe10da;</i>
+            </div>
+            <div class="logoContainer">
+
+            </div>
+            <div class="rightIcons">
+                <i>&#xe111b;</i>
+                <i>&#xe10CC;</i>
+            </div>
+        </section>
+        <section class="menuDrawer">
+            <ul>
+                <li>
+                    <a href="">Jewelry</a>
+                    <div class="subMenu">
+                        <ul>
+                            <h4>Categories</h4>
+                            <li>Rings</li>
+                            <li>Earrings</li>
+                            <li>Bracelets</li>
+                            <li>Pendants</li>
+                            <li>Necklaces</li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a href="">Gifts</a>
+                </li>
+                <li>
+                    <a href="">About</a>
+                </li>                
+                <li>
+                    <a href="">Contact</a>
+                </li>
+                <% if (userSession?.accessLevel >= 2) { %>
+                    <li>
+                        <a href="">Administración</a>
+                    </li>
+                <% } %>
+            </ul>
+        </section>
+    </nav>
+</header>

@@ -1,0 +1,336 @@
+<style>
+    body {
+
+        min-height: 100dvh;
+        display: grid;
+        grid-template-rows: max-content auto max-content;
+
+        & header {
+            position: relative;
+            box-shadow: 0 2px 2px -2px rgba(0, 0, 0, .2);
+        }
+
+        & main {
+            height: auto;
+            margin-top: 0;
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background-color: var(--gray-10);
+
+            & aside {
+                min-width: 150px;
+                max-width: 200px;
+                width: 30%;
+                padding: 20px;
+                background-color: white;
+                border-radius: 5px;
+                box-sizing: border-box;
+                box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+
+                & ul {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                    row-gap: 5px;
+                    display: grid;
+
+                    & li {
+                        display: flex;
+                        align-items: center;
+                        padding: 5px;
+                        transition: all 0.3s;
+                        cursor: pointer;
+                        border-radius: 5px;
+
+                        & i {
+                            margin-right: 10px;
+                            font-family: "LeVountIcons";
+                            font-size: 25px;
+                            font-style: normal;
+                            transition: all 0.5s;
+                        }
+
+                        &:hover {
+                            background-color: var(--gray-20);
+                            color: var(--contrast-50);
+
+                            & i {
+                                transform: translateX(5px);
+                            }
+                        }
+                    }
+                }
+            }
+
+            & .Content {
+                background-color: white;
+                border-radius: 5px;
+                padding: 25px;
+                flex-grow: 1;
+                box-sizing: border-box;
+                box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+
+                & h1 {
+                    margin: 0;
+                }
+
+                & form {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 15px;
+                    align-items: end;
+
+                    & .inputContainer {
+                        display: grid;
+                        flex-grow: 1;
+
+                        & label {
+                            margin-bottom: 3px;
+                            font-weight: 600;
+                            font-size: 0.8rem;
+                            color: var(--gray-80);
+                        }
+
+                        & input,
+                        & select {
+                            min-height: 30px;
+                            border: 1px var(--gray-50) solid;
+                            border-radius: 5px;
+                            padding: 0 5px;
+                            font-family: "Lato";
+                        }
+                    }
+
+                    & button {
+                        cursor: pointer;
+                        height: 30px;
+                        font-weight: 600;
+                        border-radius: 5px;
+                        border: 1px var(--gray-50) solid;
+                        transition: all 0.3s;
+
+                        & i {
+                            font-family: "LeVountIcons";
+                            font-size: 20px;
+                            font-style: normal;
+                            transition: all 0.5s;
+                        }
+
+                        &:hover {
+                            background-color: var(--contrast-50);
+                            color: white;
+                        }
+                    }
+                }
+
+                & .clientList {
+                    padding: 0;
+                    list-style: none;
+                    column-width: 17rem;
+                    gap: 10px;
+                    row-gap: 10px;
+                    column-gap: 10px;
+
+                    & li {
+                        min-height: 30px;
+                        padding: 8px;
+                        background-color: var(--gray-10);
+                        transition: all 0.3s;
+                        cursor: pointer;
+                        border-radius: 5px;
+                        margin-bottom: 10px;
+                        break-inside: avoid;
+
+                        &:hover {
+                            background-color: var(--gray-20);
+                        }
+
+                        &.emptyList {
+                            background-color: #fac3c3;
+                            color: #971a1a;
+                            cursor: auto;
+
+                            &:hover {}
+                        }
+
+                        &.counter {
+                            background-color: #fff7d3;
+                            cursor: auto;
+                            color: var(--gray-70);
+                        }
+
+                        & h5,
+                        & h3,
+                        & h6,
+                        & h2 {
+                            margin: 0;
+                        }
+
+                        & h3 {
+                            font-size: 1rem;
+                            font-weight: 500;
+                        }
+
+                        & h5 {
+                            font-size: 0.8rem;
+                            font-weight: 400;
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<aside>
+    <ul>
+        <li><a href="clients/new"><i>&#xe1032;</i>Nuevo cliente</a></li>
+        <li><a href="campaigns"><i>&#xe1061;</i>Campañas</a></li>
+    </ul>
+</aside>
+<section class="Content">
+    <h1><%- "Clientes" //t("pageTitle") %></h1>
+
+    <form action="" onsubmit="searchClient(event)" id="searchFilters">
+        <div class="inputContainer">
+            <label for="">Nombre</label>
+            <input type="text">
+        </div>
+        <div class="inputContainer">
+            <label for="">Correo</label>
+            <input type="email">
+        </div>
+        <div class="inputContainer">
+            <label for="">Fecha de compra</label>
+            <input onchange="searchClient(event)" type="date" max="<%- utils.dateToInputDate(Today) %>">
+        </div>
+        <div class="inputContainer">
+            <label for="">Fecha de captura</label>
+            <input onchange="searchClient(event)" type="date" value="<%- utils.dateToInputDate(Today) %>"
+                max="<%- utils.dateToInputDate(Today) %>">
+        </div>
+        <button onclick="searchClient(event)"><i>&#xe1002;</i>Buscar</button>
+    </form>
+
+    <ul class="clientList" id="clientList">
+        <li id="counter" class="counter">
+            <h2><%- clients?.length %></h2>
+            <h6>Resultados</h6>
+        </li>
+        <% for (let i=0; i < clients?.length; i++) { %>
+            <li onclick="">
+                <h3><%- clients?.[i]?.clientName %></h3>
+                <h5><%- clients?.[i]?.clientEmail %></h5>
+            </li>
+            <% } %>
+    </ul>
+</section>
+
+
+<script>
+    async function searchClient(event) {
+        event.preventDefault();
+
+        try {
+            let form = document.getElementById("searchFilters");
+            let clientList = document.getElementById("clientList");
+            let counter = document.getElementById("counter");
+
+            let clientName = form?.[0]?.value || null;
+            let registeredDate = form?.[3]?.value || null;
+            let clientEmail = form?.[1]?.value || null;
+            let acquisitionDate = form?.[2]?.value || null;
+
+            const res = await fetch("/api/search-client", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    clientName, registeredDate, clientEmail, acquisitionDate
+                })
+            })
+
+            const resJson = await res.json();
+            clientList.innerHTML = ""; //Se vacía la lista de clientes.
+
+            if (resJson.message) {
+                //Si el query falla y hay un mensaje como respuesta...
+                let newClientLi = document.createElement("li");
+                newClientLi.classList = `emptyList`;
+                newClientLi.innerHTML = `No se han encontrado coincidencias.`;
+                clientList.appendChild(newClientLi);
+            } else {
+                let newCounter = document.createElement("li");
+                newCounter.classList = `counter`;
+                newCounter.innerHTML = `<h2>${resJson?.length || 0}</h2><h6>Resultados</h6>`;
+                clientList.appendChild(newCounter);
+
+                //console.log(resJson[0].clientName);
+                for (let j = 0; j < resJson.length; j++) {
+                    let newClientLi = document.createElement("li");
+                    newClientLi.setAttribute('onclick', `window.location.href='client?Id=${resJson?.[j]?.Id}'`);
+                    newClientLi.innerHTML =
+                        `
+                        <h3>${resJson?.[j]?.clientName || "err"}</h3>
+                        <h5>${resJson?.[j]?.clientEmail || ""}</h5>                        
+                        `;
+                    clientList.appendChild(newClientLi);
+                }
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function sendCampaign(event) {
+        event.preventDefault();
+
+        try {
+            const res = await fetch("/api/whatsapp/campaign-sending", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
+                body: JSON.stringify({
+                })
+            })
+
+            const resJson = await res.json();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function stopService(event) {
+        event.preventDefault();
+
+        try {
+            const res = await fetch("/api/whatsapp/stop", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
+                body: JSON.stringify({
+                })
+            })
+
+            const resJson = await res.json();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function closeSession(event) {
+        event.preventDefault();
+
+        try {
+            const res = await fetch("/api/whatsapp/close-session", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
+                body: JSON.stringify({
+                })
+            })
+
+            const resJson = await res.json();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+</script>

@@ -1,0 +1,319 @@
+<style>
+    body {
+        & main {
+            background-color: #FAF9F6;
+            padding: 80px 0 120px;
+            color: #1A1A1A;
+
+            & .container {
+
+                & .legal-header {
+                    text-align: center;
+                    margin-bottom: 30px;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                    /* Línea divisoria muy sutil */
+                    padding-bottom: 60px;
+
+                    & .legal-subtitle {
+                        font-family: 'Montserrat', sans-serif;
+                        font-size: 0.75rem;
+                        text-transform: uppercase;
+                        letter-spacing: 2px;
+                        color: #C5A059;
+                        /* Dorado */
+                        display: block;
+                        margin-bottom: 15px;
+                    }
+
+                    & .legal-title {
+                        font-family: 'Bodoni Moda', serif;
+                        font-size: 3.5rem;
+                        font-weight: 400;
+                        margin: 0 0 15px 0;
+                        line-height: 110%;
+                    }
+
+                    & .legal-meta {
+                        font-family: 'Montserrat', sans-serif;
+                        font-size: 0.85rem;
+                        color: #888;
+                        font-style: italic;
+                    }
+                }
+
+                .legal-grid {
+                    display: grid;
+                    grid-template-columns: 250px 1fr;
+                    gap: 80px;
+                    max-width: 1000px;
+                    margin: 0 auto;
+
+                    & .legal-sidebar {
+                        position: sticky;
+                        top: 120px;
+                        height: fit-content;
+                    }
+
+                    & .legal-nav {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 15px;
+                        border-left: 1px solid rgba(0, 0, 0, 0.1);
+                        padding-left: 20px;
+
+                        & a {
+                            font-family: 'Montserrat', sans-serif;
+                            font-size: 0.85rem;
+                            color: #999;
+                            text-decoration: none;
+                            transition: all 0.3s ease;
+
+                            &:hover,
+                            &.active {
+                                color: #1A1A1A;
+                                font-weight: 600;
+                                padding-left: 5px;
+                            }
+                        }
+                    }
+
+                    & .legal-content {
+                        & section {
+                            margin-bottom: 60px;
+
+                            & .intro-text {
+                                font-size: 1.0rem !important;
+                                color: #1A1A1A !important;
+                                font-family: 'Nunito Sans', sans-serif !important;
+                            }
+                        }
+
+                        & h2 {
+                            font-family: 'Bodoni Moda', serif;
+                            font-size: 1.8rem;
+                            margin-bottom: 25px;
+                            color: #1A1A1A;
+                        }
+
+                        & p,
+                        & li {
+                            font-family: 'MulishNunito Sans', sans-serif;
+                            font-size: 1rem;
+                            line-height: 1.8;
+                            color: #555;
+                            margin-bottom: 15px;
+                        }
+
+                        & ul {
+                            padding-left: 20px;
+                            margin-bottom: 20px;
+
+                            & li {
+                                margin-bottom: 10px;
+                            }
+                        }
+
+                        & a {
+                            color: #1A1A1A;
+                            text-decoration: underline;
+                            text-decoration-color: #C5A059;
+                            text-underline-offset: 3px;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    @media only screen and (max-width: 560px) {
+
+        body {
+            & main {
+                & .container {
+                    & .legal-title {
+                        font-size: 2.5rem;
+                    }
+
+                    & .legal-grid {
+                        grid-template-columns: 1fr;
+                        gap: 40px;
+
+                        & .legal-sidebar {
+                            display: none;
+                        }
+
+                        & .legal-content {
+                            padding: 15px;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+</style>
+
+<div class="container">
+    <div class="legal-header">
+        <span class="legal-subtitle">Transparency & Trust</span>
+        <h1 class="legal-title">Privacy Policy</h1>
+        <p class="legal-meta">Last Updated: October 10th, 2024</p>
+    </div>
+
+    <div class="legal-grid">
+
+        <aside class="legal-sidebar">
+            <nav class="legal-nav">
+                <a href="#intro" class="active">01. Introduction</a>
+                <a href="#collection">02. Information We Collect</a>
+                <a href="#sharing">03. Sharing & Disclosure</a>
+                <a href="#cookies">04. Cookies & Tracking</a>
+                <a href="#rights">05. Your Rights</a>
+                <a href="#contact">06. Contact Us</a>
+            </nav>
+        </aside>
+
+        <article class="legal-content">
+
+            <section id="intro">
+                <p class="intro-text">
+                    At Le Vount, we believe that privacy is the ultimate luxury. We are committed to
+                    protecting your personal information with the same care and precision we apply to our jewelry.
+                    This policy outlines how we handle your data.
+                    <br>
+                    By accessing or using our website, you agree to the terms of this Privacy Policy.
+                    If you do not agree with the practices described in this policy, please do not use our services.
+                </p>
+            </section>
+
+            <section id="collection">
+                <h2>01. Information We Collect</h2>
+                <p>
+                    To provide you with a seamless shopping experience and curated service, we collect the following
+                    types of information:
+                </p>
+                <h3>Information You Provide Directly</h3>
+                <ul>
+                    <li><strong>Identity Data:</strong> First name, last name, and ring size preferences.</li>
+                    <li><strong>Contact Data:</strong> Shipping address, billing address, and email address (for "The Le
+                        Vount List" or order updates).</li>
+                    <li><strong>Transaction Data:</strong> Details about payments and products you have purchased from
+                        us. Note that <strong>we do not store your credit card information</strong> on our servers;
+                        transactions are processed securely by third-party providers (e.g., Stripe, PayPal).</li>
+                </ul>
+
+                <h3>Information Collected Automatically</h3>
+                <ul>
+                    <li><strong>Technical Data:</strong> IP address, browser type, time zone setting, and device
+                        information.</li>
+                    <li><strong>Usage Data:</strong> Information about how you use our website, products, and services.
+                    </li>
+                    <li><strong>Security Data:</strong> We use Cloudflare Turnstile to distinguish between human users
+                        and bots to protect our site infrastructure.</li>
+                </ul>
+            </section>
+
+            <section id="usage">
+                <h2>02. How We Use Your Information</h2>
+                <p>We use your personal data only when the law allows us to. Most commonly, we use your personal data in
+                    the following circumstances:</p>
+                <ul>
+                    <li><strong>Order Fulfillment:</strong> To process and deliver your jewelry, manage payments, and
+                        handle returns.</li>
+                    <li><strong>Concierge Service:</strong> To respond to your inquiries regarding sizing, care
+                        instructions, or order status.</li>
+                    <li><strong>Communication:</strong> To send you transactional emails (order confirmations) and, if
+                        you have opted in, our newsletter regarding new collections and exclusive access.</li>
+                    <li><strong>Security & Fraud Prevention:</strong> To protect our website and your account from
+                        unauthorized access or fraudulent transactions.</li>
+                </ul>
+            </section>
+
+            <section id="sharing">
+                <h2>03. Sharing & Disclosure</h2>
+                <p><strong>We do not sell your personal data.</strong> Transparency is key to our relationship with you.
+                    We only share your data with trusted third parties who assist us in operating our website and
+                    conducting our business:</p>
+                <ul>
+                    <li><strong>Service Providers:</strong> Payment processors, shipping partners (e.g., FedEx, DHL),
+                        and email service providers.</li>
+                    <li><strong>Legal Obligations:</strong> We may disclose your information if required to do so by law
+                        or in response to valid requests by public authorities.</li>
+                    <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of all or a
+                        portion of our assets, your data may be transferred as part of that transaction.</li>
+                </ul>
+            </section>
+
+            <section id="cookies">
+                <h2>04. Cookies & Tracking Technologies</h2>
+                <p>Our website uses cookies to enhance your browsing experience. Specifically, we use:</p>
+                <ul>
+                    <li><strong>Essential Cookies:</strong> These are necessary for the website to function (e.g.,
+                        keeping items in your shopping bag while you navigate).</li>
+                    <li><strong>Functional Cookies:</strong> These enable us to remember your preferences (such as
+                        currency or region).</li>
+                    <li><strong>Analytics Cookies:</strong> These help us understand how visitors interact with our
+                        website, allowing us to improve our design and offerings.</li>
+                </ul>
+                <p>You can choose to disable cookies through your browser settings, though this may affect the
+                    functionality of the shopping cart.</p>
+            </section>
+
+            <section id="rights">
+                <h2>05. Your Rights</h2>
+                <p>Depending on your location (including California residents under the CCPA and users in the EEA), you
+                    may have the following rights regarding your personal data:</p>
+                <ul>
+                    <li><strong>Right to Access:</strong> You can request a copy of the personal data we hold about you.
+                    </li>
+                    <li><strong>Right to Correction:</strong> You can request that we correct any incomplete or
+                        inaccurate data.</li>
+                    <li><strong>Right to Erasure:</strong> You can ask us to delete your personal data (the "Right to be
+                        Forgotten"), subject to certain legal exceptions (e.g., keeping transaction records for tax
+                        purposes).</li>
+                    <li><strong>Right to Opt-Out:</strong> You can unsubscribe from "The Le Vount List" at any time by
+                        clicking the "Unsubscribe" link in the footer of our emails.</li>
+                </ul>
+            </section>
+
+            <section id="contact">
+                <h2>06. Contact Us</h2>
+                <p>If you have any questions about this Privacy Policy or wish to exercise your rights, please contact
+                    our team:</p>
+                <p>
+                    <strong>Email:</strong> <a href="mailto:support@levount.com">support@levount.com</a><br>
+                </p>
+            </section>
+
+        </article>
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sections = document.querySelectorAll('.legal-content section');
+        const navLinks = document.querySelectorAll('.legal-nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                // Ajuste de 150px para el header
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,296 @@
+<style>
+    body {
+        & main {
+            background-color: #FAF9F6;
+            padding: 80px 0 120px;
+            color: #1A1A1A;
+
+            & .container {
+
+                & .legal-header {
+                    text-align: center;
+                    margin-bottom: 30px;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                    /* Línea divisoria muy sutil */
+                    padding-bottom: 60px;
+
+                    & .legal-subtitle {
+                        font-family: 'Montserrat', sans-serif;
+                        font-size: 0.75rem;
+                        text-transform: uppercase;
+                        letter-spacing: 2px;
+                        color: #C5A059;
+                        /* Dorado */
+                        display: block;
+                        margin-bottom: 15px;
+                    }
+
+                    & .legal-title {
+                        font-family: 'Bodoni Moda', serif;
+                        font-size: 3.5rem;
+                        font-weight: 400;
+                        margin: 0 0 15px 0;
+                        line-height: 110%;
+                    }
+
+                    & .legal-meta {
+                        font-family: 'Montserrat', sans-serif;
+                        font-size: 0.85rem;
+                        color: #888;
+                        font-style: italic;
+                    }
+                }
+
+                .legal-grid {
+                    display: grid;
+                    grid-template-columns: 250px 1fr;
+                    gap: 80px;
+                    max-width: 1000px;
+                    margin: 0 auto;
+
+                    & .legal-sidebar {
+                        position: sticky;
+                        top: 120px;
+                        height: fit-content;
+                    }
+
+                    & .legal-nav {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 15px;
+                        border-left: 1px solid rgba(0, 0, 0, 0.1);
+                        padding-left: 20px;
+
+                        & a {
+                            font-family: 'Montserrat', sans-serif;
+                            font-size: 0.85rem;
+                            color: #999;
+                            text-decoration: none;
+                            transition: all 0.3s ease;
+
+                            &:hover,
+                            &.active {
+                                color: #1A1A1A;
+                                font-weight: 600;
+                                padding-left: 5px;
+                            }
+                        }
+                    }
+
+                    & .legal-content {
+                        & section {
+                            margin-bottom: 60px;
+
+                            & .intro-text {
+                                font-size: 1.0rem !important;
+                                color: #1A1A1A !important;
+                                font-family: 'Nunito Sans', sans-serif !important;
+                            }
+                        }
+
+                        & h2 {
+                            font-family: 'Bodoni Moda', serif;
+                            font-size: 1.8rem;
+                            margin-bottom: 25px;
+                            color: #1A1A1A;
+                        }
+
+                        & p,
+                        & li {
+                            font-family: 'MulishNunito Sans', sans-serif;
+                            font-size: 1rem;
+                            line-height: 1.8;
+                            color: #555;
+                            margin-bottom: 15px;
+                        }
+
+                        & ul {
+                            padding-left: 20px;
+                            margin-bottom: 20px;
+
+                            & li {
+                                margin-bottom: 10px;
+                            }
+                        }
+
+                        & a {
+                            color: #1A1A1A;
+                            text-decoration: underline;
+                            text-decoration-color: #C5A059;
+                            text-underline-offset: 3px;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    @media only screen and (max-width: 560px) {
+
+        body {
+            & main {
+                & .container {
+                    & .legal-title {
+                        font-size: 2.5rem;
+                    }
+
+                    & .legal-grid {
+                        grid-template-columns: 1fr;
+                        gap: 40px;
+
+                        & .legal-sidebar {
+                            display: none;
+                        }
+
+                        & .legal-content {
+                            padding: 15px;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+</style>
+
+
+
+<div class="container">
+    <div class="legal-header">
+        <span class="legal-subtitle">The Agreement</span>
+        <h1 class="legal-title">Terms of Service</h1>
+        <p class="legal-meta">Last Updated: October 10th, 2024</p>
+    </div>
+
+    <div class="legal-grid">
+
+        <aside class="legal-sidebar">
+            <nav class="legal-nav">
+                <a href="#overview" class="active">01. Overview</a>
+                <a href="#products">02. Products & Accuracy</a>
+                <a href="#pricing">03. Pricing & Payment</a>
+                <a href="#shipping">04. Shipping & Risk</a>
+                <a href="#returns">05. Returns & Refunds</a>
+                <a href="#ip">06. Intellectual Property</a>
+                <a href="#liability">07. Liability</a>
+                <a href="#law">08. Governing Law</a>
+            </nav>
+        </aside>
+
+        <article class="legal-content">
+
+            <section id="overview">
+                <p class="intro-text">
+                    Welcome to Le Vount. These Terms of Service ("Terms") govern your use of our website and the
+                    purchase of our products. By accessing our digital boutique or purchasing a piece from our
+                    collection, you agree to be bound by these Terms.
+                </p>
+                <p>
+                    We reserve the right to update these Terms at any time. Continued use of our services following any
+                    changes constitutes acceptance of those changes.
+                </p>
+            </section>
+
+            <section id="products">
+                <h2>02. Products & Accuracy</h2>
+                <p>We have made every effort to display the colors, textures, and details of our jewelry as accurately
+                    as possible. However, we cannot guarantee that your monitor's display of any color will be perfectly
+                    accurate.</p>
+                <ul>
+                    <li><strong>Handcrafted Nature:</strong> Many of our pieces are finished by hand. Slight variations
+                        in metal texture or stone setting are not defects but rather characteristics of artisanal
+                        craftsmanship.</li>
+                    <li><strong>Sizing:</strong> We provide a sizing guide for reference. It is the client's
+                        responsibility to ensure the correct size is selected before purchase.</li>
+                </ul>
+            </section>
+
+            <section id="pricing">
+                <h2>03. Pricing & Payment</h2>
+                <p>Prices for our products are subject to change without notice, reflecting the dynamic nature of the
+                    precious metals market.</p>
+                <ul>
+                    <li><strong>Billing Accuracy:</strong> We reserve the right to refuse any order you place with us.
+                        In the event that we make a change to or cancel an order, we will attempt to notify you by
+                        contacting the email provided at the time of purchase.</li>
+                    <li><strong>Errors:</strong> In the rare event of a pricing error (e.g., a diamond ring listed for
+                        $0.00), Le Vount reserves the right to cancel orders placed at the incorrect price, even if the
+                        order has been confirmed.</li>
+                </ul>
+            </section>
+
+            <section id="shipping">
+                <h2>04. Shipping & Risk of Loss</h2>
+                <p>Upon delivery of the products to the carrier (e.g., FedEx, DHL), the risk of loss and title for all
+                    products pass to you. However, Le Vount insures all packages during transit until they are marked as
+                    "Delivered" at your specified address.</p>
+                <p>We are not responsible for delays caused by customs clearance or unforeseen carrier issues.</p>
+            </section>
+
+            <section id="returns">
+                <h2>05. Returns & Refunds</h2>
+                <p>Our commitment is to your satisfaction. If you are not completely in love with your purchase, you may
+                    return eligible items within <strong>14 days</strong> of receipt.</p>
+                <p>Items must be unworn, in their original condition, and in the original packaging. Personalized or
+                    custom-engraved pieces are <strong>final sale</strong> and cannot be returned. Please refer to our
+                    full <a href="/returns">Return Policy</a> for detailed instructions.</p>
+            </section>
+
+            <section id="ip">
+                <h2>06. Intellectual Property</h2>
+                <p>All content included on this site, such as text, graphics, logos, images, and software, is the
+                    property of <strong>Le Vount Jewelry</strong> and is protected by United States and international
+                    copyright laws. You may not reproduce, duplicate, copy, sell, or exploit any portion of the Service
+                    without express written permission by us.</p>
+            </section>
+
+            <section id="liability">
+                <h2>07. Limitation of Liability</h2>
+                <p style="text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">
+                    In no case shall Le Vount, our directors, officers, employees, affiliates, agents, contractors, or
+                    licensors be liable for any injury, loss, claim, or any direct, indirect, incidental, punitive,
+                    special, or consequential damages of any kind, including, without limitation lost profits, lost
+                    revenue, lost savings, loss of data, replacement costs, or any similar damages, whether based in
+                    contract, tort (including negligence), strict liability or otherwise, arising from your use of any
+                    of the service or any products procured using the service.
+                </p>
+            </section>
+
+            <section id="law">
+                <h2>08. Governing Law</h2>
+                <p>These Terms and any separate agreements whereby we provide you Services shall be governed by and
+                    construed in accordance with the laws of the State of <strong>Quintana Roo</strong>, Mexico.</p>
+            </section>
+
+        </article>
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sections = document.querySelectorAll('.legal-content section');
+        const navLinks = document.querySelectorAll('.legal-nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                // Ajuste de 150px para el header
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    });
+</script>
