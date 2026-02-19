@@ -1,11 +1,4 @@
-<link rel="stylesheet" href="/styles/admin-forms.css">
-
-<aside>
-    <ul>
-        <li><a href="clients/create"><i>&#xe1032;</i>Nuevo cliente</a></li>
-        <li><a href="campaigns"><i>&#xe1061;</i>Campañas</a></li>
-    </ul>
-</aside>
+<link rel="stylesheet" href="https://assets.levount.com/global/styles/admin-forms.css">
 <section class="Content">
     <h1><%- "Clientes" //t("pageTitle") %></h1>
 
@@ -27,7 +20,7 @@
             <input onchange="searchClient(event)" type="date" value="<%- utils.dateToInputDate(Today) %>"
                 max="<%- utils.dateToInputDate(Today) %>">
         </div>
-        <button onclick="searchClient(event)"><i>&#xe1002;</i>Buscar</button>
+        <button onclick="searchClient(event)"><i>&#xe110d;</i>Buscar</button>
     </form>
 
     <ul class="clientList" id="clientList">
@@ -59,12 +52,10 @@
             let clientEmail = form?.[1]?.value || null;
             let acquisitionDate = form?.[2]?.value || null;
 
-            const res = await fetch("/api/search-client", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
-                body: JSON.stringify({
-                    clientName, registeredDate, clientEmail, acquisitionDate
-                })
+            const fetchUrl = `/api/clients?name=${clientName}&captured=${registeredDate}&email=${clientEmail}&purchaseDate=${acquisitionDate}`;
+            const res = await fetch(fetchUrl, {
+                method: "GET",
+                headers: { "Content-Type": "application/json", 'Accept': 'application/json' }
             })
 
             const resJson = await res.json();

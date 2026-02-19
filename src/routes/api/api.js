@@ -1,8 +1,9 @@
-import express from "express";
+import express, { Router } from "express";
 import permissionsVerification from "../../middlewares/permissionsVerification.js";
 import apiController from "../../controllers/api/apiController.js";
 import clientController from "../../controllers/clientController.js";
 import authMiddleware from "../../middlewares/authMiddleware.js";
+import queryParser from "../../middlewares/queryParser.js";
 
 const router = express.Router();
 //router.use(apiTokenVerification);
@@ -27,6 +28,7 @@ router.delete(['/cart', '/cart/:quantity'], apiController.delete);
 router.post('/auth/login', apiController.login);
 router.post('/auth/signup', apiController.signUp);
 router.get('/auth/logout', apiController.logout);
+router.post('/signup', apiController.signUp);
 
 // ===================================
 //          GESTIÓN DE CLIENTES
@@ -36,6 +38,16 @@ router.post('/clients',
     permissionsVerification.checkPermission('customers:create'),
     apiController.clients.post
 );
+router.get(['/clients', '/clients/:id'],
+    permissionsVerification.checkPermission('customers:read'),
+    queryParser,
+    apiController.clients.get
+);
+
+// ===================================
+//       GESTIÓN DE NEWSLETTER
+// ===================================
+router.post('/newsletter', apiController.newsletter.post);
 
 // ===================================
 //          GESTIÓN DE DOCUMENTOS

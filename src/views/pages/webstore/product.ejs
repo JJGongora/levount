@@ -179,6 +179,7 @@
                                     font-style: normal;
                                     font-weight: 300;
                                     text-align: center;
+                                    margin: auto;
                                     margin-bottom: 4px;
                                 }
 
@@ -261,14 +262,14 @@
     <% const cleanSku=product?.sku?.trim().replace(/\s+/g, '-' ).toLowerCase(); const category=product?.category; %>
 
         <div class="item hero-img">
-            <img src="/images/products/<%= product?.material %>/<%= category %>/<%= product?.sku %>/<%= cleanSku %>-large.webp"
+            <img src="https://assets.levount.com/global/images/products/<%= product?.material %>/<%= category %>/<%= product?.sku %>/<%= cleanSku %>-large.webp"
                 alt="<%= product.name %> Main View" onerror="this.src='/images/errors/jewel-placeholder.webp'"
                 loading="eager">
         </div>
 
         <% for (let i=1; i <=4; i++) { %>
             <div class="item extra-img">
-                <img src="/images/products/<%= product?.material %>/<%= category %>/<%= product?.sku %>/<%= cleanSku %>-<%= i %>-large.webp"
+                <img src="https://assets.levount.com/global/images/products/<%= product?.material %>/<%= category %>/<%= product?.sku %>/<%= cleanSku %>-<%= i %>-large.webp"
                     alt="<%= product?.shortProductName %> Detail <%= i %>" onerror="this.closest('.item').remove()"
                     loading="eager">
             </div>
@@ -282,10 +283,10 @@
     </div>
     <div class="head">
         <h1><%- utils.toTitleCase(product?.shortName) || utils.toTitleCase(product?.name) || "err" %></h1>
-        <% if(product?.discountPercentage) { %>
+        <% if(product?.discountPrice != product?.tagPrice) { %>
             <h3><%- utils.toCurrency(product?.tagPrice) %></h3>
-            <% } %>
-                <h2><%- utils.toCurrency(product?.finalUnitPrice) %> USD</h2>
+        <% } %>
+            <h2><%- utils.toCurrency(product?.finalUnitPrice) %> USD</h2>
     </div>
     <hr>
     <p><%- utils.capitalize(product?.description) %></p>
@@ -307,10 +308,10 @@
                     </div>
                     <hr>
                     <% } %>
-                        <div class="label">
-                            <i>&#xe103f;</i>
-                            <span>1 year warranty</span>
-                        </div>
+                    <div class="label">
+                        <i>&#xe103f;</i>
+                        <span>1 year warranty</span>
+                    </div>
             </div>
             <hr>
         </div>
@@ -318,7 +319,7 @@
         <div class="productDetails">
             <ul>
                 <li><b>SKU:</b> <%- product?.sku %></li>
-                <li><b>Material:</b> <%- product?.productMaterial %></li>
+                <li><b>Material:</b> <%- `${product?.purity} ${utils.toTitleCase(product?.material)}` %></li>
                 <% if (product?.gems) { %>
                     <li><b>Gems:</b> <%- utils.toTitleCase(product?.gems) %></li>
                     <% } %>

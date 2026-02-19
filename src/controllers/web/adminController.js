@@ -34,6 +34,20 @@ const adminController = {
         }
     },
 
+    products: {
+        create: async(req, res, next) => {
+            try {
+                return res.render('pages/admin/new-product', {
+                    title: `${ pageTitle } | Nuevo producto`,
+                    page: 'new-product',
+                    utils, Today
+                });
+            } catch (error) {
+                next(error);
+            }
+        }
+    }
+
 };
 
 export default adminController;

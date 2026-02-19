@@ -436,7 +436,7 @@
         50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
     }
 </style>
-<link rel="stylesheet" href="/intl-input/build/css/intlTelInput.css">
+<link rel="stylesheet" href="https://assets.levount.com/intl-input/build/css/intlTelInput.css">
 
 <div class="checkout-layout">
 
@@ -507,7 +507,7 @@
             
                 <div class="product-item">
                     <div class="product-img-wrapper">
-                        <img src="https://assets.levount.com/products/<%- `${item?.material}/${item?.category}/${item?.sku}/${item?.sku?.toLowerCase()}-thumb.webp` %>" alt="Hera Ring" class="product-img">
+                        <img src="https://assets.levount.com/global/images/products/<%- `${item?.material}/${item?.category}/${item?.sku}/${item?.sku?.toLowerCase()}-thumb.webp` %>" alt="Hera Ring" class="product-img">
                     </div>
                     <div class="product-info">
                         <h4><%- utils.toTitleCase(item?.shortName || item?.name) %></h4>
@@ -567,14 +567,14 @@
 <script
     src="https://www.paypal.com/sdk/js?client-id=<%- ppClient %>&currency=USD">
 </script>
-<script src="/intl-input/build/js/intlTelInput.js"></script>
+<script src="https://assets.levount.com/intl-input/build/js/intlTelInput.js"></script>
 <script>
     const input = document.querySelector("#phoneInput");
     const iti = window.intlTelInput(input, {
         initialCountry: "us",
         separateDialCode: false,
         strictMode: true,
-        loadUtils: () => import('/intl-input/build/js/utils.js'),
+        loadUtils: () => import('https://assets.levount.com/intl-input/build/js/utils.js'),
     });
 
     paypal.Buttons({
@@ -682,8 +682,8 @@
 
     async function refreshCart(action, sku, quantity) {
         let fetchUrl = (!quantity)
-            ? `https://core.levount.com/api/cart`
-            : `https://core.levount.com/api/cart/${quantity}`;
+            ? `/api/cart`
+            : `/api/cart/${quantity}`;
         const method = (action == 'add') ? 'POST' : 'DELETE';
         const res = await fetch(fetchUrl, {
             method: method,
@@ -693,7 +693,7 @@
         const resJson = await res.json();
 
         if (resJson.success == true) {
-            const cartQuery = await fetch(`https://core.levount.com/api/cart?cartSession=${CART_ID}`, {
+            const cartQuery = await fetch(`/api/cart?cartSession=${CART_ID}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
             });
@@ -712,7 +712,7 @@
                     itemsDivContent += `
                         <div class="product-item">
                             <div class="product-img-wrapper">
-                                <img src="https://assets.levount.com/products/${item?.material}/${item?.category}/${item?.sku}/${item?.sku?.toLowerCase()}-thumb.webp" alt="Hera Ring" class="product-img">
+                                <img src="https://assets.levount.com/global/images/products/${item?.material}/${item?.category}/${item?.sku}/${item?.sku?.toLowerCase()}-thumb.webp" alt="Hera Ring" class="product-img">
                             </div>
                             <div class="product-info">
                                 <h4>${toTitleCase(item?.shortName || item?.name) }</h4>

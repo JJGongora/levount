@@ -7,6 +7,7 @@ import filterHelper from "../../utils/filterHelper.js";
 import apiController from "../api/apiController.js";
 import cartModel from "../../models/cartModel.js";
 import countries from "country-list";
+import orderModel from "../../models/orderModel.js";
 
 const pageTitle = process?.env?.FRONT_TITLE || "New project";
 const Today = new Date();
@@ -15,7 +16,6 @@ const pageController = {
 
     home: async (req, res, next) => {
         try {
-            //console.log(res.locals, req?.headers?.['x-forwarded-for']);
             res.render('pages/webstore/home', {
                 title: 'Le Vount Jewelry | Luxury Handcrafted Jewelry & Fine Diamonds',
                 page: 'home',
@@ -25,7 +25,7 @@ const pageController = {
                 Turnstile: process.env.TURNSTILE_SITE,
                 metaDescription: `Discover Le Vount. Handcrafted 18k gold jewelry designed for the modern muse. Shop rings, necklaces, and bracelets. Free shipping to the US.`,
                 currentUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
-                socialImage: "/LeVount/images/og/og-image-001.jpg"
+                socialImage: "https://assets.levount.com/images/og/og-image-001.jpg"
             });
         } catch (error) {
             next(error);
@@ -73,7 +73,7 @@ const pageController = {
                     },
                     metaDescription: `Discover Le Vount. Handcrafted 18k gold jewelry designed for the modern muse. Shop rings, necklaces, and bracelets. Free shipping to the US.`,
                     currentUrl: 'https://levount.com' + req.originalUrl,
-                    socialImage: "/LeVount/images/og/og-image-001.jpg"
+                    socialImage: "https://assets.levount.com/images/og/og-image-001.jpg"
                 }
             );
         } catch (error) {
@@ -97,7 +97,7 @@ const pageController = {
                     product,
                     metaDescription: utils.capitalizeFirstLetter(product?.description),
                     currentUrl: 'https://levount.com' + req.originalUrl,
-                    socialImage: `/LeVount/images/products/${ product?.material }/${ product?.category }/${ product?.sku }/${ product?.sku?.toLowerCase() }-large.webp`
+                    socialImage: `https://levount.com/images/products/${ product?.material }/${ product?.category }/${ product?.sku }/${ product?.sku?.toLowerCase() }-large.webp`
                 }
             );
         } catch (error) {
@@ -114,7 +114,7 @@ const pageController = {
                     utils,
                     metaDescription: `Discover Le Vount. Handcrafted 18k gold jewelry designed for the modern muse. Shop rings, necklaces, and bracelets. Free shipping to the US.`,
                     currentUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
-                    socialImage: "/LeVount/images/og/og-image-001.jpg",
+                    socialImage: "https://assets.levount.com/images/og/og-image-001.jpg",
                     page: 'privacy'
                 }
             );
@@ -132,7 +132,7 @@ const pageController = {
                     utils,
                     metaDescription: `Discover Le Vount. Handcrafted 18k gold jewelry designed for the modern muse. Shop rings, necklaces, and bracelets. Free shipping to the US.`,
                     currentUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
-                    socialImage: "/LeVount/images/og/og-image-001.jpg",
+                    socialImage: "https://assets.levount.com/images/og/og-image-001.jpg",
                     page: 'terms'
                 }
             );
@@ -160,7 +160,7 @@ const pageController = {
                     utils,
                     metaDescription: `Discover Le Vount. Handcrafted 18k gold jewelry designed for the modern muse. Shop rings, necklaces, and bracelets. Free shipping to the US.`,
                     currentUrl: req?.protocol + '://' + req?.get('host') + req?.originalUrl,
-                    socialImage: "/LeVount/images/og/og-image-001.jpg",
+                    socialImage: "https://assets.levount.com/images/og/og-image-001.jpg",
                     page: 'checkout',
                     ppClient: ppClientId || null,
                     items
@@ -176,13 +176,9 @@ const pageController = {
             const { orderId } = req?.params;
             
             if (orderId) {
-                const orderDataFetch = await fetch(`https://core.levount.com/orders/${orderId}` , {
-                    method: 'get',
-                    headers: { 'Accept': 'application/json' }
-                });
-                const orderData = await orderDataFetch.json();
-
-                if (!orderData.order) {
+                const orderData = await orderModel.getOrder(orderId);
+                
+                if (!orderData) {
                     return res.redirect("/");
                 } else {
                     res.clearCookie('cartSession');
@@ -192,15 +188,34 @@ const pageController = {
                         utils,
                         metaDescription: `Discover Le Vount. Handcrafted 18k gold jewelry designed for the modern muse. Shop rings, necklaces, and bracelets. Free shipping to the US.`,
                         currentUrl: req?.protocol + '://' + req?.get('host') + req?.originalUrl,
-                        socialImage: "/LeVount/images/og/og-image-001.jpg",
+                        socialImage: "https://assets.levount.com/images/og/og-image-001.jpg",
                         page: 'thanks',
-                        orderData: orderData?.order
+                        orderData
                     });
                 }                
             } else {
                 return res.redirect("/");
             }
 
+        } catch (error) {
+            //console.log(error);
+            next(error);
+        }
+    },
+
+    signup: async(req, res, next) => {
+        try {
+            res.render('pages/webstore/signup',
+                {
+                    title: `Le Vount Jewelry | Sign Up`, 
+                    userSession: res.locals.userSession, 
+                    utils,
+                    metaDescription: `Discover Le Vount. Handcrafted 18k gold jewelry designed for the modern muse. Shop rings, necklaces, and bracelets. Free shipping to the US.`,
+                    currentUrl: req.protocol + '://' + req.get('host') + req.originalUrl,
+                    socialImage: "https://assets.levount.com/images/og/og-image-001.jpg",
+                    page: 'terms'
+                }
+            );
         } catch (error) {
             next(error);
         }

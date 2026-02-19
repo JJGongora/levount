@@ -9,9 +9,9 @@ function openLateralMenu() {
 
     if (drawer.classList.contains("Open")) {
         drawer.classList.remove("Open");
-        buttonMenu.innerHTML=`&#xe1010;`;
+        buttonMenu.innerHTML=`&#xe1106;`;
     } else {
         drawer.classList.add("Open");
-        buttonMenu.innerHTML=`&#xe1014;`;
+        buttonMenu.innerHTML=`&#xe1120;`;
     }
 }

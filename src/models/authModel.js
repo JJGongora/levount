@@ -69,9 +69,13 @@ const authModel = {
     signup: async(data, user) => {
         const conn = await db.getConnection();
         try {
+            let { 
+                name, lastname, phone, address, gender, birthDate, rfc, nss, displayName,
+                username, email, password
+            } = data;
+            username = username || email;
 
-            const { fullname, email, phone, storeId, username, password, role } = data;
-            if (!username || !password || !storeId) {
+            if (!name || !password || !lastname || !email) {
                 throw new appError('Por favor, ingrese los campos obligatorios.', 400);
             }
 
@@ -79,11 +83,22 @@ const authModel = {
 
             await conn.beginTransaction();
 
-                const userInsertQuery = `
-                    INSERT INTO users (username, email, password, active, createdAt, createdBy, phone, fullname)
-                    VALUES (?, ?, ?, ?, NOW(), ?, ?, ?)
+                const personInsertQuery = `
+                    INSERT INTO persons
+                        (name, lastname, phone, address, gender, birthDate, rfc, nss, displayName)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
                 `;
-                const [userResult] = await db.query(userInsertQuery, [username, email, hashedPassword, 1, user || 'System', phone, fullname]);
+                const personInsertValues = [
+                    name, lastname, phone, address, gender, birthDate, rfc, nss, displayName || `${name} ${lastname}`
+                ];
+                const [personResult] = await conn.query(personInsertQuery, personInsertValues);
+                const personId = personResult?.insertId;
+                
+                const userInsertQuery = `
+                    INSERT INTO users (username, email, password, active, createdAt, createdBy, phone)
+                    VALUES (?, ?, ?, ?, NOW(), ?, ?)
+                `;
+                const [userResult] = await conn.query(userInsertQuery, [username, email, hashedPassword, 1, user || 'System', phone]);
                 const userId = userResult.insertId;
 
                 let roleId = 2; // Vendedor por defecto.

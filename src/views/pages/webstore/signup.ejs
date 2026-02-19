@@ -1,0 +1,260 @@
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    .auth-container {
+        display: flex;
+        width: 100%;
+        max-width: 1100px;
+        margin: auto;
+        height: 85vh;
+        background-color: #ffffff;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .image-side {
+        flex: 1;
+        background-image: url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=2075&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        display: none;
+    }
+
+    .image-side::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .form-side {
+        flex: 1;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+    }
+
+    h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 32px;
+        font-weight: 400;
+        margin-bottom: 10px;
+        color: #111;
+    }
+
+    p.subtitle {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 40px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+        position: relative;
+
+        & label {
+            display: block;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        & i {
+            position: absolute;
+            bottom: 15px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 25px;
+            color: var(--gray-50);
+        }
+    }    
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 15px 5px;
+        border: none;
+        border-bottom: 1px solid #ddd;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
+        color: #333;
+        background: transparent;
+        transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+        outline: none;
+        border-bottom: 1px solid #c5a059;
+    }
+
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .checkbox-group input {
+        margin-right: 10px;
+        accent-color: #c5a059;
+    }
+
+    .checkbox-group label {
+        text-transform: none;
+        letter-spacing: 0;
+        margin: 0;
+        color: #555;
+        font-size: 13px;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 18px;
+        background-color: #1a1a1a;
+        color: #ffffff;
+        border: none;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-submit:hover {
+        background-color: #c5a059;
+    }
+
+    .auth-footer {
+        margin-top: 30px;
+        text-align: center;
+        font-size: 13px;
+        color: #666;
+    }
+
+    .auth-footer a {
+        color: #1a1a1a;
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.3s;
+    }
+
+    .auth-footer a:hover {
+        border-bottom: 1px solid #1a1a1a;
+    }
+
+    @media (min-width: 768px) {
+        .image-side {
+            display: block;
+        }
+
+        .form-side {
+            padding: 60px;
+        }
+    }
+</style>
+
+
+<div class="auth-container">
+    <div class="image-side"></div>
+
+    <div class="form-side">
+
+        <h1>Create account</h1>
+        <p class="subtitle">Join our community for exclusive access and offers.</p>
+
+        <form onsubmit="signup(event)" method="POST" id="accountData">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="lastname">Lastname</label>
+                <input type="text" id="lastname" name="lastname" placeholder="Enter your lastname" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Create a password" required>
+                <i onclick="showPass(this)">&#xe10ed;</i>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="newsletter" name="newsletter" checked>
+                <label for="newsletter">Subscribe to our newsletter for updates and exclusive offers.</label>
+            </div>
+
+            <button type="submit" class="btn-submit">Create Account</button>
+        </form>
+        <div class="backResponse">
+
+        </div>
+        <div class="auth-footer">
+            Already have an account? <a onclick="openUserMenu()">Sign In</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function signup(event) {
+        event.preventDefault();
+        const form = document.getElementById("accountData");
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const res = await fetch('/api/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', 
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            const resJson = await res.json();
+        } catch (error) {
+
+        }
+    }
+
+    function showError(feedback, msg) {
+        feedback.innerHTML = `<div class="feedback-error">${msg}</div>`;
+        feedback.classList.add('animate-in');
+        setTimeout(() => {
+            feedback.classList.remove('animate-in');
+            feedback.style.opacity = '0';
+        }, 4000);
+    }
+
+    function showSuccess(form, feedback) {
+        form.classList.add('animate-out');
+        setTimeout(() => {
+            form.style.display = 'none';
+            feedback.innerHTML = `
+                <div class="feedback-success">
+                    <span style="display:block; font-size: 2rem; margin-bottom: 10px;">&#10024;</span> Welcome to the Inner Circle.
+                </div>
+                `;
+            feedback.classList.add('animate-in');
+        }, 450);
+    }
+</script>

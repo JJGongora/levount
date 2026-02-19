@@ -42,7 +42,7 @@
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    src: url('/fonts/LeVountCustomIcons.woff2');
+    src: url('https://assets.levount.com/global/fonts/LeVountCustomIcons.woff2');
 }
 
 body {

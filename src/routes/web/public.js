@@ -24,4 +24,6 @@ router.get(['/thanks', '/thanks/:orderId'], pageController.thanks);
 router.get(['/products', '/products/:category'], pageController.products);
 router.get('/products/:category/:id', pageController.product);
 
+router.get('/signup', pageController.signup);
+
 export default router;

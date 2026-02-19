@@ -34,10 +34,16 @@ const filterHelper = {
                 this.cleanEmptyFields(value);
             } 
             else {
-                if (typeof value === 'string' && value.trim() === '') {
+                if (value === 'true' || value === 'on' || value == 1) {
+                    data[key] = true;
+                }
+                else if (value === 'false' || value === 'off') {
+                    data[key] = false;
+                }
+                else if (typeof value === 'string' && value.trim() === '') {
                     data[key] = null;
                 }
-                else if (value == 0) {
+                else if (value === 0 && typeof value !== 'boolean') {
                     data[key] = null;
                 }
             }
@@ -73,6 +79,11 @@ const filterHelper = {
             day: 'numeric',
             timeZone: 'UTC'
         });
+    },
+
+    getUrlParams: (url) => {
+        const searchParams = new URLSearchParams(url.search);
+        const params = {};
     },
 
 };

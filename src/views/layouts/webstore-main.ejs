@@ -7,14 +7,14 @@
 
     <%- include ('../partials/webstore/global-tags.ejs') %>
 
-    <% if (typeof useTurnstile !== 'undefined' && useTurnstile) { %>
+    <% if (typeof Turnstile !== 'undefined' && Turnstile) { %>
         <%- include('../partials/scripts/turnstile') %>
     <% } %>
 
     <%- style %>
 </head>
 <body>
-    <%- include ('../partials/webstore/nav.ejs') %>
+    <%- include ('../partials/nav.ejs') %>
 
     <main><%- body %></main>
 

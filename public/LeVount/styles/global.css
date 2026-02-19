@@ -4,7 +4,7 @@
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    src: url('/fonts/LeVountCustomIcons.woff2');
+    src: url('https://assets.levount.com/global/fonts/LeVountCustomIcons.woff2');
 }
 
 a {
@@ -23,6 +23,17 @@ a {
     --gray-80: #646464;
     --gray-90: #4e4e4e;
     --gray-100: #353535;
+
+    --lv-obsidian: #0f172a;
+    --lv-slate: #334155;
+    --lv-gold: #c5a059;
+    --lv-gold-dim: #b08d4b;
+    --lv-white: #ffffff;
+    --lv-light: #f8fafc;
+    --lv-border: #e2e8f0;
+    --lv-gold-light: #fdf6e7;
+    --lv-error: #ef4444;
+    --lv-green: #10b981;
 
     --main-light: #ffffff;
     --main-dark: #000000;
@@ -52,129 +63,16 @@ body {
     display: grid;
     grid-template-rows: max-content auto max-content;
 
-    & header {
-        box-sizing: border-box;
-        position: relative;
-        width: 100%;
-        background-color: white;
-        top: 0px;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
-        font-family: -apple-system, "Montserrat", sans-serif;
-
-        & nav {
-            padding: 0;
-            box-sizing: border-box;
-            position: relative;
-
-            & .upperContainer {
-                top: 0;
-                display: flex;
-                position: fixed;
-                width: 100%;
-                box-sizing: border-box;
-                padding: 8px 20px;
-                min-height: 70px;
-                justify-content: space-between;
-                background-color: var(--main-light);
-                z-index: 999;
-                transition: 0.3s all;
-
-                & .logoContainer {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    position: absolute;
-                    left: 50%;
-                    height: calc(100% - 16px);
-                    transform: translateX(-50%);
-                    box-sizing: border-box;
-
-                    & img {
-                        box-sizing: border-box;
-                        max-height: 50px;
-                        height: 50px;
-                        cursor: pointer;
-                    }
-                }
-
-                & .rightContainer, & .leftContainer {
-                    display: flex;
-                    align-items: center;
-
-                    & ul {
-                        list-style: none;
-                        display: flex;
-                        gap: 15px;
-                        padding: 0;
-                        margin: 0;
-
-                        & li {
-                            font-family: "LeVountIcons";
-                            font-size: 30px;
-                            font-style: normal;
-                            font-weight: 500;
-                            transition: all 0.5s;
-                            cursor: pointer;
-
-                            &:hover {
-                                color: #C0A700;
-                            }
-                        }
-                    }
-
-                    & #menuButton1 {
-                        display: none;
-                    }
-                }
-
-                &.Scrolled {
-                    box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
-                }
-            }
-
-            & .bottomContainer {
-                margin-top: 70px;
-                padding: 8px 16px;
-
-                & ul {
-                    display: flex;
-                    flex-wrap: wrap;
-                    row-gap: 0;
-                    column-gap: 20px;
-                    justify-content: center;
-                    list-style: none;
-                    padding: 0;
-                    margin: auto;
-
-                    &.mobileMenuIcons {
-                        display: none;
-                    }
-
-                    & li {
-                        cursor: pointer;
-                        transition: color 0.4s;
-                        padding: 5px;
-                        font-size: 0.8rem;
-                        font-weight: 500;
-                        display: flex;
-                        align-items: center;
-
-                        &:hover {
-                            color: #C0A700;
-                        }
-
-                        & i {
-                            font-family: "LeVountIcons";
-                            font-size: 30px;
-                            font-style: normal;
-                            margin-right: 5px;
-                        }
-                    }
-                }               
-            }
-            
-        }
+    & i {
+        font-family: "LeVountIcons" !important;
+        font-style: normal;
+        font-weight: normal;
+        display: inline-block;
+        text-decoration: inherit;
+        width: 1em;
+        text-align: center;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 
     & main {
@@ -183,508 +81,7 @@ body {
         width: 100%;
     }
 
-    & .userDrawer {
-        position: fixed;
-        top: 0; right: -400px;
-        width: 100%;
-        max-width: 400px;
-        height: 100dvh;
-        background-color: #FFFFFF;
-        font-family: apple-system, BlinkMacSystemFont, "Nunito Sans", sans-serif;
-        box-shadow: -5px 0 30px rgba(0,0,0,0.1);
-        transition: right 0.4s cubic-bezier(0.2, 1, 0.3, 1);
-        display: grid;
-        grid-template-rows: auto max-content;
-        box-sizing: border-box;
-        z-index: 1000;
-
-        & button {
-            width: 100%;
-            background-color: var(--main-dark);
-            color: var(--font-light);
-            cursor: pointer;
-            min-height: 35px;
-            border-style: solid;
-            transition: all 0.3s ease-in-out;
-            border-radius: 3px;
-            margin-bottom: 10px;
-            border: 1px var(--font-dark) solid;
-
-            & i {
-                font-family: "LeVountIcons";
-                font-size: 20px;
-                margin-right: 5px;
-                font-style: normal;
-                font-weight: 400;
-            }
-
-            &:hover {
-                background-color: var(--main-light);
-                color: var(--font-dark);
-            }            
-        }
-
-        & .userData {
-            display: grid;
-            grid-template-rows: max-content max-content max-content max-content max-content;
-            padding: 20px;
-
-            & .closeButton {
-                background-color: transparent;
-                min-height: auto;
-                height: 35px;
-                aspect-ratio: 1 / 1;
-                font-family: "LeVountIcons";
-                border: none;
-                width: 35px;
-                font-size: 30px;
-                color: var(--font-dark);
-                padding: 0;
-                margin: 0;
-                margin-bottom: 10px;
-                margin-left: auto;
-
-                &:hover {
-                    color: var(--accent-gold);
-                }
-            }
-
-            & h4, & h3 {
-                margin: 0;
-                border-bottom: 1px var(--gray-80) solid;
-                line-height: 200%;
-                margin-bottom: 10px;
-            }
-
-            h3 {
-                font-size: 1rem;
-                color: var(--gray-80);
-            }
-
-            & .logIn {
-
-                & .inputContainer {
-                    display: grid;
-                    position: relative;
-
-                    &:first-child {
-                        margin-bottom: 10px;
-                    }
-
-                    & label {
-                        font-size: 0.8rem;
-                        font-weight: 500;
-                        color: var(--gray-80);
-                        margin-bottom: 8px;
-                    }
-
-                    & input {
-                        box-sizing: border-box;
-                        min-height: 35px;
-                        border: none;
-                        padding: 5px 10px;
-                        color: var(--gray-90);
-                        outline: 1px var(--gray-40) solid;
-                        transition: outline 0.3s;
-
-                        &:focus {
-                            outline: 1px var(--gray-70) solid;
-                        }
-                    }
-
-                    & i {
-                        font-family: "LeVountIcons";
-                        font-size: 25px;
-                        font-style: normal;
-                        font-weight: 400;
-                        position: absolute;
-                        right: 5px;
-                        bottom: 5px;
-                        color: var(--gray-60);
-                        cursor: pointer;
-                    }
-                }
-
-                & .errorMessage {
-                    display: flex;
-                    align-items: center;
-                    max-height: 0px;
-                    background-color: #b41c1c;
-                    color: white;
-                    transition: max-height 0.3s ease-in-out;
-                    border-radius: 5px;
-                    max-width: 100%;
-                    font-size: 0.8rem;
-                    overflow: hidden;
-                    box-sizing: border-box;
-                    padding: 0 8px;
-                    margin: 10px 0;
-
-                    & i {
-                        font-family: "LeVountIcons";
-                        font-size: 25px;
-                        margin-right: 5px;
-                        font-style: normal;
-                        font-weight: 400;
-                    }
-
-                    & p {
-                        margin: 0;
-                        padding: 5px;
-                        line-height: 100%;
-                    }
-
-                    &.Open {
-                        max-height: 500px;
-                    }
-                }                    
-            }
-
-            & a {
-                text-align: center;
-                color: var(--gray-70);
-                font-size: 0.9rem;
-                margin: auto;
-                text-decoration: none;
-                transition: color 0.3s;
-
-                &:hover {
-                    color: var(--contrast-50);
-                }
-
-                &.sign {
-                    color: var(--accent-gold);
-                    &:hover {
-                        color: var(--gray-80);
-                    }
-                }
-            }
-
-            & ul {
-                list-style: none;
-                margin: 0;
-                padding: 0;
-
-                & li {
-                    font-size: 1rem;
-                    display: flex;
-                    align-items: center;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                    padding: 5px 8px;
-                    border-radius: 7px;
-
-                    &:hover {
-                        transform: translateX(5px);
-                        background-color: var(--gray-10);
-                        border-left: 2px var(--gray-70) solid;
-                        color: #C0A700;
-                    }
-                    
-                    &:last-child {
-                        border-bottom: none;
-                    }
-
-                    & i {
-                        font-family: "LeVountIcons";
-                        font-size: 30px;
-                        margin-right: 5px;
-                        font-style: normal;
-                        font-weight: 400;
-                    }
-
-                    & a {
-                        color: var(--font-dark);
-                        text-align: left;
-                        margin: 0;
-                        width: 100%;
-                    }
-                }
-
-                & .adminOptions {
-                    & li {
-                        & i {
-                            font-weight: lighter;
-                        }
-                    }
-                }
-            }
-        }
-        
-        & .drawerBottom {
-            padding: 20px;
-            & .links {
-                display: flex;
-                flex-wrap: wrap;
-                color: var(--gray-70);
-                font-size: 0.7rem;
-                gap: 5px;
-                justify-content: center;
-
-                & a {
-                    color: var(--gray-70);
-                    transition: color 0.3s;
-                    &:hover {
-                        color: var(--gray-90);
-                    }
-                }
-            }                
-        }
-
-        &.Open {
-            right: 0;
-        }
-    }
-
-    & .userOverlay {
-        position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.5);
-        z-index: 999;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s;
-
-        &.Open {
-            opacity: 1;
-            visibility: visible;
-        }
-    }
-
-    & .cartDrawer {
-        position: fixed;
-        top: 0; right: -400px; /* Escondido */
-        width: 100%;
-        max-width: 400px;
-        height: 100vh;
-        background: #FFF;
-        z-index: 1000;
-        box-shadow: -5px 0 30px rgba(0,0,0,0.1);
-        transition: right 0.4s cubic-bezier(0.2, 1, 0.3, 1); /* Animación suave */
-        font-family: apple-system, BlinkMacSystemFont, "Nunito Sans", sans-serif;
-        display: flex;
-        flex-direction: column;
-
-        &.open {
-            right: 0;
-        }
-
-        & .cart-header {
-            padding: 20px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            & h2 {
-                margin: 0;
-            }
-
-            & .closeButton {
-                background-color: transparent;
-                min-height: auto;
-                height: 35px;
-                aspect-ratio: 1 / 1;
-                font-family: "LeVountIcons";
-                border: none;
-                width: 35px;
-                font-size: 30px;
-                color: var(--font-dark);
-                padding: 0;
-                margin: 0;
-                margin-bottom: 10px;
-                margin-left: auto;
-
-                &:hover {
-                    color: var(--accent-gold);
-                }
-            }
-        }
-        & .cart-items-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-
-            & ul {
-                padding: 0;
-                margin: 0;
-                list-style: none;
-
-                & li {
-                    display: flex;
-                    gap: 15px;
-                    position: relative;
-
-                    &+ li {
-                        margin-top: 25px;
-                    }
-
-                    & img {
-                        width: 80px;
-                        height: 100px;
-                        object-fit: cover;
-                    } 
-
-                    & i {
-                        font-family: "LeVountIcons";
-                        font-size: 25px;
-                        font-style: normal;
-                        position: absolute;
-                        left: 0;
-                        top: 0;
-                        border-radius: 50%;
-                        aspect-ratio: 1 / 1;
-                        cursor: pointer;
-                        transition: 0.3s all;
-
-                        &:hover {
-                            background-color: var(--bg-stone);
-                            color: var(--accent-gold);
-                        }
-                    }
-
-                    & .description {
-                        display: grid;
-                        grid-template-rows: auto max-content;
-
-                        & h2, & h3, & h4, & h5 {
-                            margin: 0;
-                            font-weight: 400;
-                            line-height: 100%;
-                        }
-
-                        & .details {
-                            display: grid;
-                            height: fit-content;
-
-                            & a {
-                                color: var(--font-dark);
-                                line-height: 100%;
-                                margin-bottom: 5px;
-                                font-weight: 500;
-                                font-size: 0.8rem;
-                                transition: all 0.3s;
-
-                                &:hover {
-                                    color: var(--accent-gold);
-                                }
-                            }
-
-                            & span {
-                                color: var(--gray-80);
-                                line-height: 100%;
-                                font-size: 0.8rem;
-                            }
-
-                            & .quantities {
-                                display: flex;
-                                & span {
-                                    background-color: var(--gray-20);
-                                    height: 20px;
-                                    width: 20px;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                }
-
-                                & button {
-                                    height: 20px;
-                                    width: 20px;
-                                    padding: 0;
-                                    border: 0;
-                                    box-sizing: border-box;
-                                    font-family: "Nunito Sans", sans-serif;
-                                    cursor: pointer;
-                                    background-color: var(--gray-40);
-                                    transition: all 0.3s;
-
-                                    &:hover {
-                                        background-color: var(--gray-90);
-                                        color: var(--font-light);
-                                    }
-                                }
-                            }
-                        }
-
-                        & .price {
-                            height: fit-content;
-
-                            & h5 {
-                                color: var(--gray-80);
-                                text-decoration: line-through;
-                            }
-
-                            & h4 {
-                                color: var(--accent-gold);
-                                font-size: 1rem;
-                                font-weight: 500;
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-        & .cart-footer {
-            padding: 20px;
-            background: #FAF9F6;
-            border-top: 1px solid #eee;
-
-            & button {
-                width: 100%;
-                background-color: var(--main-dark);
-                color: var(--font-light);
-                cursor: pointer;
-                min-height: 35px;
-                border-style: solid;
-                transition: all 0.3s ease-in-out;
-                border-radius: 3px;
-                margin-top: 10px;
-                border: 1px var(--font-dark) solid;
-
-                & i {
-                    font-family: "LeVountIcons";
-                    font-size: 20px;
-                    margin-right: 5px;
-                    font-style: normal;
-                    font-weight: 400;
-                }
-
-                &:hover {
-                    background-color: var(--main-light);
-                    color: var(--font-dark);
-                }            
-            }
-
-            & .subtotal {
-                color: var(--gray-80);
-                font-size: 0.8rem;
-                display: flex;
-                justify-content: space-between;
-
-                & #cartSubtotal {
-                    font-weight: 500;
-                    color: var(--accent-gold) !important;
-                    font-size: 1rem;
-                }
-            }
-        }
-    }
-
-    & .cartOverlay {
-        position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.5);
-        z-index: 999;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s;
-
-        &.open {
-            opacity: 1;
-            visibility: visible;
-        }
-    }
+    
 
     & footer {
         background-color: var(--text-dark);
@@ -711,8 +108,7 @@ body {
 
                 & .footerCol {
                     &.brandCol {
-                        display: flex;
-                        align-items: center;
+                        display: grid;
                     }
                     & .logoContainer {
                         display: grid;
@@ -728,11 +124,13 @@ body {
                             font-size: 0.9rem;
                             line-height: 1.6;
                             max-width: 300px;
+                            margin: auto;
                         }
                     }
                     & .socialLinks {
                         display: flex;
                         gap: 20px;
+                        justify-content: center;
 
                         & a {
                             color: var(--font-light);
@@ -742,6 +140,10 @@ body {
                             &:hover {
                                 opacity: 1;
                                 color: var(--accent-gold);
+                            }
+
+                            & i {
+                                font-size: 30px;
                             }
                         }
                     }
@@ -923,7 +325,7 @@ body {
         }
 
         & main {
-            margin-top: 70px !important;
+            
             & .frontPage {
                 width: 100% !important;
                 border-radius: 0 !important;

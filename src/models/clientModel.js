@@ -13,20 +13,24 @@ const clientModel = {
         let conditions = [];
         let queryParams = [];
 
-        if (filters?.clientName) {
+        console.log(filters);
+
+        if (filters?.name) {
             conditions.push("clientName LIKE ?");
-            queryParams.push(`%${filters.clientName}%`);
+            queryParams.push(`%${filters.name}%`);
         } if (filters?.registeredDate) {
             conditions.push("registeredDate LIKE ?");
-            queryParams.push(`%${filters.registeredDate}%`);
-        } if (filters?.clientEmail) {
+            queryParams.push(`%${filters.captured}%`);
+        } if (filters?.email) {
             conditions.push("clientEmail LIKE ?");
-            queryParams.push(`%${filters.clientEmail}%`);
+            queryParams.push(`%${filters.email}%`);
         }
 
         if (conditions.length > 0) {
             query += " WHERE " + conditions.join(" AND ");
         }
+
+        query += ` LIMIT 100`;
 
         const result = await db.query(query, queryParams); //console.log(result[0]);
         return result[0]; 
@@ -34,7 +38,7 @@ const clientModel = {
 
     register: async(data, username) => {
 
-        if (!data?.clientName || data.clientName == null) { data.clientName = 'Sin Nombre'; }
+        if (!data?.client?.name || data.client.name == null) { data.clientName = 'Sin Nombre'; }
         const responseSteps = [];
 
         let query = `
@@ -57,13 +61,13 @@ const clientModel = {
                 editedBy        = COALESCE(VALUES(editedBy), editedBy)
         `;
         const insertData = [
-            utils.toTitleCase(data?.clientName) || null,
-            data?.clientEmail || null,
-            data?.phone || null,
-            data?.clientCountry || data?.telCountryCode || 'US',
-            data?.clientState || null,
-            data?.remarks || null,
-            data?.clientBirthday || '1000-01-01',
+            utils.toTitleCase(data?.client?.name) || null,
+            data?.client?.email || null,
+            data?.client?.phone || null,
+            data?.client?.country || data?.telCountryCode || 'US',
+            data?.client?.state || null,
+            data?.client?.remarks || null,
+            data?.client?.birthday || '1000-01-01',
             username || 'System',
             username || 'System'
         ];
@@ -77,16 +81,16 @@ const clientModel = {
         }
 
         let newsletterRow = null;
-        if (result?.affectedRows != 0 && data?.clientEmail) {
-            newsletterRow = await newsletterModel.registerClientEmail(result?.insertId, data?.clientEmail);
+        if (result?.affectedRows != 0 && data?.client?.email) {
+            newsletterRow = await newsletterModel.registerClientEmail(result?.insertId, data?.client?.email);
             responseSteps.push(filterHelper.dbResultStatus(newsletterRow, "el correo al newsletter"));
         }
         
         //Si se insertó el cliente como nuevo...
         if (newsletterRow?.affectedRows == 1) {
             const sendNewClientEmail = await newsletterModel.sendNewClientEmail(
-                data?.clientEmail, 
-                data?.clientName?.split(" ")[0] || data?.clientName, 
+                data?.client?.email, 
+                data?.client?.name?.split(" ")[0] || data?.client?.name, 
                 newsletterRow.newsletterToken,
                 filterHelper.inputDateToEnglish(data?.docDate),
                 await storesModel.getBranchName(data?.storeId),
@@ -103,8 +107,8 @@ const clientModel = {
             });
         } else if (newsletterRow?.affectedRows == 0 && newDocument?.affectedRows == 1) {
             const sendThanksEmail = await newsletterModel.sendPurchaseThanksEmail(
-                data?.clientEmail, 
-                data?.clientName?.split(" ")[0] || data?.clientName, 
+                data?.client?.email, 
+                data?.client?.name?.split(" ")[0] || data?.client?.name, 
                 filterHelper.inputDateToEnglish(data?.docDate),
                 await storesModel.getBranchName(data?.storeId),
                 username,

@@ -9,6 +9,8 @@ import clientModel from "../../models/clientModel.js";
 import createPayPalClient from "../../config/paypalConfig.js";
 import { OrdersController } from '@paypal/paypal-server-sdk';
 import paymentModel from "../../models/paymentModel.js";
+import authHelpers from "../../utils/authHelpers.js";
+import newsletterModel from "../../models/newsletterModel.js";
 
 const apiController = {
 
@@ -263,7 +265,8 @@ const apiController = {
     },
     signUp: async (req, res, next) => {
         try {
-            const signUpResult = await authModel.signup(req.body);
+            const username = res?.locals?.userSession?.id || null;
+            const signUpResult = await authModel.signup(filterHelper.cleanEmptyFields(req.body));
             return res.status(201).send(signUpResult);
         } catch (error) {
             next(error);
@@ -318,7 +321,7 @@ const apiController = {
                 const containsGold = Object.values(data?.sale?.saleItems || {}).some(item => item.material == 'gold'); //data?.sale?.saleItems?
                 if (data?.sale) {data.sale.containsGold = containsGold; }
 
-                //console.log("\n\n\n\n", data, "\n\n\n\n", data?.sale);
+                //console.log("\n\n\n\n", data, "\n\n\n\n", data?.sale?.payment);
 
                 const result = await clientModel.register(data, res.locals.userSession.name);
                 return res.status(200).send(result);
@@ -327,6 +330,36 @@ const apiController = {
                 next(error);
             }
             
+        },
+
+        get: async(req, res, next) => {
+            try {
+                const result = await clientModel.getClients(req.query);
+                return res.status(200).send(result);
+                //return res.status(400).send({success: false, message: "Esta es una prueba."});
+            } catch (error) {
+                next(error);
+            }
+        }
+    },
+
+    newsletter: {
+        post: async (req, res, next) => {
+            try {
+                const data = filterHelper.cleanEmptyFields(req.body);
+                if (!data.email) { return next(new appError("Please, enter a valid email address.", 400)); }
+                if(!data.token) { return next(new appError("Verification error. Please, enable JavaScript and refresh.", 400)); } 
+
+                const tokenVerify = await authHelpers.verifyCloudflareToken(data?.token, req?.ip);
+                if (tokenVerify.success) {
+                    const subscription = await newsletterModel.subscribe(data.email);
+                    return res.status(200).send(subscription);
+                } else {
+                    return next(new appError("Security check failed, please refresh.", 400));
+                }
+            } catch (error) {
+                next(error);
+            }
         }
     },
 

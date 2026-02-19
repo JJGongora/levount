@@ -1,17 +1,20 @@
 import db from "../config/db.js";
+import appError from "../utils/appError.js";
 
 const documentModel = {
 
     register: async (data, username, clientId) => {
         let result = [];
-        let query = ""; let insertData = [];       
+        let query = ""; let insertData = [];  
+        
+        const connection = await db.getConnection();
+        await connection.beginTransaction();
 
-        if (data?.documentType == 'sale') {
+        //console.log(data);
+        try {
+
+            if (data?.documentType == 'sale') {
             
-            const connection = await db.getConnection();
-            await connection.beginTransaction();
-
-            try {
                 // Se inserta el registro de la nota de venta.
                 query = `
                     INSERT INTO sales
@@ -49,7 +52,7 @@ const documentModel = {
                     username || 'System',
                     data?.sale?.containsGold || null,
                     clientId || null,
-                    data?.roomNumber || null,
+                    data?.client?.room || null,
                     username || 'System',
                     data?.sale?.shift
                 ];
@@ -118,7 +121,7 @@ const documentModel = {
                             item?.levCode?.toUpperCase(),
                             item?.altCode?.toUpperCase() ,
                             item?.material,
-                            item?.description 
+                            item?.description || null 
                         ]);
 
                         const itemsQuery = `
@@ -133,57 +136,57 @@ const documentModel = {
 
                 // Inserción de los pagos.
                 if (data?.sale?.payment) {
+
+                    if (Object.values(data?.sale?.payment || {}).some(item => !item.amount)) {
+                        throw (new appError("El monto de los métodos de pago no puede ser 0. Verifique los métodos de pago.", 400));
+                    };
+
                     await connection.query(`DELETE FROM salePayments WHERE saleId = ?`, [saleId]);
+
                     const paymInsQuery = `
                         INSERT INTO salePayments
                         (saleId, method, amount, currency, exchangeRate, reference)
                         VALUES ?
                         ON DUPLICATE KEY UPDATE
-                            method      = COALESCE(VALUES(method), method),
-                            amount      = COALESCE(VALUES(amount), amount),
-                            currency      = COALESCE(VALUES(currency), currency),
-                            exchangeRate      = COALESCE(VALUES(exchangeRate), exchangeRate),
-                            reference      = COALESCE(VALUES(reference), reference)
+                            method       = COALESCE(VALUES(method), method),
+                            amount       = COALESCE(VALUES(amount), amount),
+                            currency     = COALESCE(VALUES(currency), currency),
+                            exchangeRate = COALESCE(VALUES(exchangeRate), exchangeRate),
+                            reference    = COALESCE(VALUES(reference), reference)
                     `;
 
-                    const paymentsMap = new Map();
-                    data?.sale?.payment?.forEach(payment => {
-                        paymentsMap.set(payment?.currency, {
-                            method: payment?.method,
-                            amount: Number(payment?.amount) || null,
-                            currency: payment?.currency,
-                            exchangeRate: Number(payment?.exchange) || null,
-                            reference: payment?.reference
-                        });
-                    });                    
-
-                    const paymentsArray = Array.from(paymentsMap.values());
-                    const paymentValues = paymentsArray.map(pay => [
+                    // Mapear directamente desde el array original sin usar un Map intermedio
+                    const paymentValues = data.sale.payment.map(payment => [
                         saleId,
-                        pay?.method || null,
-                        pay?.amount || null,
-                        pay?.currency || null,
-                        pay?.exchangeRate || null,
-                        pay?.reference || null
-                    ]); //console.log("===== ", paymInsQuery, paymentValues);
+                        payment?.method || null,
+                        Number(payment?.amount) || null,
+                        payment?.currency || null,
+                        Number(payment?.exchange) || null,
+                        payment?.reference || null
+                    ]); //console.log(paymentValues);
 
                     if (paymentValues.length > 0) {
+                        // Asegúrate de pasar [paymentValues] para que el driver de MySQL lo trate como inserción múltiple
                         await connection.query(paymInsQuery, [paymentValues]);
                     }
                 }
 
                 await connection.commit();
-                result = headerResult;
+                result = headerResult;            
 
-            } catch (error) {
-                connection.rollback();
-                throw error;
-            } finally {
-                connection.release();
+            } else if (data?.documentType == 'warranty') {
+                
+
+                
             }
 
+        } catch (error) {
+            connection.rollback();
+            throw error;
+        } finally {
+            connection.release();
         }
-
+        
         return result;
     },
 
@@ -195,12 +198,14 @@ const documentModel = {
             const headerQuery = `
                 SELECT 
                     s.*, 
-                    c.clientName,
-                    c.clientEmail,
-                    c.clientTel,
-                    c.clientCountry,
-                    c.clientState,
-                    c.remarks
+                    c.clientName as name,
+                    c.clientEmail as email,
+                    c.clientTel as phone,
+                    c.clientCountry as country,
+                    c.clientState as state,
+                    c.remarks as remarks,
+                    c.clientBirthday as birthday,
+                    s.roomNumber as room
                 FROM sales s
                 LEFT JOIN clients c ON c.id = s.clientId
                 WHERE s.documentNumber = ? AND s.storeId = ? AND s.docDate = ?

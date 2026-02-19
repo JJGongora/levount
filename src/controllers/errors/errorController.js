@@ -52,8 +52,7 @@ const sendErrorWeb = (err, req, res) => {
 
     res.status(err.statusCode).render('pages/error', {
         title: `Le Vount Jewelry | ${err.statusCode} Error`,
-        layout: 'layouts/webstore-main',
-        
+        layout: 'layouts/webstore-main',        
         error: {
             code: err.statusCode,
             title: title,
@@ -70,7 +69,7 @@ const sendErrorWeb = (err, req, res) => {
                 env: process.env.ENVIRONMENT
             }
         },
-        
+        metaDescription: null,
         err: (process.env.ENVIRONMENT == 'development' || res?.locals?.userSession?.accessLevel >= 10) ? err.stack : null
     });
 };

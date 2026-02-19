@@ -21,4 +21,12 @@ router.get('/clients/create',
     adminController.createClient
 );
 
+// ===========================
+//          PRODUCTOS
+// ===========================
+router.get('/products/create',
+    permissionsVerification.checkPermission("inventory:create"),
+    adminController.products.create
+);
+
 export default router;

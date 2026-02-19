@@ -8,28 +8,34 @@ import emailModel from "./emailModel.js";
 const newsletterModel = {
 
     subscribe: async(email) => {
-        const emailData = await authHelpers.senderEmailData("customercare");
-        const emailParams = {
-            username: emailData.user,
-            pass: emailData.pass,
-            display: emailData.display,
-            recipient: email,
-            subject: "Welcome to our inner circle",
-            text: "Welcome to Le Vount's newsletter",
-            attachments: null /*[
-                {
-                    filename: `Logo_KCA-${ data?.Logo }.png`,
-                    path: `/public/images/email/`,
-                    cid: 'logo'
-                }
-            ]*/,
-            html: emailTemplates.newsletterSubscription()
-        }; //console.log(emailParams);
-        const sendingEmail = await sendEmail(emailParams); //console.log(sendingEmail);
-
         const query = `INSERT IGNORE INTO newsletterSubscribers (address, registerDate, verifiedEmail) VALUES (?, NOW(), 'active');`;
         const [result] = await db.query(query, [email]); //console.log(result);
-        if (result.affectedRows == 0) { return { message: "You're already an Le Vount's Insider."}; }
+        if (result.affectedRows == 0) { 
+
+            return { message: "You're already an Le Vount's Insider."}; 
+
+        } else {
+
+            const emailData = await authHelpers.senderEmailData("levount-noreply");
+            const emailParams = {
+                username: emailData.user,
+                pass: emailData.pass,
+                display: emailData.display,
+                recipient: email,
+                subject: "Welcome to our inner circle",
+                text: "Welcome to Le Vount's newsletter",
+                attachments: null /*[
+                    {
+                        filename: `Logo_KCA-${ data?.Logo }.png`,
+                        path: `/public/images/email/`,
+                        cid: 'logo'
+                    }
+                ]*/,
+                html: emailTemplates.newsletterSubscription()
+            }; //console.log(emailParams);
+            const sendingEmail = await sendEmail(emailParams); //console.log(sendingEmail);
+            
+        }
 
         return {success: true};
     },

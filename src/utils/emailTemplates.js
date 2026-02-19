@@ -31,7 +31,7 @@ const emailTemplates = {
 
                                 <tr>
                                     <td align="center">
-                                        <img src="https://levount.com/images/email/subscribe-001.jpg" alt="Le Vount Jewelry" width="600" style="width: 100%; max-width: 600px; display: block;">
+                                        <img src="https://assets.levount.com/images/email/subscribe-001.jpg" alt="Le Vount Jewelry" width="600" style="width: 100%; max-width: 600px; display: block;">
                                     </td>
                                 </tr>
 
@@ -59,7 +59,7 @@ const emailTemplates = {
 
                                 <tr>
                                     <td align="center" style="padding-bottom: 50px;">
-                                        <img src="https://levount.com/images/logos/logo.png" alt="Signature" width="100" style="display: block; width: 100px;">
+                                        <img src="https://assets.levount.com/images/logos/LeVount_Logo.png" alt="Signature" width="100" style="display: block; width: 100px;">
                                         <p style="font-family: 'Georgia', serif; font-size: 12px; color: #999999; margin-top: 10px; font-style: italic;">
                                             The Le Vount Team
                                         </p>
@@ -111,7 +111,7 @@ const emailTemplates = {
                                 
                                 <tr>
                                     <td align="center" style="padding: 50px 0 30px 0;">
-                                        <img src="https://levount.com/images/logos/logo.png" style="width: 40%;">
+                                        <img src="https://assets.levount.com/images/logos/LeVount_Logo.png" style="width: 40%;">
                                     </td>
                                 </tr>
 
@@ -143,7 +143,7 @@ const emailTemplates = {
                                                     </p>
 
                                                     <div>
-                                                        <a href="https://levount.com/api/newsletter/confirm/${newsletterToken}" class="mobile-btn" style="background-color:#1A1A1A; color:#FFFFFF; display:inline-block; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:13px; font-weight:bold; line-height:50px; text-align:center; text-decoration:none; width:220px; text-transform:uppercase; letter-spacing:2px; -webkit-text-size-adjust:none;">
+                                                        <a href="https://levount.com/newsletter/confirm/${newsletterToken}" class="mobile-btn" style="background-color:#1A1A1A; color:#FFFFFF; display:inline-block; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:13px; font-weight:bold; line-height:50px; text-align:center; text-decoration:none; width:220px; text-transform:uppercase; letter-spacing:2px; -webkit-text-size-adjust:none;">
                                                             Activate Access
                                                         </a>
                                                     </div>
@@ -203,7 +203,7 @@ const emailTemplates = {
                                 
                                 <tr>
                                     <td align="center" style="padding: 50px 0 30px 0;">
-                                        <img src="https://levount.com/images/logos/logo.png" style="width: 40%;">
+                                        <img src="https://assets.levount.com/images/logos/LeVount_Logo.png" style="width: 40%;">
                                     </td>
                                 </tr>
 
@@ -235,7 +235,7 @@ const emailTemplates = {
                                                     </p>
 
                                                     <div>
-                                                        <a href="https://levount.com/api/newsletter/confirm/${newsletterToken}" style="background-color:#1A1A1A; padding: 5px 8px; color:#FFFFFF; display:inline-block; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:13px; font-weight:bold; line-height:50px; text-align:center; text-decoration:none; width:220px; text-transform:uppercase; letter-spacing:2px; -webkit-text-size-adjust:none;">
+                                                        <a href="https://levount.com/newsletter/confirm/${newsletterToken}" style="background-color:#1A1A1A; padding: 5px 8px; color:#FFFFFF; display:inline-block; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:13px; font-weight:bold; line-height:50px; text-align:center; text-decoration:none; width:220px; text-transform:uppercase; letter-spacing:2px; -webkit-text-size-adjust:none;">
                                                             Activate Access
                                                         </a>
                                                     </div>
@@ -295,7 +295,7 @@ const emailTemplates = {
                                 
                                 <tr>
                                     <td align="center" style="padding: 50px 0 30px 0;">
-                                        <img src="https://levount.com/images/logos/logo.png" style="width: 180px; max-width: 40%; display: block;" alt="Le Vount">
+                                        <img src="https://assets.levount.com/images/logos/LeVount_Logo.png" style="width: 180px; max-width: 40%; display: block;" alt="Le Vount">
                                     </td>
                                 </tr>
 
@@ -513,6 +513,202 @@ const emailTemplates = {
             </html>
         `;
     },
+
+    LeVount: {
+
+        redeemedGift: (clientName) => {
+            return `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                    <title>A Gift from Le Vount</title>
+                </head>
+                <body style="margin: 0; padding: 0; background-color: #f4f4f4;">
+                    
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f4f4; padding: 40px 0;">
+                        <tr>
+                            <td align="center">
+                                
+                                <table border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border: 1px solid #e0e0e0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                                    
+                                    <tr>
+                                        <td align="center" style="padding: 50px 0 40px 0; background-color: #111111;">
+                                            <img src="https://assets.levount.com/images/logos/LeVount_Logo_White.png" style="max-width: 60%; max-height: 75px;">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align="center" style="padding: 0;">
+                                            <a href="https://levount.com" target="_blank" style="text-decoration: none; display: block;">
+                                                <img src="https://assets.levount.com/images/email/gift-002.jpg" alt="Your Exclusive Gift" width="600" style="display: block; width: 100%; max-width: 600px; height: auto; border: 0;" />
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align="center" style="padding: 50px 40px;">
+                                            
+                                            <h1 style="font-family: Georgia, 'Times New Roman', serif; color: #111111; font-size: 24px; margin: 0 0 20px 0; font-weight: normal; letter-spacing: 1px;">
+                                                A Timeless Token of Gratitude
+                                            </h1>
+                                            
+                                            <table border="0" cellpadding="0" cellspacing="0" width="60" style="margin: 0 auto;">
+                                                <tr>
+                                                    <td style="border-bottom: 2px solid #c5a059; font-size: 1px; line-height: 1px;">&nbsp;</td>
+                                                </tr>
+                                            </table>
+
+                                            <p style="color: #555555; font-size: 16px; line-height: 1.8; margin: 30px 0 40px 0;">
+                                                Dear <b>${clientName}</b>,<br><br>
+                                                It was a true pleasure to welcome you to <strong>Le Vount</strong>. We hope your visit was as memorable for you as it was for us.
+                                                <br><br>
+                                                Your gift card has been successfully redeemed. Thank you for allowing us to be a part of your day. It was truly an honor to have you with us, and we look forward to welcoming you back to Le Vount in the near future.
+                                            </p>
+
+                                            <table border="0" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td align="center" bgcolor="#c5a059" style="border-radius: 2px;">
+                                                        <a href="https://levount.com" target="_blank" style="font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; text-transform: uppercase; padding: 15px 40px; border: 1px solid #c5a059; display: inline-block; letter-spacing: 2px; font-weight: bold;">
+                                                            Discover More
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align="center" style="padding: 30px; background-color: #f9f9f9; border-top: 1px solid #eeeeee;">
+                                            <p style="font-family: Helvetica, Arial, sans-serif; color: #999999; font-size: 12px; line-height: 1.5; margin: 0;">
+                                                &copy; 2026 Le Vount Jewelry. <br>
+                                            </p>
+                                            <p style="font-family: Helvetica, Arial, sans-serif; color: #999999; font-size: 12px; line-height: 1.5; margin: 15px 0 0 0;">
+                                                <a href="#" style="color: #999999; text-decoration: underline;">Unsubscribe</a> &nbsp;|&nbsp; <a href="#" style="color: #999999; text-decoration: underline;">Privacy Policy</a>
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="40">
+                                    <tr><td>&nbsp;</td></tr>
+                                </table>
+
+                            </td>
+                        </tr>
+                    </table>
+
+                </body>
+                </html>
+            `;
+        },
+
+        newAccount: (name, email) => {
+            return `
+                <!DOCTYPE html PUBLIC>
+                <html>
+                <head>
+                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                    <title>Welcome to Le Vount</title>
+                </head>
+                <body style="margin: 0; padding: 0; background-color: #f4f4f4;">
+                    
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f4f4; padding: 40px 0;">
+                        <tr>
+                            <td align="center">
+                                
+                                <table border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border: 1px solid #e0e0e0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                                    
+                                    <tr>
+                                        <td align="center" style="padding: 20px 0; background-color: #111111;">
+                                            <img src="https://assets.levount.com/images/logos/LeVount_Logo_White.png"
+                                            style="max-height: 60px;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <img src="https://assets.levount.com/images/email/welcome-001.jpg"
+                                            style="width: 100%;">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align="center" style="padding: 30px 50px;">
+                                            
+                                            <h1 style="font-family: Georgia, 'Times New Roman', serif; color: #111111; font-size: 26px; margin: 0 0 25px 0; font-weight: normal; letter-spacing: 0.5px;">
+                                                Welcome
+                                            </h1>
+                                            
+                                            <table border="0" cellpadding="0" cellspacing="0" width="40" style="margin: 0 auto;">
+                                                <tr>
+                                                    <td style="border-bottom: 2px solid #c5a059; font-size: 1px; line-height: 1px;">&nbsp;</td>
+                                                </tr>
+                                            </table>
+
+                                            <p style="color: #555555; font-size: 16px; line-height: 1.8; margin: 30px 0 30px 0;">
+                                                Dear ${name},<br><br>
+                                                We are honored to welcome you to the Le Vount community. Your account has been successfully created and is now active.
+                                                <br><br>
+                                                You can now enjoy a seamless shopping experience, including faster checkouts, order tracking, and exclusive access to our latest collections and curated offers.
+                                            </p>
+
+                                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f9f9f9; border: 1px solid #eeeeee; margin-bottom: 35px;">
+                                                <tr>
+                                                    <td align="center" style="padding: 15px;">
+                                                        <p style="margin: 0; color: #888888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Your Login Email</p>
+                                                        <p style="margin: 5px 0 0 0; color: #333333; font-size: 16px; font-weight: bold;">
+                                                            ${email}
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                            <table border="0" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td align="center" bgcolor="#c5a059" style="border-radius: 2px;">
+                                                        <a href="https://levount.com/account" target="_blank" style="font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; text-transform: uppercase; padding: 16px 45px; border: 1px solid #c5a059; display: inline-block; letter-spacing: 2px; font-weight: bold;">
+                                                            Visit Our Store
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            
+                                            <p style="margin-top: 30px;">
+                                                <a href="https://levount.com/products" style="color: #111111; text-decoration: underline; font-size: 14px;">Browse New Arrivals</a>
+                                            </p>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align="center" style="padding: 35px; background-color: #f9f9f9; border-top: 1px solid #eeeeee;">
+                                            <p style="font-family: Helvetica, Arial, sans-serif; color: #999999; font-size: 12px; line-height: 1.6; margin: 0;">
+                                                If you have any questions about your account, simply reply to this email or contact our <a href="mailto:customercare@levount.com" style="color: #888888; text-decoration: underline;">concierge team</a>.
+                                            </p>
+                                            <p style="font-family: Helvetica, Arial, sans-serif; color: #999999; font-size: 12px; line-height: 1.6; margin: 20px 0 0 0;">
+                                                &copy; 2026 Le Vount Jewelry. All rights reserved.
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" height="40">
+                                    <tr><td>&nbsp;</td></tr>
+                                </table>
+
+                            </td>
+                        </tr>
+                    </table>
+
+                </body>
+                </html>
+            `;
+        }
+
+    }
 };
 
 export default emailTemplates;

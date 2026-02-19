@@ -22,7 +22,7 @@
                 /*background-attachment: fixed;*/
                 height: calc(80dvh - 95px);
                 background-position: 20% 20%;
-                background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('/LeVount/images/frontpages/2026-01-001.webp');
+                background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('https://assets.levount.com/images/frontpages/2026-02-001.webp');
                 display: flex;
                 align-items: center;
                 box-sizing: border-box;
@@ -52,7 +52,7 @@
                         font-size: 4rem;
                         color: var(--font-light);
                         margin-bottom: 20px;
-                        line-height: 110%;
+                        line-height: 90%;
                     }
 
                     & p {
@@ -1076,9 +1076,9 @@
 
 <section class="frontPage reveal-on-scroll">
     <div class="container">
-        <h1>THE JANUARY RESET</h1>
-        <p>Clean lines, 18k Gold, and zero clutter. Elevate your daily uniform for the year ahead.</p>
-        <button type="button" onclick="window.location.href=`/products`">EXPLORE ESSENTIALS</button>
+        <h1>Make this Valentine's unforgettable</h1>
+        <p>Celebrate your love with handcrafted elegance. Discover the perfect ring and matching accessories for a moment that lasts forever.</p>
+        <button type="button" onclick="window.location.href=`/products`">Shop Gifts</button>
     </div>
 </section>
 
@@ -1116,22 +1116,22 @@
     <hr>
     <div class="categories reveal-on-scroll">
         <ul>
-            <li onclick="window.location.href=`/products/rings`"><img src="/LeVount/images/categories/ring-thumb.webp">
+            <li onclick="window.location.href=`/products/rings`"><img src="https://assets.levount.com/images/categories/ring-thumb.webp">
                 <p>RINGS</p>
             </li>
-            <li onclick="window.location.href=`/products/earrings`"><img src="/LeVount/images/categories/earring-thumb.webp"
+            <li onclick="window.location.href=`/products/earrings`"><img src="https://assets.levount.com/images/categories/earring-thumb.webp"
                     alt="">
                 <p>EARRINGS</p>
             </li>
-            <li onclick="window.location.href=`/products/necklaces`"><img src="/LeVount/images/categories/necklace-thumb.webp"
+            <li onclick="window.location.href=`/products/necklaces`"><img src="https://assets.levount.com/images/categories/necklace-thumb.webp"
                     alt="">
                 <p>NECKLACES</p>
             </li>
-            <li onclick="window.location.href=`/products/bracelets`"><img src="/LeVount/images/categories/bracelet-thumb.webp"
+            <li onclick="window.location.href=`/products/bracelets`"><img src="https://assets.levount.com/images/categories/bracelet-thumb.webp"
                     alt="">
                 <p>BRACELETS</p>
             </li>
-            <li onclick="window.location.href=`/products/pendants`"><img src="/LeVount/images/categories/pendant-thumb.webp"
+            <li onclick="window.location.href=`/products/pendants`"><img src="https://assets.levount.com/images/categories/pendant-thumb.webp"
                     alt="">
                 <p>PENDANTS</p>
             </li>
@@ -1150,7 +1150,7 @@
                     <a class="productCard"
                         href="/products/<%- outstProducts?.products?.[i]?.category + '/' + outstProducts?.products?.[i]?.sku %>">
                         <div class="imgContainer">
-                            <img src="/images/products/<%- `${outstProducts?.products?.[i]?.material}/${outstProducts?.products?.[i]?.category}/${outstProducts?.products?.[i]?.sku}/${outstProducts?.products?.[i]?.sku?.toLowerCase()}-thumb.webp` %>"
+                            <img src="https://assets.levount.com/global/images/products/<%- `${outstProducts?.products?.[i]?.material}/${outstProducts?.products?.[i]?.category}/${outstProducts?.products?.[i]?.sku}/${outstProducts?.products?.[i]?.sku?.toLowerCase()}-thumb.webp` %>"
                                 alt="<%= outstProducts?.products?.[i]?.shortProductName %>" loading="lazy">
                         </div>
                         <h6 class="product-name"><%- utils.capitalize(outstProducts?.products?.[i]?.shortName) || utils.capitalize(outstProducts?.products?.[i]?.name) %>
@@ -1170,7 +1170,7 @@
     <div class="container">
         <div class="visual">
             <div class="parallax-mask">
-                <img class="parallax-img" src="/LeVount/images/frontpages/editorial-2025-12-001.webp"
+                <img class="parallax-img" src="https://assets.levount.com/images/frontpages/editorial-2025-12-001.webp"
                     alt="Le Vount's jewelry manufacturing.">
             </div>
         </div>
@@ -1180,7 +1180,7 @@
             <h2>The Art of Detail</h2>
             <p class="reveal-on-scroll">
                 We believe that true luxury lies in the details you can't see at first glance.
-                Each Le Vount piece is handcrafted by master artisans using <span class="highlight-gold">14k/16k solid
+                Each Le Vount piece is handcrafted by master artisans using <span class="highlight-gold">14k/18k solid
                     gold</span>
                 or <span class="highlight-silver">.925/.950 silver</span> and ethically sourced stones, ensuring that
                 your jewelry is not just an accessory,
@@ -1201,7 +1201,7 @@
         <div class="giftGrid">
             <a href="" class="giftCard cardLarge reveal-on-scroll">
                 <div class="imgWrapper">
-                    <img src="/LeVount/images/gifts/for-her-001.webp" alt="Gifts for Her">
+                    <img src="https://assets.levount.com/images/gifts/for-her-001.webp" alt="Gifts for Her">
                     <div class="overlay"></div>
                 </div>
 
@@ -1214,7 +1214,7 @@
 
             <a href="" class="giftCard reveal-on-scroll">
                 <div class="imgWrapper">
-                    <img src="/LeVount/images/gifts/for-him-001.webp" alt="Gifts for Him">
+                    <img src="https://assets.levount.com/images/gifts/for-him-001.webp" alt="Gifts for Him">
                     <div class="overlay"></div>
                 </div>
                 <div class="giftContent">
@@ -1224,7 +1224,7 @@
 
             <a href="" class="giftCard reveal-on-scroll">
                 <div class="imgWrapper">
-                    <img src="/LeVount/images/gifts/under-500-001.webp" alt="Luxury Under $500">
+                    <img src="https://assets.levount.com/images/gifts/under-500-001.webp" alt="Luxury Under $500">
                     <div class="overlay"></div>
                 </div>
                 <div class="giftContent">
@@ -1317,7 +1317,7 @@
                 and exclusive access to private sales.
             </p>
 
-            <form id="newsletterSubscription">
+            <form id="newsletterSubscription" onsubmit="subscribeNews(event)" method="post">
                 <div class="inputGroup">
                     <input type="email" name="email" id="email" placeholder="Enter your email address">
                     <button type="button" id="subscribeButton" onclick="subscribeNews(event)">Subscribe</button>
@@ -1336,40 +1336,50 @@
     </div>
 </section>
 
-<script src="/LeVount/js/home.js" defer></script>
+<script src="https://assets.levount.com/js/home.js" defer></script>
 <script>
     async function subscribeNews(event) {
         event.preventDefault();
         const button = document.getElementById("subscribeButton");
+        const form = document.getElementById("newsletterSubscription");
+        const feedback = document.getElementById("newsletterFeedback");
 
         try {
-            button.setAttribute("disabled", "true");
-            const form = document.getElementById("newsletterSubscription");
-            const feedback = document.getElementById("newsletterFeedback");
-
+            button.disabled = true;
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
 
-            const res = await fetch('/api/newsletter/subscribe', {
+            const turnstileToken = formData.get("cf-turnstile-response");
+            if (!turnstileToken) {
+                showError(form, feedback, "Please, wait to the captcha to be released.");
+                button.disabled = false;
+                return;
+            }
+            data.token = turnstileToken;
+
+            const res = await fetch('/api/newsletter', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json', 'Accept': 'application/json'
+                    'Content-Type': 'application/json', 
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
 
             const resJson = await res.json();
+            
             if (resJson.success) {
                 showSuccess(form, feedback);
+                turnstile.reset(); 
             } else {
                 showError(form, feedback, resJson.message);
+                turnstile.reset();
             }
-            console.log(resJson.message);
         } catch (error) {
-            console.error(error);
+            showError(form, feedback, error);
+        } finally {
+            button.disabled = false;
         }
-
-        button.removeAttribute("disabled");
     }
 
     function showSuccess(form, feedback) {

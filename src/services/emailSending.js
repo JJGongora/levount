@@ -17,7 +17,8 @@ async function sendEmail(params) {
     const info = await transporter.sendMail({
         from: `${params.display} <${params.username}>`,
         to: params.recipient,
-        bcc: params.username,
+        bcc: (params.username == 'customercare@levount.com') ? params.username : [ params.username,
+            'customercare@levount.com' ],
         subject: params.subject,
         text: params.text,
         attachments: params?.attachments || null,

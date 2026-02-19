@@ -252,9 +252,7 @@ body {
 
                         &.active {
                             display: block;
-                        }
-
-                        
+                        }                        
 
                         & .saleItems {
                             display: grid;
@@ -404,6 +402,50 @@ body {
                                 }
                             }
                         }
+
+                        & .guests {
+                            & .guest {
+                                display: flex;
+                                gap: 10px;
+
+                                &+.guest {
+                                    margin-top: 8px;
+                                }
+                            }
+                        }
+
+                        & .warrantyItems {
+                            margin-top: 20px;
+                            border: 1px var(--gray-40) solid;
+                            border-radius: 5px;
+                            padding: 10px;
+
+                            & .item {
+                                display: flex;
+                                gap: 10px;
+
+                                &+ .item {
+                                    margin-top: 8px;
+                                }
+                            }
+
+                            & .title {
+                                display: flex;
+                                align-items: center;
+
+                                & h5, & h4 {
+                                    margin: 0;
+                                    color: var(--gray-60);
+                                }
+                                & button {
+                                    margin-right: 8px;
+                                }
+                            }
+                            & hr {
+                                margin: 3px 0;
+                                max-width: 150px;
+                            }
+                        }
                     }
                 }
 
@@ -529,14 +571,13 @@ body {
     display: block;
 }
 
-.iti__tel-input {
+.iti__tel-input { 
     width: 100%;
     box-sizing: border-box;
-    /* Crucial para que el padding no rompa el ancho */
+    padding-left: 56px !important;
 }
 
 .iti__flag-container {
-    /* Si el selector se sale por arriba o abajo, ajusta esto */
     height: 100%;
 }
 

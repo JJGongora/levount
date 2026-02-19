@@ -1,0 +1,223 @@
+<style>
+    body {
+        background-color: #FDFCFB/*var(--gray-10)*/;
+
+        & main {
+            padding: 20px;
+
+            & .globalFormContainer {
+                max-width: 1200px;
+                margin: auto;
+
+                & .mainDetails {
+                    display: flex;
+                    gap: 20px;
+                }
+
+                & .storesDetails {
+                    margin-top: 20px;
+                    gap: 20px;
+                    display: flex;
+
+                    & .store {
+                        flex: 999 1 50%;
+                    }
+
+                    & h2 {
+                        margin: 0;
+                        font-family: "Google Sans", sans-serif;
+                        font-size: 1rem;
+                        margin-bottom: 10px;
+                    }
+                }
+
+                & .formSection {
+                    background-color: var(--lv-white);
+                    padding: 15px;
+                    border-radius: 5px;
+                    border: 1px var(--gray-30) solid;
+                    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+                    flex: 999 1 50%;
+                    box-sizing: border-box;
+
+                    &.media {
+                        flex: 1 1 400px;
+                    }
+                    
+                    & h3 {
+                        margin: 0;
+                        margin-bottom: 15px;
+                    }
+
+                    & .inputContainer {
+                        display: grid;
+                        row-gap: 4px;
+                        flex: 999 1 50%;
+
+                        & label {
+                            font-size: 0.7rem;
+                            font-weight: 600;
+                            color: var(--gray-80);
+                            text-transform: uppercase;
+                            letter-spacing: 1px;
+                        }
+
+                        & input, & select, & textarea {
+                            box-sizing: border-box;
+                            border: 1px var(--gray-40) solid;
+                            border-radius: 5px;
+                            min-height: 30px;
+                            padding: 3px 5px;
+                            font-family: "Google Sans", sans-serif;
+                        }
+
+                        & +.inputContainer {
+                            margin-top: 8px;
+                        }
+                    }
+
+                    & .twoInputContainer {
+                        display: flex;
+                        gap: 15px;
+
+                        & +.twoInputContainer {
+                            margin-top: 8px;
+                        }
+
+                        & .inputContainer {
+                            margin-top: 0 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<form class="globalFormContainer">
+    <section class="mainDetails">
+
+        <section class="formSection media">
+            <h3>Multimedia</h3>
+        </section>
+
+        <section class="formSection">
+            <h3>Información general</h3>
+
+            <div class="inputContainer">
+                <label for="">Id de sistema</label>
+                <input type="text" name="product[id]" readonly>
+            </div>
+
+            <div class="twoInputContainer" style="margin-top: 8px;">
+                <div class="inputContainer">
+                    <label for="">Categoría</label>
+                    <select name="product[category]" id="">
+                        <option value=""></option>
+                        <option value="rings">Anillos</option>
+                        <option value="earrings">Aretes</option>
+                        <option value="pendants">Dijes</option>
+                        <option value="necklace">Collar</option>
+                        <option value="bracelets">Brazaletes</option>
+                    </select>
+                </div>
+                <div class="inputContainer">
+                    <label for="">Peso (gramos)</label>
+                    <input type="number" step="0.01" name="product[weight]" id="">
+                </div>                
+            </div>
+
+            <div class="twoInputContainer">
+                <div class="inputContainer">
+                    <label for="">Material</label>
+                    <select name="product[material]" id="">
+                        <option value="" selected></option>
+                        <option value="silver">Plata</option>
+                        <option value="gold">Oro</option>
+                        <option value="steel">Acero</option>
+                    </select>
+                </div>
+                <div class="inputContainer">
+                    <label for="">Pureza</label>
+                    <select name="product[purity]" id="">
+                        <option value="" selected></option>
+                        <option value="14k">14K</option>
+                        <option value="18k">18K</option>
+                        <option value=".925">.925</option>
+                        <option value=".950">.950</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="twoInputContainer">
+                <div class="inputContainer">
+                    <label for="">Código LeVount</label>
+                    <input type="text" name="product[levountCode]">
+                </div>
+                <div class="inputContainer">
+                    <label for="">Código alterno</label>
+                    <input type="text" name="product[alternateCode]">
+                </div>
+            </div>
+
+        </section>        
+
+    </section>
+
+    <section class="storesDetails">        
+
+        <% 
+            [
+                {
+                    id: 0,
+                    name: "Le Vount"
+                },
+                {
+                    id: 1,
+                    name: "Silver Best Price"
+                }
+            ]?.forEach(store => {
+        %>
+        <section class="store">
+            <div class="title">
+                <h2><%- store?.name %></h2>
+            </div>
+
+            <div class="formSection storeSub-Section">                
+                <div class="inputContainer">
+                    <label for="">Nombre del producto</label>
+                    <input type="text" name="product[<%- store?.id %>][name][main]">
+                </div>
+
+                <div class="inputContainer">
+                    <label for="">Nombre corto</label>
+                    <input type="text" name="product[<%- store?.id %>][name][short]">
+                </div>
+
+                <div class="inputContainer">
+                    <label for="">Precio etiqueta</label>
+                    <input type="number" name="product[<%- store?.id %>][tagPrice]">
+                </div>
+
+                <div class="twoInputContainer" style="margin: 8px 0;">                    
+                    <div class="inputContainer">
+                        <label for="">Descuento (%)</label>
+                        <input type="number" name="product[<%- store?.id %>][discountPercentage]">
+                    </div>
+                    <div class="inputContainer">
+                        <label for="">Precio con descuento</label>
+                        <input type="number" name="product[<%- store?.id %>][discountPrice]" readonly>
+                    </div>
+                </div>
+
+                <div class="inputContainer">
+                    <label for="">Descripción</label>
+                    <textarea name="product[<%- store?.id %>][description]"></textarea>
+                </div>
+            </div>
+        </section>
+        <% }); %>
+
+    </section>
+</form>
+

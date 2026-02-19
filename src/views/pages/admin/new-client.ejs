@@ -1,6 +1,6 @@
-<link rel="stylesheet" href="/flags/css/flag-icons.min.css">
-<link rel="stylesheet" href="/styles/admin-forms.css">
-<link rel="stylesheet" href="/intl-input/build/css/intlTelInput.css">
+<link rel="stylesheet" href="https://assets.levount.com/flags/css/flag-icons.min.css">
+<link rel="stylesheet" href="https://assets.levount.com/global/styles/admin-forms.css">
+<link rel="stylesheet" href="https://assets.levount.com/intl-input/build/css/intlTelInput.css">
 
 <section class="Content">
     <h1><%- "Nuevo cliente" //t("pageTitle") %></h1>
@@ -13,7 +13,7 @@
 
                 <div class="inputContainer">
                     <label for="">Tipo de documento</label>
-                    <select name="documentType" id="" onchange="switchForm(this.value)">
+                    <select name="documentType" id="documentType" onchange="switchForm(this.value)">
                         <option value="" selected></option>
                         <option value="sale">Nota de venta</option>
                         <option value="warranty">Garantía</option>
@@ -47,11 +47,11 @@
                     </select>
                 </div>
 
-                <button type="button" onclick="getDocumentData()"><i>&#xe1002;</i></button>
+                <button type="button" onclick="getDocumentData()"><i>&#xe110D;</i></button>
 
             </div>
 
-            <div class="containerDocForm active" id="saleForm">
+            <div class="containerDocForm" id="saleForm">
                 <h3>Nota de venta</h3>                               
 
                 <section class="saleItems">
@@ -69,33 +69,6 @@
                         <h4>Forma de pago</h4>
                         
                         <div class="payments" id="payments">
-
-                            <div class="twoInputContainer">
-                                <button type="button" onclick="deletePayment(this)"><i>&#xe1082;</i></button>
-                                <div class="inputContainer">
-                                    <label for="">Método</label>
-                                    <select name="sale[payment][0][method]" class="currSelect">
-                                        <option value="cash" selected>Efectivo</option>
-                                        <option value="card">Tarjeta</option>
-                                        <option value="amex">American Express</option>
-                                        <option value="roomCharge">Habitación</option>
-                                        <option value="travelCheck">Travel check</option>
-                                    </select>
-                                </div>
-                                <div class="inputContainer"> 
-                                    <label for="">Moneda</label>                                   
-                                    <select name="sale[payment][0][currency]" class="currSelect" onchange="changeCurrency(this)">
-                                        <option value="mxn" selected>MXN</option>
-                                        <option value="usd">USD</option>
-                                        <option value="eur">EUR</option>
-                                    </select>
-                                </div>
-                                <div class="inputContainer">
-                                    <label for="">Monto</label>
-                                    <input type="number" step="0.01" name="sale[payment][0][amount]">
-                                </div>
-                            </div>
-
                         </div>
 
                         <button type="button" onclick="addPaymentMethod()"><i>&#xe1041;</i></button>
@@ -119,54 +92,146 @@
                     </div> 
                 </section>
             </div>
+
+            <div class="containerDocForm" id="giftForm">
+                <h3>Dijes de obsequio</h3>
+
+                <section class="guests" id="guests">
+                    <div class="guest">
+                        <button type="button" onclick="this.parentElement.remove()"><i>&#xe1118;</i></button>
+                        <div class="inputContainer">
+                            <label>Nombre</label>
+                            <input type="text" name="guest[0][name]">
+                        </div>
+                        <div class="inputContainer">
+                            <label>Correo</label>
+                            <input type="email" name="guest[0][email]">
+                        </div>
+                        <div class="inputContainer">
+                            <label>Teléfono</label>
+                            <input type="tel" class="iti-phone" name="guest[0][phone]">
+                        </div>
+                        <div class="inputContainer">
+                            <label>Habitación</label>
+                            <input type="number" name="guest[0][room]">
+                        </div>
+                        <div class="inputContainer">
+                            <label>Vendedor</label>
+                            <input type="text" name="guest[0][seller]">
+                        </div>
+                        <div class="inputContainer">
+                            <label>Área</label>
+                            <input type="text" name="guest[0][area]">
+                        </div>
+                    </div>
+                </section>
+
+                <button type="button" style="margin-top: 10px;" onclick="addGuest()"><i style="margin-right: 5px;">&#xe1041;</i> Añadir obsequio</button>
+            </div>
+
+            <section class="containerDocForm" id="warrantyForm">
+                <h3>Garantía</h3>
+
+                <section class="details">
+                    <div class="inputContainer">
+                        <label>Fecha/hora de entrega</label>
+                        <input type="datetime-local" name="warranty[deliverDate]" id="">
+                    </div>
+
+                    <div class="inputContainer">
+                        <label>Elaborado por</label>
+                        <input type="text" name="warranty[seller]" id="">
+                    </div>
+
+                    <div class="inputContainer">
+                        <label>Fecha de compra</label>
+                        <input type="date" name="warranty[purchaseDate]" id="">
+                    </div>
+
+                    <div class="inputContainer">
+                        <label># Nota</label>
+                        <input type="number" name="warranty[purchaseTicket]" id="">
+                    </div>
+
+                    <div class="inputContainer">
+                        <label>Sucursal de compra</label>
+                        <select name="warranty[purchaseBranch]" id="">
+                            <option value="" selected></option>
+                            <% for (let n=0; n < branches?.length; n++) { %>
+                                <option value="<%- branches?.[n]?.id %>"><%- branches?.[n]?.id + " - " + branches?.[n]?.name
+                                        %></option>
+                                <% } %>
+                        </select>
+                    </div>
+
+                    <div class="inputContainer">
+                        <label>Quien transporta</label>
+                        <input type="text" name="warranty[transportist]" id="">
+                    </div>
+
+                    <div class="inputContainer">
+                        <label>Quien recibe</label>
+                        <input type="text" name="warranty[receiver]" id="">
+                    </div>
+                </section>
+
+                <section class="warrantyItems">
+                    <div class="title">
+                        <button type="button" onclick="addWarrantyItem()"><i>&#xe1041;</i></button>
+                        <h4>Piezas</h4>
+                    </div>
+                    <div id="warrantyItems"></div>
+                </section>
+            </section>
         </div>
 
-        <hr>
-
-        <h2>Datos de contacto</h2>
-        <div class="personalData" id="personalData">
-            <div class="inputContainer">
-                <label for="">Nombre</label>
-                <input type="text" name="clientName" id="clientName">
-            </div>
-            <div class="inputContainer">
-                <label for="">Correo electrónico</label>
-                <input type="email" name="clientEmail">
-            </div>
-            <div class="inputContainer">
-                <label for="">Teléfono</label>
-                <input type="tel" id="phoneInput" name="clientTel">
-            </div>
-            <div class="inputContainer">
-                <label for="">Habitación</label>
-                <input type="number" name="roomNumber">
-            </div>
-            <div class="custom-select-container">
-                <label for="">País</label>
-                <input type="hidden" name="telCountryCode" id="telCountryCode">
-                <input type="text" id="countrySearch" autocomplete="off" onclick="showList()"
-                    onkeyup="filterCountry(this)">
-                <ul id="optionsList" class="options-list hidden">
-                    <% countries.forEach(country=> { %>
-                        <li value="<%- country.code %>"
-                            onclick="selectCountry('<%- country.name %>', '<%- country.code %>')">
-                            <span class="fi fi-<%- country.code?.toLowerCase() %>"></span><%- country.name %>
-                        </li>
-                        <% }) %>
-                </ul>
-            </div>
-            <div class="inputContainer">
-                <label for="">Estado/Provincia</label>
-                <input type="text" name="clientState">
-            </div>
-            <div class="inputContainer">
-                <label for="">Cumpleaños</label>
-                <input onchange="searchClient(event)" type="date" max="<%- utils.dateToInputDate(Today) %>"
-                    name="clientBirthday">
-            </div>
-            <div class="inputContainer">
-                <label for="">Notas del registro</label>
-                <textarea name="remarks" id=""></textarea>
+        <div id="personDataContainer">
+            <hr>
+            <h2>Datos de contacto</h2>
+            <div class="personalData" id="personalData">
+                <div class="inputContainer">
+                    <label for="">Nombre</label>
+                    <input type="text" name="client[name]" id="clientName">
+                </div>
+                <div class="inputContainer">
+                    <label for="">Correo electrónico</label>
+                    <input type="email" name="client[email]">
+                </div>
+                <div class="inputContainer">
+                    <label for="">Teléfono</label>
+                    <input type="tel" id="client[phone]" name="client[phone]" class="iti-phone">
+                </div>
+                <div class="inputContainer">
+                    <label for="">Habitación</label>
+                    <input type="number" name="client[room]">
+                </div>
+                <div class="custom-select-container">
+                    <label for="">País</label>
+                    <input type="hidden" name="client[country]" id="telCountryCode">
+                    <input type="text" id="countrySearch" autocomplete="off" onclick="showList()"
+                        onkeyup="filterCountry(this)">
+                    <ul id="optionsList" class="options-list hidden">
+                        <% countries.forEach(country=> { %>
+                            <li value="<%- country.code %>"
+                                onclick="selectCountry('<%- country.name %>', '<%- country.code %>')">
+                                <span class="fi fi-<%- country.code?.toLowerCase() %>"></span><%- country.name %>
+                            </li>
+                            <% }) %>
+                    </ul>
+                </div>
+                <div class="inputContainer">
+                    <label for="">Estado/Provincia</label>
+                    <input type="text" name="client[state]">
+                </div>
+                <div class="inputContainer">
+                    <label for="">Cumpleaños</label>
+                    <input onchange="searchClient(event)" type="date" max="<%- utils.dateToInputDate(Today) %>"
+                        name="client[birthday]">
+                </div>
+                <div class="inputContainer">
+                    <label for="">Notas del registro</label>
+                    <textarea name="client[remarks]" id=""></textarea>
+                </div>
             </div>
         </div>
         <button onclick="registerClient(event)" type="submit"><i>&#xe1052;</i>Guardar</button>
@@ -178,15 +243,211 @@
     </div>
 </section>
 
-<script src="/intl-input/build/js/intlTelInput.js"></script>
+<script src="https://assets.levount.com/intl-input/build/js/intlTelInput.js"></script>
 <script fetchpriority="high">
-    const input = document.getElementById("phoneInput");
+    let productIndex = 0;
+    let paymentIndex = 0;
+    let warrantyItemIndex = 0;
+
+    /*const input = document.getElementById("phoneInput");
     const iti = window.intlTelInput(document.getElementById("phoneInput"), {
         initialCountry: "us",
         separateDialCode: false,
         strictMode: true,
         loadUtils: () => import('/intl-input/build/js/utils.js'),
+    });*/
+
+    var itiInstances = [];
+    const telInputs = document.querySelectorAll(".iti-phone");
+    telInputs.forEach(function(input) {
+        var instance = window.intlTelInput(input, {
+            initialCountry: "us",
+            separateDialCode: false,
+            strictMode: true,
+            loadUtils: () => import('https://assets.levount.com/intl-input/build/js/utils.js'),
+        });
+        itiInstances.push(instance);
     });
+    
+
+    async function registerClient(event) {
+        event.preventDefault();
+
+        try {
+
+            let form = document.getElementById("clientData");
+            let documentNumber = document.getElementById("documentNumber");
+            let clientName = document.getElementById("clientName");
+            const formData = new FormData(form);
+
+            let errorFound = false;
+            telInputs.forEach((input, index) => {
+                const instance = itiInstances[index]; 
+
+                if (instance.isValidNumber()) {
+                    formData.set(input.name, instance.getNumber());                    
+                    input.classList.remove("error-border"); 
+                } else {
+                    errorFound = true;
+                    //showResponse("responseMessage", `Error en el campo: ${input.name}`);
+                    //setTimeout(hideMessage, 6000);
+                    input.classList.add("error-border"); 
+                }
+            });
+
+            /*if (!errorFound) {
+                console.log("Datos listos para enviar:", Object.fromEntries(formData));
+            } else {
+                showResponse("responseMessage", "Por favor corrige los números telefónicos en rojo.");
+                setTimeout(hideMessage, 6000);
+            }*/
+
+            const data = Object.fromEntries(formData.entries());
+            const res = await fetch("/api/clients", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const resJson = await res.json();
+
+            if (resJson.success == false) {
+            } else {
+                productIndex = 0;
+                paymentIndex = 0;
+                guestIndex = 0;
+                documentNumber.stepUp();
+                clientName.focus();
+                document.getElementById('itemsContainer').innerHTML = "";
+                document.getElementById('payments').innerHTML = "";
+                resetFormExcept(form,
+                    [
+                        'documentType', 'storeId', 'docDate', 'documentNumber', 'telCountryCode', 'countrySearch',
+                        'docStatus', 'sale[preparedBy]', 'sale[shift]'
+                    ]
+                );
+            }
+            showResponse("responseMessage", resJson);
+            setTimeout(hideMessage, 6000);
+
+        } catch (error) {
+            showResponse("responseMessage", error);
+            setTimeout(hideMessage, 6000);
+        }
+    }
+
+    let guestIndex = 1;
+    function addGuest() {
+        const div = document.getElementById("guests");
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('guest');
+        itemDiv.innerHTML = `
+            <button onclick="this.parentElement.remove()"><i>&#xe1118;</i></button>
+            <div class="inputContainer">
+                <label>Nombre</label>
+                <input type="text" name="guest[${guestIndex}][name]">
+            </div>
+            <div class="inputContainer">
+                <label>Correo</label>
+                <input type="email" name="guest[${guestIndex}][email]">
+            </div>
+            <div class="inputContainer">
+                <label>Teléfono</label>
+                <input type="tel" class="iti-phone" name="guest[${guestIndex}][phone]">
+            </div>
+            <div class="inputContainer">
+                <label>Habitación</label>
+                <input type="number" name="guest[${guestIndex}][room]">
+            </div>
+            <div class="inputContainer">
+                <label>Vendedor</label>
+                <input type="text" name="guest[${guestIndex}][seller]">
+            </div>
+            <div class="inputContainer">
+                <label>Área</label>
+                <input type="text" name="guest[${guestIndex}][area]">
+            </div>
+        `;
+        guestIndex++;
+
+        var instance = window.intlTelInput(itemDiv.children[3].children[1], {
+            initialCountry: "us",
+            separateDialCode: false,
+            strictMode: true,
+            loadUtils: () => import('https://assets.levount.com/intl-input/build/js/utils.js'),
+        });
+        itiInstances.push(instance);
+
+        div.appendChild(itemDiv);
+        itemDiv.children[1].children[1].focus();
+    }
+
+    function addWarrantyItem() {
+        const div = document.getElementById("warrantyItems");
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('item');
+        itemDiv.innerHTML = `
+            <button type="button" onclick="this.parentElement.remove()"><i>&#xe1118;</i></button>
+            <div class="inputContainer">
+                <label>Forma</label>
+                <select name="warranty[items][0][shape]" id="">
+                    <option value=""></option>
+                    <option value="ring">A - anillo</option>
+                    <option value="earring">B - arete</option>
+                    <option value="pendant">C - dije</option>
+                    <option value="chain">D - cadena</option>
+                    <option value="necklace">E - gargantilla</option>
+                    <option value="wristlet">F - pulsera</option>
+                    <option value="bracelet">G - brazalete</option>
+                    <option value="anklet">H - tobillera</option>
+                    <option value="dangly">N - arracada</option>
+                    <option value="omega">Q - omega</option>
+                    <option value="choker">R - choker</option>
+                    <option value="accesory">V - accesorio</option>
+                </select>
+            </div>
+
+            <div class="inputContainer">
+                <label>Material</label>
+                <select name="warranty[items][${warrantyItemIndex}][material]" id="">
+                    <option value="silver">Plata</option>
+                    <option value="gold">Oro</option>
+                </select>
+            </div>
+
+            <div class="inputContainer">
+                <label>Rodio</label>
+                <select name="warranty[items][${warrantyItemIndex}][rodium]" id="">
+                    <option value="" selected></option>
+                    <option value="white">Blanco</option>
+                    <option value="yellow">Amarillo</option>
+                    <option value="pink">Rosado</option>
+                </select>
+            </div>
+
+            <div class="inputContainer">
+                <label>Piedra central</label>
+                <input type="text" name="warranty[items][${warrantyItemIndex}][centralStone]">
+            </div>
+
+            <div class="inputContainer">
+                <label>Piedra lateral</label>
+                <input type="text" name="warranty[items][${warrantyItemIndex}][lateralStone]">
+            </div>
+
+            <div class="inputContainer">
+                <label>Reparación y notas</label>
+                <textarea name="warranty[items][${warrantyItemIndex}][remarks]"></textarea>
+            </div>
+        `;
+        warrantyItemIndex++;
+
+        div.appendChild(itemDiv);
+        itemDiv.children[1].children[1].focus();
+    }
+
+
+
 
     function setUnitPrice(element) {
         const levountCode = element.value;
@@ -199,7 +460,6 @@
         }
     }
 
-    let paymentIndex = 1;
     function addPaymentMethod(data) {
         const div = document.getElementById("payments");
 
@@ -207,12 +467,12 @@
         itemDiv.classList.add('twoInputContainer');
 
         itemDiv.innerHTML=`               
-            <button type="button" onclick="deletePayment(this)"><i>&#xe1082;</i></button>
+            <button type="button" onclick="deletePayment(this)"><i>&#xe1118;</i></button>
             <div class="inputContainer">
                 <label for="">Método</label>
                 <select name="sale[payment][${paymentIndex}][method]" class="currSelect">
                     <option value="cash" ${ (data?.method == 'cash') ? 'selected' : '' }>Efectivo</option>
-                    <option value="card" ${ (data?.method == 'card') ? 'selected' : '' }>Tarjeta</option>
+                    <option value="card" ${ (data?.method == 'card' || !data) ? 'selected' : '' }>Tarjeta</option>
                     <option value="amex" ${ (data?.method == 'amex') ? 'selected' : '' }>American Express</option>
                     <option value="roomCharge" ${ (data?.method == 'roomCharge') ? 'selected' : '' }>Habitación</option>
                     <option value="travelCheck" ${ (data?.method == 'travelCheck') ? 'selected' : '' }>Travel check</option>
@@ -222,7 +482,7 @@
                 <label for="">Moneda</label>                                   
                 <select name="sale[payment][${paymentIndex}][currency]" class="currSelect" onchange="changeCurrency(this)">
                     <option value="mxn" ${ (data?.currency == 'mxn') ? 'selected' : '' }>MXN</option>
-                    <option value="usd" ${ (data?.currency == 'usd') ? 'selected' : '' }>USD</option>
+                    <option value="usd" ${ (data?.currency == 'usd' || !data) ? 'selected' : '' }>USD</option>
                     <option value="eur" ${ (data?.currency == 'eur') ? 'selected' : '' }>EUR</option>
                 </select>
             </div>
@@ -230,20 +490,15 @@
                 <label for="">Monto</label>
                 <input type="number" step="0.01" name="sale[payment][${paymentIndex}][amount]" value="${ data?.amount }">
             </div>
-
-            ${ 
-                (data?.currency && data?.currency != 'mxn') 
-                ? `
-                    <div class="inputContainer exchangeCurrency">
-                        <label for="">Tipo de cambio</label>
-                        <input type="number" step="0.01" name="sale[payment][${paymentIndex}][exchange]" value="${ data?.exchangeRate }">
-                    </div>    
-                `
-                : ''
-            }
+            <div class="inputContainer exchangeCurrency">
+                <label for="">Tipo de cambio</label>
+                <input type="number" step="0.01" name="sale[payment][${paymentIndex}][exchange]" value="${ data?.exchangeRate }">
+            </div>  
         `;
+        paymentIndex++;
         
         div.appendChild(itemDiv);
+        itemDiv.children[3].children[1].focus();
     }
 
     function changeCurrency(element) {
@@ -293,7 +548,7 @@
                         'Accept': 'application/json'
                     }
                 });
-                const resJson = await res.json(); console.log(resJson);
+                const resJson = await res.json();
 
                 if (resJson.success == true) {
 
@@ -313,7 +568,13 @@
                         });
                     }
 
-                    fillContainer(document.getElementById('personalData'), resJson?.data, '');
+                    fillContainer(document.getElementById('personalData'), resJson?.data, 'client');
+                    const clientPhoneInputId = "client[phone]";
+                    const phoneindex = Array.from(telInputs).findIndex(input => input.id === clientPhoneInputId);
+                    if (phoneindex !== -1) {
+                        itiInstances[phoneindex].setNumber(resJson?.data?.phone);
+                    }
+
 
                 } else {
                     resetFormExcept(form, [
@@ -325,6 +586,9 @@
                        document.getElementById("payments").innerHTML = "";
                        productIndex = 0;
                        paymentIndex = 0;
+                    } else if (documentType == 'warranty') {
+                        document.getElementById("warrantyItems").innerHTML = "";
+                        warrantyItemIndex = 0;
                     }
                 }
 
@@ -364,52 +628,7 @@
         });
     }
 
-    async function registerClient(event) {
-        event.preventDefault();
-
-        try {
-
-            let form = document.getElementById("clientData");
-            let documentNumber = document.getElementById("documentNumber");
-            let clientName = document.getElementById("clientName");
-            const formData = new FormData(form);
-
-            if (iti.isValidNumber()) {
-                formData.set('phone', iti.getNumber());
-            }
-
-            const data = Object.fromEntries(formData.entries());
-            const res = await fetch("/api/clients", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
-                body: JSON.stringify(data)
-            })
-
-            const resJson = await res.json();
-
-            if (resJson.success == false) {
-            } else {
-                productIndex = 0;
-                paymentIndex = 0;
-                documentNumber.stepUp();
-                clientName.focus();
-                document.getElementById('itemsContainer').innerHTML = "";
-                document.getElementById('payments').innerHTML = "";
-                resetFormExcept(form,
-                    [
-                        'documentType', 'storeId', 'docDate', 'documentNumber', 'telCountryCode', 'countrySearch',
-                        'docStatus', 'sale[preparedBy]', 'sale[shift]'
-                    ]
-                );
-            }
-            showResponse("responseMessage", resJson);
-            setTimeout(hideMessage, 6000);
-
-        } catch (error) {
-            showResponse("responseMessage", error);
-            setTimeout(hideMessage, 6000);
-        }
-    }
+    
 
     function resetFormExcept(formElement, fieldsToKeep = []) {
         Array.from(formElement.elements).forEach(input => {
@@ -464,6 +683,12 @@
         forms.forEach(form => form.classList.toggle('active', false));
         const docForm = document.getElementById(id + "Form");
         docForm.classList.toggle('active', true);
+
+        if (id == 'gift') {
+            document.getElementById("personDataContainer").style.display = 'none';
+        } else {
+            document.getElementById("personDataContainer").style.display = 'block';
+        }
     }
 
     function showExchange(currencyValue) {
@@ -512,7 +737,6 @@
         list.classList.add('hidden');
     }
 
-    let productIndex = 0;
     function addItem(itemData) {
         const itemsContainer = document.getElementById('itemsContainer');
 
@@ -520,7 +744,7 @@
         itemDiv.classList.add('itemRow');
 
         itemDiv.innerHTML = `
-            <button type="button" onclick="removeItem(this)"><i>&#xe1013;</i></button>
+            <button type="button" onclick="removeItem(this)"><i>&#xe1118;</i></button>
             <input type="hidden" value="${itemData?.id || ''}" />
             <div class="inputContainer">
                 <label>Cantidad</label>
@@ -569,32 +793,35 @@
         productIndex++;
 
         itemsContainer.appendChild(itemDiv);
+        itemDiv.children[3].children[1].focus();
     }
 
     function removeItem(button) {
         button.parentElement.remove();
     }
 
-    function calculateRemaining() {
-        const totalVenta = parseFloat(document.querySelector('[name="sale[total]"]').value) || 0;
-        
-        let totalPagado = 0;
-        
-        // Buscamos todos los inputs de monto dentro del grupo de pagos
-        // El selector busca inputs cuyo name termine en [amount]
-        const montos = document.querySelectorAll('[name*="sale[payment]"][name$="[amount]"]');
-        
-        montos.forEach(input => {
-            totalPagado += parseFloat(input.value) || 0;
-        });
 
-        const restante = totalVenta - totalPagado;
-        
-        console.log(`Pagado: ${totalPagado}, Resta: ${restante}`);
-        
-        // Aquí podrías actualizar un span visual para el usuario
-        document.getElementById('lblRestante').innerText = restante.toFixed(2);
-        
-        if(restante < 0) alert("¡Estás cobrando de más! Verifica el cambio.");
-    }
+    document.addEventListener('keydown', function(event) {
+
+        if(event.altKey && event.key.toLowerCase() == 'a') {
+            if(document.getElementById("documentType").value == 'sale') {
+                addItem();
+            } else if(document.getElementById("documentType").value == 'gift') {
+                addGuest();
+            } else if(document.getElementById("documentType").value == 'warranty') {
+                addWarrantyItem();
+            }
+        };
+
+        if(event.altKey && event.key.toLowerCase() == 'c') {
+            document.getElementById("clientName").focus();
+        };
+
+        if(event.altKey && event.key.toLowerCase() == 'x') {
+            if(document.getElementById("documentType").value == 'sale') {
+                addPaymentMethod();
+            }
+        };
+
+    });
 </script>

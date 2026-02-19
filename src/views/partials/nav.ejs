@@ -2,7 +2,9 @@
     body {
         & header {
             position: sticky;
+            top: 0;
             z-index: 999;
+            background-color: var(--lv-white);
 
             & nav {
                 box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.5);
@@ -13,17 +15,18 @@
                     justify-content: space-between;
 
                     & .logoContainer {
+                        cursor: pointer;
                         display: block;
                         min-width: 200px;
                         width: fit-content;
                         height: 50px;
                         background-color: var(--text-dark);
                         text-align: left;
-                        -webkit-mask-image: url('/LeVount/images/logos/LeVount_Logo.svg') !important;
+                        -webkit-mask-image: url('https://assets.levount.com/images/logos/LeVount_Logo.svg') !important;
                         -webkit-mask-size: contain;
                         -webkit-mask-repeat: no-repeat;
                         -webkit-mask-position: center;
-                        mask-image: url('/LeVount/images/logos/LeVount_Logo.svg') !important;
+                        mask-image: url('https://assets.levount.com/images/logos/LeVount_Logo.svg') !important;
                         mask-size: contain;
                         mask-repeat: no-repeat;
                         mask-position: center;
@@ -45,6 +48,10 @@
                                 color: var(--lv-gold);
                             }
                         }
+
+                        & #menuButton1 {
+                            display: none;
+                        }
                     }
                 }
 
@@ -63,17 +70,26 @@
                             align-items: center;
                             text-transform: uppercase;
                             font-weight: 500;
-                            font-size: 0.9rem;
+                            font-size: 0.8rem;
+                            font-family: "Montserrat", sans-serif;
+                            font-weight: 500;
+                            border-bottom: 2px transparent solid;
+                            transition: all 0.3s;
 
                             & a {
                                 color: var(--text-dark);
                                 text-decoration: none;
                                 transition: all 0.3s;
+
+                                &:hover {
+                                    color: var(--lv-gold);
+                                }
                             }
 
                             & .subMenu {
                                 position: absolute;
-                                background-color: var(--lv-gold);
+                                background-color: var(--lv-white);
+                                border-top: 1px var(--gray-20) solid;
                                 top: 100%;
                                 left: 0;
                                 right: 0;
@@ -84,16 +100,40 @@
                                 transition: all 0.3s ease-in-out;
                                 overflow: hidden;
                                 display: flex;
+                                gap: 50px;
+                                row-gap: 10px;
+                                padding: 25px;
+                                box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.5);
 
                                 & ul {
                                     display: block;
 
                                     & h4 {
                                         margin: 0;
+                                        margin-bottom: 12px;
                                     }
 
                                     & li {
                                         min-height: 0;
+
+                                        &+ li {
+                                            margin-top: 5px;
+                                        }
+
+                                        & a {
+                                            color: var(--text-dark);
+                                            display: flex;
+                                            align-items: center;
+
+                                            &:hover {
+                                                color: var(--lv-gold);
+                                            }
+                                        }
+
+                                        & i {
+                                            font-size: 20px;
+                                            margin-right: 5px;
+                                        }
                                     }
                                 }
                             }
@@ -105,17 +145,594 @@
                                     transform: translateY(0);
                                 }
 
-                                & a {
-                                    color: var(--lv-gold);
-                                }
-
-                                border-bottom: 2px var(--lv-gold) solid;
+                                border-color: var(--lv-gold);
                             }
                         }
                     }
                 }
             }
         }
+
+        & .userDrawer {
+            position: fixed;
+            top: 0; right: -400px;
+            width: 100%;
+            max-width: 400px;
+            height: 100dvh;
+            background-color: #FFFFFF;
+            font-family: apple-system, BlinkMacSystemFont, "Nunito Sans", sans-serif;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+            transition: right 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+            display: grid;
+            grid-template-rows: auto max-content;
+            box-sizing: border-box;
+            z-index: 1000;
+
+            & button {
+                width: 100%;
+                background-color: var(--main-dark);
+                color: var(--font-light);
+                cursor: pointer;
+                min-height: 35px;
+                border-style: solid;
+                transition: all 0.3s ease-in-out;
+                border-radius: 3px;
+                margin-bottom: 10px;
+                border: 1px var(--font-dark) solid;
+
+                & i {
+                    font-family: "LeVountIcons";
+                    font-size: 20px;
+                    margin-right: 5px;
+                    font-style: normal;
+                    font-weight: 400;
+                }
+
+                &:hover {
+                    background-color: var(--main-light);
+                    color: var(--font-dark);
+                }            
+            }
+
+            & .userData {
+                display: grid;
+                grid-template-rows: max-content max-content max-content max-content max-content;
+                padding: 20px;
+
+                & .closeButton {
+                    background-color: transparent;
+                    min-height: auto;
+                    height: 35px;
+                    aspect-ratio: 1 / 1;
+                    font-family: "LeVountIcons";
+                    border: none;
+                    width: 35px;
+                    font-size: 30px;
+                    color: var(--font-dark);
+                    padding: 0;
+                    margin: 0;
+                    margin-bottom: 10px;
+                    margin-left: auto;
+
+                    &:hover {
+                        color: var(--accent-gold);
+                    }
+                }
+
+                & h4, & h3 {
+                    margin: 0;
+                    border-bottom: 1px var(--gray-80) solid;
+                    line-height: 200%;
+                    margin-bottom: 10px;
+                }
+
+                h3 {
+                    font-size: 1rem;
+                    color: var(--gray-80);
+                }
+
+                & .logIn {
+
+                    & .inputContainer {
+                        display: grid;
+                        position: relative;
+
+                        &:first-child {
+                            margin-bottom: 10px;
+                        }
+
+                        & label {
+                            font-size: 0.8rem;
+                            font-weight: 500;
+                            color: var(--gray-80);
+                            margin-bottom: 8px;
+                        }
+
+                        & input {
+                            box-sizing: border-box;
+                            min-height: 35px;
+                            border: none;
+                            padding: 5px 10px;
+                            color: var(--gray-90);
+                            outline: 1px var(--gray-40) solid;
+                            transition: outline 0.3s;
+
+                            &:focus {
+                                outline: 1px var(--gray-70) solid;
+                            }
+                        }
+
+                        & i {
+                            font-family: "LeVountIcons";
+                            font-size: 25px;
+                            font-style: normal;
+                            font-weight: 400;
+                            position: absolute;
+                            right: 5px;
+                            bottom: 5px;
+                            color: var(--gray-60);
+                            cursor: pointer;
+                        }
+                    }
+
+                    & .errorMessage {
+                        display: flex;
+                        align-items: center;
+                        max-height: 0px;
+                        background-color: #b41c1c;
+                        color: white;
+                        transition: max-height 0.3s ease-in-out;
+                        border-radius: 5px;
+                        max-width: 100%;
+                        font-size: 0.8rem;
+                        overflow: hidden;
+                        box-sizing: border-box;
+                        padding: 0 8px;
+                        margin: 10px 0;
+
+                        & i {
+                            font-family: "LeVountIcons";
+                            font-size: 25px;
+                            margin-right: 5px;
+                            font-style: normal;
+                            font-weight: 400;
+                        }
+
+                        & p {
+                            margin: 0;
+                            padding: 5px;
+                            line-height: 100%;
+                        }
+
+                        &.Open {
+                            max-height: 500px;
+                        }
+                    }                    
+                }
+
+                & a {
+                    text-align: center;
+                    color: var(--gray-70);
+                    font-size: 0.9rem;
+                    margin: auto;
+                    text-decoration: none;
+                    transition: color 0.3s;
+
+                    &:hover {
+                        color: var(--contrast-50);
+                    }
+
+                    &.sign {
+                        color: var(--accent-gold);
+                        &:hover {
+                            color: var(--gray-80);
+                        }
+                    }
+                }
+
+                & ul {
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+
+                    & li {
+                        font-size: 1rem;
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                        padding: 5px 8px;
+                        border-radius: 7px;
+
+                        &:hover {
+                            transform: translateX(5px);
+                            background-color: var(--gray-10);
+                            border-left: 2px var(--gray-70) solid;
+                            color: #C0A700;
+                        }
+                        
+                        &:last-child {
+                            border-bottom: none;
+                        }
+
+                        & i {
+                            font-family: "LeVountIcons";
+                            font-size: 30px;
+                            margin-right: 5px;
+                            font-style: normal;
+                            font-weight: 400;
+                        }
+
+                        & a {
+                            color: var(--font-dark);
+                            text-align: left;
+                            margin: 0;
+                            width: 100%;
+                        }
+                    }
+
+                    & .adminOptions {
+                        & li {
+                            & i {
+                                font-weight: lighter;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            & .drawerBottom {
+                padding: 20px;
+                & .links {
+                    display: flex;
+                    flex-wrap: wrap;
+                    color: var(--gray-70);
+                    font-size: 0.7rem;
+                    gap: 5px;
+                    justify-content: center;
+
+                    & a {
+                        color: var(--gray-70);
+                        transition: color 0.3s;
+                        &:hover {
+                            color: var(--gray-90);
+                        }
+                    }
+                }                
+            }
+
+            &.Open {
+                right: 0;
+            }
+        }
+        & .userOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s;
+
+            &.Open {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
+        & .cartDrawer {
+            position: fixed;
+            top: 0; right: -400px; /* Escondido */
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: #FFF;
+            z-index: 1000;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+            transition: right 0.4s cubic-bezier(0.2, 1, 0.3, 1); /* Animación suave */
+            font-family: apple-system, BlinkMacSystemFont, "Nunito Sans", sans-serif;
+            display: flex;
+            flex-direction: column;
+
+            &.open {
+                right: 0;
+            }
+
+            & .cart-header {
+                padding: 20px;
+                border-bottom: 1px solid #eee;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                & h2 {
+                    margin: 0;
+                }
+
+                & .closeButton {
+                    background-color: transparent;
+                    min-height: auto;
+                    height: 35px;
+                    aspect-ratio: 1 / 1;
+                    font-family: "LeVountIcons";
+                    border: none;
+                    width: 35px;
+                    font-size: 30px;
+                    color: var(--font-dark);
+                    padding: 0;
+                    margin: 0;
+                    margin-bottom: 10px;
+                    margin-left: auto;
+
+                    &:hover {
+                        color: var(--accent-gold);
+                    }
+                }
+            }
+            & .cart-items-container {
+                flex: 1;
+                overflow-y: auto;
+                padding: 20px;
+
+                & ul {
+                    padding: 0;
+                    margin: 0;
+                    list-style: none;
+
+                    & li {
+                        display: flex;
+                        gap: 15px;
+                        position: relative;
+
+                        &+ li {
+                            margin-top: 25px;
+                        }
+
+                        & img {
+                            width: 80px;
+                            height: 100px;
+                            object-fit: cover;
+                        } 
+
+                        & i {
+                            font-family: "LeVountIcons";
+                            font-size: 25px;
+                            font-style: normal;
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            border-radius: 50%;
+                            aspect-ratio: 1 / 1;
+                            cursor: pointer;
+                            transition: 0.3s all;
+
+                            &:hover {
+                                background-color: var(--bg-stone);
+                                color: var(--accent-gold);
+                            }
+                        }
+
+                        & .description {
+                            display: grid;
+                            grid-template-rows: auto max-content;
+
+                            & h2, & h3, & h4, & h5 {
+                                margin: 0;
+                                font-weight: 400;
+                                line-height: 100%;
+                            }
+
+                            & .details {
+                                display: grid;
+                                height: fit-content;
+
+                                & a {
+                                    color: var(--font-dark);
+                                    line-height: 100%;
+                                    margin-bottom: 5px;
+                                    font-weight: 500;
+                                    font-size: 0.8rem;
+                                    transition: all 0.3s;
+
+                                    &:hover {
+                                        color: var(--accent-gold);
+                                    }
+                                }
+
+                                & span {
+                                    color: var(--gray-80);
+                                    line-height: 100%;
+                                    font-size: 0.8rem;
+                                }
+
+                                & .quantities {
+                                    display: flex;
+                                    & span {
+                                        background-color: var(--gray-20);
+                                        height: 20px;
+                                        width: 20px;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                    }
+
+                                    & button {
+                                        height: 20px;
+                                        width: 20px;
+                                        padding: 0;
+                                        border: 0;
+                                        box-sizing: border-box;
+                                        font-family: "Nunito Sans", sans-serif;
+                                        cursor: pointer;
+                                        background-color: var(--gray-40);
+                                        transition: all 0.3s;
+
+                                        &:hover {
+                                            background-color: var(--gray-90);
+                                            color: var(--font-light);
+                                        }
+                                    }
+                                }
+                            }
+
+                            & .price {
+                                height: fit-content;
+
+                                & h5 {
+                                    color: var(--gray-80);
+                                    text-decoration: line-through;
+                                }
+
+                                & h4 {
+                                    color: var(--accent-gold);
+                                    font-size: 1rem;
+                                    font-weight: 500;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            & .cart-footer {
+                padding: 20px;
+                background: #FAF9F6;
+                border-top: 1px solid #eee;
+
+                & button {
+                    width: 100%;
+                    background-color: var(--main-dark);
+                    color: var(--font-light);
+                    cursor: pointer;
+                    min-height: 35px;
+                    border-style: solid;
+                    transition: all 0.3s ease-in-out;
+                    border-radius: 3px;
+                    margin-top: 10px;
+                    border: 1px var(--font-dark) solid;
+
+                    & i {
+                        font-family: "LeVountIcons";
+                        font-size: 20px;
+                        margin-right: 5px;
+                        font-style: normal;
+                        font-weight: 400;
+                    }
+
+                    &:hover {
+                        background-color: var(--main-light);
+                        color: var(--font-dark);
+                    }            
+                }
+
+                & .subtotal {
+                    color: var(--gray-80);
+                    font-size: 0.8rem;
+                    display: flex;
+                    justify-content: space-between;
+
+                    & #cartSubtotal {
+                        font-weight: 500;
+                        color: var(--accent-gold) !important;
+                        font-size: 1rem;
+                    }
+                }
+            }
+        }
+        & .cartOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s;
+
+            &.open {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+
+    @media only screen and (max-width: 560px) {
+
+        body {
+            & header {
+                & nav {
+
+                    & .upperBar {
+                        padding: 10px;
+
+                        & .leftIcons, & .rightIcons {
+                            & i {
+                                font-size: 30px;
+                            }
+
+                            & #menuButton1 {
+                                display: flex;
+                            }
+                            & #mailButton {
+                                display: none;
+                            }
+                        }
+                    }
+
+                    & .menuDrawer {
+                        position: absolute;
+                        top: 100%;
+                        right: 100%;
+                        left: -100%;
+                        background-color: var(--font-light);
+                        padding: 20px;
+                        transition: all 0.3s;
+                        border: 1px var(--gray-20) solid;
+                        border-top: 1px var(--gray-20) solid;
+                        height: 100dvh;
+
+                        & ul {
+                            display: block;
+
+                            & li {
+                                position: relative;
+
+                                & .subMenu {
+                                    background-color: var(--gray-10);
+                                    z-index: 1;
+                                    display: block;
+                                    border-top: 2px var(--lv-gold) solid;
+                                    box-shadow: none;
+
+                                    & ul {
+                                        & h4 {
+                                            margin-bottom: 5px;
+                                        }
+                                        &+ ul {
+                                            margin-top: 15px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        &.Open {
+                            left: 0;
+                            right: 0;
+                        }
+                    }
+                }
+            }
+
+            & .userDrawer {
+                right: -100%;
+                max-width: 100%;
+
+                & .userData {
+
+                }
+            }
+        }
+
     }
 </style>
 
@@ -123,46 +740,184 @@
     <nav>
         <section class="upperBar">
             <div class="leftIcons">
-                <i>&#xe10da;</i>
+                <i id="mailButton">&#xe10da;</i>
+                <i id="menuButton1" onclick="openLateralMenu()">&#xe1120;</i>
             </div>
-            <div class="logoContainer">
+            <div class="logoContainer" onclick="window.location.href=`/`">
 
             </div>
             <div class="rightIcons">
-                <i>&#xe111b;</i>
-                <i>&#xe10CC;</i>
+                <i onclick="toggleCart()">&#xe111b;</i>
+                <i onclick="openUserMenu()">&#xe10CC;</i>
             </div>
         </section>
-        <section class="menuDrawer">
+        <section class="menuDrawer" id="menuDrawer">
             <ul>
                 <li>
-                    <a href="">Jewelry</a>
+                    <a href="/products">Jewelry</a>
                     <div class="subMenu">
                         <ul>
                             <h4>Categories</h4>
-                            <li>Rings</li>
-                            <li>Earrings</li>
-                            <li>Bracelets</li>
-                            <li>Pendants</li>
-                            <li>Necklaces</li>
+                            <li><a href="/products/rings">Rings</a></li>
+                            <li><a href="/products/earrings">Earrings</a></li>
+                            <li><a href="/products/bracelets">Bracelets</a></li>
+                            <li><a href="/products/pendants">Pendants</a></li>
+                            <li><a href="/products/necklaces">Necklaces</a></li>
                         </ul>
                     </div>
                 </li>
                 <li>
-                    <a href="">Gifts</a>
+                    <a href="/products">Gifts</a>
                 </li>
                 <li>
                     <a href="">About</a>
                 </li>                
                 <li>
                     <a href="">Contact</a>
+                    <div class="subMenu">
+                        <ul>
+                            <h4>Contact us</h4>
+                            <li style="text-transform: none;">
+                                <a href="mailto:customercare@levount.com">
+                                    <i>&#xe111d;</i>customercare@levount.com
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i>&#xe1100;</i>+52 998 756 2435
+                                </a>
+                            </li>
+                            <li>
+
+                            </li>
+                        </ul>
+
+                        <ul>
+                            <h4>Social</h4>
+                            <li style="text-transform: none;">
+                                <a href="https://www.facebook.com/LevountJewelry/">
+                                    <i>&#xe1122;</i>@LevountJewelry
+                                </a>
+                            </li>
+                            <li style="text-transform: none;">
+                                <a href="https://www.instagram.com/le_vount/">
+                                    <i>&#xe1123;</i>le_vount
+                                </a>
+                            </li>
+                            <li style="text-transform: none;">
+                                <a href="https://www.tiktok.com/@levount_">
+                                    <i>&#xe1124;</i>levount_
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a href="">Legal</a>
+                    <div class="subMenu">
+                        <ul>
+                            <h4>Legal</h4>
+                            <li><a href="/terms">Terms of service</a></li>
+                            <li><a href="/privacy">Privacy policy</a></li>
+                        </ul>
+                    </div>
                 </li>
                 <% if (userSession?.accessLevel >= 2) { %>
                     <li>
                         <a href="">Administración</a>
+                        <div class="subMenu">
+                            <ul>
+                                <h4>Productos</h4>
+                                <li><a href="/admin/products">Consultar</a></li>
+                                <li><a href="/admin/products/create">Nuevo</a></li>
+                            </ul>
+
+                            <ul>
+                                <h4>Clientes</h4>
+                                <li><a href="/admin/clients">Consultar</a></li>
+                                <li><a href="/admin/clients/create">Nuevo</a></li>
+                            </ul>
+
+                            <ul>
+                                <h4>Campañas</h4>
+                                <li><a href="/admin/campaigns/whatsapp">WhatsApp</a></li>
+                                <li><a href="/admin/campaigns/email">Email</a></li>
+                            </ul>
+                        </div>
                     </li>
                 <% } %>
             </ul>
         </section>
     </nav>
 </header>
+
+<section class="userDrawer" id="userDrawer">
+    <div class="userData">
+        <button class="closeButton" onclick="openUserMenu()">&#xe1105;</button>
+        <% if (userSession) { %>
+
+        <h4>Welcome, <%- userSession?.name?.split(" ")?.[0] + " " + (userSession?.lastname?.split(" ")?.[0] || '') %></h4>
+        <ul>
+            <li><a href="/account"><i>&#xe10cc;</i>My account</a></li>
+            <li><a href="/purchases"><i>&#xe111c;</i>My purchases</a></li>
+            <li><a href="/wishlist"><i>&#xe10f7;</i>Wishlist</a></li>
+        </ul>
+        <% } else { %>
+
+        <section class="logIn">
+            <form id="logIn" onsubmit="logIn(event)">
+                <div class="inputContainer">
+                    <label for="eMail">Email or username</label>
+                    <input type="email" name="eMail" id="eMail">
+                </div>
+                <div class="inputContainer">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password">
+                    <i onclick="showPass(this)">&#xe10ed;</i>
+                </div>
+            </form>
+            <div class="errorMessage" id="errorMessage">
+                <i>&#xe104d;</i>
+                <p></p>
+            </div>
+        </section>
+        <button type="button" onclick="logIn(event)"><i>&#xe104a;</i>LogIn</button>
+        <a href="">Forgot your password?</a>
+        <a href="/signup" class="sign">Create an account</a>
+
+        <% } %>
+    </div>
+    <div class="drawerBottom">
+        <% if (userSession) { %>
+            <button type="button" onclick="window.location.href=`/api/auth/logout`"><i>&#xe104b;</i>LogOut</button>
+        <% } %>
+        <div class="links">
+            <a href="/privacy">Privacy</a>
+            <span>|</span>
+            <a href="/terms">Terms & conditions</a>
+        </div>
+    </div>
+</section>
+<section class="userOverlay" id="userOverlay" onclick="openUserMenu()"></section>
+
+<section class="cartDrawer" id="cartDrawer">
+    <div class="cart-header">
+        <h2>Your bag</h2>
+        <button onclick="toggleCart()" class="closeButton">&#xe1105;</button>
+    </div>
+    
+    <div class="cart-items-container">        
+        <ul id="cartItemsContainer">
+            <li>Your bag is empty.</li>
+        </ul>
+    </div>
+
+    <div class="cart-footer">
+        <div class="subtotal">
+            <span>Subtotal</span>
+            <span id="cartSubtotal">$0.00</span>
+        </div>
+        <button onclick="window.location.href='/checkout'" class="btn btn-primary btn-block"><i>&#xe111c;</i>Checkout</button>
+    </div>
+</section>
+<section class="cartOverlay" id="cartOverlay" onclick="toggleCart()"></section>

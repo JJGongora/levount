@@ -5,17 +5,14 @@ function openUserMenu() {
 
 function openLateralMenu() {
     let buttonMenu = document.getElementById("menuButton1");
-    let lateralMenu = document.getElementsByClassName("bottomContainer")[0];
     let drawer = document.getElementById("menuDrawer");
 
-    if (lateralMenu.classList.contains("Open")) {
-        lateralMenu.classList.remove("Open");
+    if (drawer.classList.contains("Open")) {
         drawer.classList.remove("Open");
-        buttonMenu.innerHTML=`&#xe1010;`;
+        buttonMenu.innerHTML=`&#xe1120;`;
     } else {
-        lateralMenu.classList.add("Open");
         drawer.classList.add("Open");
-        buttonMenu.innerHTML=`&#xe1014;`;
+        buttonMenu.innerHTML=`&#xe1106;`;
     }
 }
 
@@ -31,14 +28,7 @@ function showPass(element) {
     }
 }
 
-window.addEventListener("scroll", function () {
-    const navbar = document.getElementsByClassName("upperContainer")[0];
-    if (window.scrollY > 0) {
-        navbar.classList.add("Scrolled");
-    } else {
-        navbar.classList.remove("Scrolled");
-    }
-
+window.addEventListener("scroll", function () {    
     const parallaxImg = document.querySelector('.parallax-img');
     const section = document.querySelector('.editorial');
     
@@ -133,7 +123,7 @@ async function loadCartDetails() {
             resJson.items.forEach(item => {
                 itemsHTML += `
                     <li>
-                        <img src="/images/products/${item.material}/${item.category}/${item.sku}/${item.sku.toLowerCase()}-thumb.webp" alt="" loading="lazy">
+                        <img src="https://assets.levount.com/global/images/products/${item.material}/${item.category}/${item.sku}/${item.sku.toLowerCase()}-thumb.webp" alt="" loading="lazy">
                         <i onclick="deteleCartItem('${item.sku}')">&#xe1118;</i>
                         <div class="description">
                             <div class="details">
