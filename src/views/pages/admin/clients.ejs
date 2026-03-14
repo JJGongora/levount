@@ -1,94 +1,482 @@
-<link rel="stylesheet" href="https://assets.levount.com/global/styles/admin-forms.css">
-<section class="Content">
-    <h1><%- "Clientes" //t("pageTitle") %></h1>
+<style>
+    /* Estilos encapsulados para el panel de clientes */
+    body {
+        & main {
+            padding: 25px;
 
-    <form action="" onsubmit="searchClient(event)" id="searchFilters" style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <div class="inputContainer">
+            & .Content.sys-clients-panel {
+                background-color: transparent;
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                display: grid;
+                row-gap: 20px;
+
+                /* Cabecera y controles superiores */
+                & .view-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-bottom: 16px;
+                    border-bottom: 1px solid var(--lv-border);
+
+                    & .title-area {
+                        & h1 {
+                            font-size: 1.5rem;
+                            color: var(--lv-obsidian);
+                            font-weight: 600;
+                            margin: 0;
+                        }
+
+                        & p {
+                            font-size: 0.9rem;
+                            color: var(--gray-70);
+                            margin: 0;
+                        }
+                    }
+
+                    /* Barra de herramientas */
+                    & .toolbar-actions {
+                        display: flex;
+                        gap: 16px;
+                        align-items: center;
+
+                        & .search-wrapper {
+                            position: relative;
+
+                            & input[type="search"] {
+                                padding: 10px 16px 10px 36px;
+                                border: 1px solid var(--gray-40);
+                                border-radius: 4px;
+                                width: 320px;
+                                font-size: 0.9rem;
+                                color: var(--text-dark);
+                                background-color: var(--bg-white);
+                                transition: all 0.2s ease;
+
+                                &:focus {
+                                    outline: none;
+                                    border-color: var(--lv-gold);
+                                    box-shadow: 0 0 0 3px var(--lv-gold-light);
+                                }
+                            }
+
+                            &::before {
+                                content: '⌕';
+                                position: absolute;
+                                left: 12px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                font-size: 1.2rem;
+                                color: var(--gray-60);
+                                font-weight: bold;
+                            }
+                        }
+
+                        & .btn-outline {
+                            background-color: var(--bg-white);
+                            border: 1px solid var(--gray-40);
+                            color: var(--lv-slate);
+                            padding: 10px 16px;
+                            border-radius: 4px;
+                            font-size: 0.9rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+
+                            &:hover {
+                                background-color: var(--gray-20);
+                            }
+                        }
+
+                        & .btn-primary {
+                            background-color: var(--lv-obsidian);
+                            color: var(--lv-white);
+                            padding: 10px 20px;
+                            font-size: 0.9rem;
+                            font-weight: 600;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            border: none;
+                            transition: background-color 0.2s;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+
+                            &:hover {
+                                background-color: var(--lv-slate);
+                            }
+                        }
+                    }
+                }
+
+                & form {
+                    display: flex;
+                    gap: 10px;
+
+                    & .form-group {
+                        display: grid;
+                        row-gap: 3px;
+
+                        & label {
+                            color: var(--gray-70);
+                            font-size: 0.7rem;
+                            text-transform: uppercase;
+                            font-weight: 600;
+                        }
+
+                        & input {
+                            padding: 8px 10px;
+                            box-sizing: border-box;
+                            border-radius: 4px;
+                            border: 1px var(--lv-border) solid;
+                            font-size: 0.9rem;
+                        }
+                    }
+                }
+
+                /* Contenedor principal de la tabla */
+                & .table-card {
+                    background-color: var(--bg-white);
+                    border: 1px solid var(--lv-border);
+                    border-radius: 6px;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                    overflow: hidden;
+
+                    & .table-container {
+                        width: 100%;
+                        overflow-x: auto;
+
+                        & table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            text-align: left;
+
+                            & th {
+                                background-color: var(--gray-10);
+                                padding: 14px 20px;
+                                font-size: 0.75rem;
+                                text-transform: uppercase;
+                                letter-spacing: 0.05em;
+                                color: var(--gray-70);
+                                font-weight: 600;
+                                border-bottom: 1px solid var(--lv-border);
+                                white-space: nowrap;
+                            }
+
+                            & td {
+                                padding: 16px 20px;
+                                border-bottom: 1px solid var(--lv-border);
+                                vertical-align: middle;
+                                font-size: 0.9rem;
+                                color: var(--text-dark);
+
+                                /* Agrupación de Avatar y Nombre */
+                                & .client-profile {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 12px;
+
+                                    & .avatar {
+                                        width: 40px;
+                                        height: 40px;
+                                        border-radius: 50%;
+                                        background-color: var(--lv-gold-light);
+                                        color: var(--lv-gold-dim);
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        font-weight: bold;
+                                        font-size: 0.9rem;
+                                        flex-shrink: 0;
+                                    }
+
+                                    & .info {
+                                        display: flex;
+                                        flex-direction: column;
+
+                                        & .name {
+                                            font-weight: 600;
+                                            color: var(--lv-obsidian);
+                                            text-decoration: none;
+                                            margin: 0;
+
+                                            &:hover {
+                                                color: var(--lv-gold);
+                                            }
+                                        }
+
+                                        & .email {
+                                            font-size: 0.8rem;
+                                            color: var(--gray-70);
+                                            margin-top: 2px;
+                                        }
+                                    }
+                                }
+
+                                & .sub-text {
+                                    display: block;
+                                    font-size: 0.8rem;
+                                    color: var(--gray-70);
+                                    margin-top: 2px;
+                                }
+
+                                & .amount {
+                                    font-weight: 600;
+                                    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+                                }
+
+                                /* Botones de acción en la tabla */
+                                & .action-links {
+                                    display: flex;
+                                    gap: 12px;
+                                    justify-content: flex-end;
+
+                                    & button {
+                                        background: none;
+                                        border: none;
+                                        cursor: pointer;
+                                        font-size: 0.85rem;
+                                        font-weight: 500;
+                                        padding: 4px;
+                                        transition: color 0.2s;
+
+                                        &.view-btn {
+                                            color: var(--lv-gold-dim);
+
+                                            &:hover {
+                                                color: var(--lv-gold);
+                                            }
+                                        }
+
+                                        &.edit-btn {
+                                            color: var(--gray-60);
+
+                                            &:hover {
+                                                color: var(--lv-obsidian);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            & tbody tr {
+                                transition: background-color 0.15s ease;
+                                cursor: pointer;
+
+                                &:hover {
+                                    background-color: var(--lv-light);
+                                }
+
+                                &:last-child td {
+                                    border-bottom: none;
+                                }
+                            }
+                        }
+                    }
+
+                    /* Sistema de Badges para Niveles de Cliente */
+                    & .badge {
+                        display: inline-flex;
+                        align-items: center;
+                        padding: 4px 10px;
+                        border-radius: 12px;
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.02em;
+
+                        &.tier-diamond {
+                            background-color: var(--lv-obsidian);
+                            color: var(--lv-white);
+                        }
+
+                        &.tier-gold {
+                            background-color: var(--lv-gold-light);
+                            color: var(--lv-gold-dim);
+                            border: 1px solid rgba(197, 160, 89, 0.2);
+                        }
+
+                        &.tier-silver {
+                            background-color: var(--gray-20);
+                            color: var(--gray-80);
+                        }
+
+                        &.tier-new {
+                            background-color: rgba(16, 185, 129, 0.1);
+                            color: var(--lv-green);
+                        }
+                    }
+
+                    /* Paginación */
+                    & .pagination-footer {
+                        padding: 16px 24px;
+                        border-top: 1px solid var(--lv-border);
+                        background-color: var(--bg-white);
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        & .results-info {
+                            font-size: 0.85rem;
+                            color: var(--gray-70);
+                        }
+
+                        & .page-controls {
+                            display: flex;
+                            gap: 8px;
+
+                            & button {
+                                padding: 6px 12px;
+                                border: 1px solid var(--gray-40);
+                                background-color: var(--bg-white);
+                                color: var(--text-dark);
+                                border-radius: 4px;
+                                font-size: 0.85rem;
+                                cursor: pointer;
+
+                                &:hover:not(:disabled) {
+                                    background-color: var(--gray-20);
+                                }
+
+                                &:disabled {
+                                    color: var(--gray-50);
+                                    cursor: not-allowed;
+                                    background-color: var(--gray-10);
+                                }
+
+                                &.active {
+                                    background-color: var(--lv-gold);
+                                    color: var(--lv-white);
+                                    border-color: var(--lv-gold);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<section class="Content sys-clients-panel">
+    <div class="view-header">
+        <div class="title-area">
+            <h1>Directorio de Clientes</h1>
+            <p>Gestiona la información, historial y preferencias de tus compradores.</p>
+        </div>
+
+        <div class="toolbar-actions">
+            <button class="btn-primary" onclick="window.location.href='/admin/clientes/nuevo'">+ Nuevo Cliente</button>
+        </div>
+    </div>
+
+    <form method="get" id="searchFilters">
+        <div class="form-group">
             <label for="">Nombre</label>
-            <input type="text">
+            <input type="text" name="name" value="<%- utils?.toTitleCase(filters?.name) %>">
         </div>
-        <div class="inputContainer">
+
+        <div class="form-group">
             <label for="">Correo</label>
-            <input type="email">
+            <input type="text" name="email" value="<%- filters?.email?.toLowerCase() %>">
         </div>
-        <div class="inputContainer">
-            <label for="">Fecha de compra</label>
-            <input onchange="searchClient(event)" type="date" max="<%- utils.dateToInputDate(Today) %>">
-        </div>
-        <div class="inputContainer">
+
+        <div class="form-group">
             <label for="">Fecha de captura</label>
-            <input onchange="searchClient(event)" type="date" value="<%- utils.dateToInputDate(Today) %>"
-                max="<%- utils.dateToInputDate(Today) %>">
+            <input type="date" name="captured" max="<%- utils.dateToInputDate(Today) %>" value="<%- filters?.captured %>">
         </div>
-        <button onclick="searchClient(event)"><i>&#xe110d;</i>Buscar</button>
+
+        <button type="submit">Buscar</button>
     </form>
 
-    <ul class="clientList" id="clientList">
-        <li id="counter" class="counter">
-            <h2><%- clients?.length %></h2>
-            <h6>Resultados</h6>
-        </li>
-        <% for (let i=0; i < clients?.length; i++) { %>
-            <li onclick="">
-                <h3><%- clients?.[i]?.clientName %></h3>
-                <h5><%- clients?.[i]?.clientEmail %></h5>
-            </li>
+    <div class="table-card">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Contacto</th>
+                        <th>Última Compra</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% clients?.clients?.forEach(client=> { %>
+                        <tr onclick="window.location.href='/admin/clients/<%- client?.id %>'">
+                            <td>
+                                <div class="client-profile">
+                                    <div class="avatar"><%- client?.name.split(' ').slice(0, 2).map(p => p.slice(0, 1)).join(''); %></div>
+                                    <div class="info">
+                                        <p class="name"><%- client?.name %></p>
+                                        <span class="email"><%- client?.email || `<i
+                                                style="font-style: italic;">error</i>` %></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span><%- client?.phone || `` %></span>
+                                <span class="sub-text"><%- (client?.roomNumber) ? `Habitación: ${client?.roomNumber}`
+                                        : '' %></span>
+                            </td>
+                            <td>
+                                <span><%- client?.docDate?.toLocaleDateString('es-MX', {day: 'numeric' , year: 'numeric'
+                                        , month: 'short' }) %></span>
+                                <span class="sub-text"><%- `${(client?.documentNumber) ? `Nota
+                                        #${client?.documentNumber}` : '' }${(client?.store) ? ` | ${client?.store}` : ''
+                                        }` %></span>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination-footer">
+            <div class="results-info">
+                Mostrando <strong><%- `${clients?.pagination?.startItem} - ${clients?.pagination?.endItem}` %></strong> de <strong><%- clients?.pagination?.totalItems %></strong> clientes
+            </div>
+            <% const p = clients.pagination; if (p && p.totalPages > 1) { %>
+                <div class="page-controls">
+                    
+                    <button 
+                        <%- p.page == 1 ? 'disabled' : '' %> 
+                        onclick="changePage('<%- p.page - 1 %>')">
+                        Anterior
+                    </button>
+
+                    <% p.pagesArray.forEach(item => { %>
+                        <% if (item === '...') { %>
+                            <button disabled>...</button>
+                        <% } else { %>
+                            <button 
+                                class="<%- p.page === item ? 'active' : '' %>"
+                                onclick="changePage('<%- item %>')">
+                                <%- item %>
+                            </button>
+                        <% } %>
+                    <% }) %>
+
+                    <button 
+                        <%= p.page === p.totalPages ? 'disabled' : '' %> 
+                        onclick="changePage('<%- p.page + 1 %>')">
+                        Siguiente
+                    </button>
+                    
+                </div>
             <% } %>
-    </ul>
+        </div>
+    </div>
 </section>
 
 
 <script>
-    async function searchClient(event) {
-        event.preventDefault();
-
-        try {
-            let form = document.getElementById("searchFilters");
-            let clientList = document.getElementById("clientList");
-            let counter = document.getElementById("counter");
-
-            let clientName = form?.[0]?.value || null;
-            let registeredDate = form?.[3]?.value || null;
-            let clientEmail = form?.[1]?.value || null;
-            let acquisitionDate = form?.[2]?.value || null;
-
-            const fetchUrl = `/api/clients?name=${clientName}&captured=${registeredDate}&email=${clientEmail}&purchaseDate=${acquisitionDate}`;
-            const res = await fetch(fetchUrl, {
-                method: "GET",
-                headers: { "Content-Type": "application/json", 'Accept': 'application/json' }
-            })
-
-            const resJson = await res.json();
-            clientList.innerHTML = ""; //Se vacía la lista de clientes.
-
-            if (resJson.message) {
-                //Si el query falla y hay un mensaje como respuesta...
-                let newClientLi = document.createElement("li");
-                newClientLi.classList = `emptyList`;
-                newClientLi.innerHTML = `No se han encontrado coincidencias.`;
-                clientList.appendChild(newClientLi);
-            } else {
-                let newCounter = document.createElement("li");
-                newCounter.classList = `counter`;
-                newCounter.innerHTML = `<h2>${resJson?.length || 0}</h2><h6>Resultados</h6>`;
-                clientList.appendChild(newCounter);
-
-                //console.log(resJson[0].clientName);
-                for (let j = 0; j < resJson.length; j++) {
-                    let newClientLi = document.createElement("li");
-                    newClientLi.setAttribute('onclick', `window.location.href='client?Id=${resJson?.[j]?.Id}'`);
-                    newClientLi.innerHTML =
-                        `
-                        <h3>${resJson?.[j]?.clientName || "err"}</h3>
-                        <h5>${resJson?.[j]?.clientEmail || ""}</h5>                        
-                        `;
-                    clientList.appendChild(newClientLi);
-                }
-            }
-
-        } catch (error) {
-            console.error(error);
-        }
+    function changePage(newPage) {
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('page', newPage);
+        window.location.href = currentUrl.toString();
     }
 
     async function sendCampaign(event) {

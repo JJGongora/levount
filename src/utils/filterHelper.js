@@ -29,11 +29,10 @@ const filterHelper = {
         if (typeof data !== 'object' || data === null) return data;
 
         Object.keys(data).forEach(key => {
-            let value = data[key];
+            let value = data[key]; //console.log(value);
             if (typeof value === 'object' && value !== null) {
                 this.cleanEmptyFields(value);
-            } 
-            else {
+            } else {
                 if (value === 'true' || value === 'on' || value == 1) {
                     data[key] = true;
                 }
@@ -43,7 +42,7 @@ const filterHelper = {
                 else if (typeof value === 'string' && value.trim() === '') {
                     data[key] = null;
                 }
-                else if (value === 0 && typeof value !== 'boolean') {
+                else if ((value === 0 && typeof value !== 'boolean') || value === 'null') {
                     data[key] = null;
                 }
             }

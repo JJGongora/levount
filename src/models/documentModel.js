@@ -192,6 +192,8 @@ const documentModel = {
         let result = [];
 
         if (data?.documentType == 'sale') {
+            const whereClause = (data?.id) ? `s.id = ?` : `s.documentNumber = ? AND s.storeId = ? AND s.docDate = ?`;
+            const queryParams = (data?.id) ? [data?.id] : [data?.documentNumber, data?.storeId, data?.docDate];
 
             const headerQuery = `
                 SELECT 
@@ -206,26 +208,26 @@ const documentModel = {
                     s.roomNumber as room
                 FROM sales s
                 LEFT JOIN clients c ON c.id = s.clientId
-                WHERE s.documentNumber = ? AND s.storeId = ? AND s.docDate = ?
+                WHERE ${whereClause}
                 LIMIT 1
             `;
 
             const itemsQuery = `
                 SELECT si.* FROM saleItems si
                 INNER JOIN sales s ON s.id = si.saleId
-                WHERE s.documentNumber = ? AND s.storeId = ? AND s.docDate = ?
+                WHERE ${whereClause}
             `;
 
             const paymentsQuery = `
                 SELECT p.* from salePayments p
                 INNER JOIN sales s ON s.id = p.saleId
-                WHERE s.documentNumber = ? AND s.storeId = ? AND s.docDate = ?
+                WHERE ${whereClause}
             `;
 
             const [headerRows, itemRows, paymentRows] = await Promise.all([
-                db.query(headerQuery, [data?.documentNumber, data?.storeId, data?.docDate]),
-                db.query(itemsQuery, [data?.documentNumber, data?.storeId, data?.docDate]),
-                db.query(paymentsQuery, [data?.documentNumber, data?.storeId, data?.docDate])
+                db.query(headerQuery, queryParams),
+                db.query(itemsQuery, queryParams),
+                db.query(paymentsQuery, queryParams)
             ]);
 
             const saleHeader = headerRows[0][0]; 

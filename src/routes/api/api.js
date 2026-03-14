@@ -44,7 +44,6 @@ router.post('/clients',
 );
 router.get(['/clients', '/clients/:id'],
     permissionsVerification.checkPermission('customers:read'),
-    queryParser,
     apiController.clients.get
 );
 

@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%- title %></title>
 
-    <%- include ('../partials/global-tags.ejs') %>
+    <%- include('../partials/global-tags.ejs') %>
 
     <% if (typeof useTurnstile !== 'undefined' && useTurnstile) { %>
-        <%- include('../partials/scripts/turnstile') %>
+        <%- include('../partials/scripts/turnstile.ejs') %>
     <% } %>
 
     <%- style %>
@@ -198,7 +198,7 @@
     </style>
 </head>
 <body>
-    <%- include ('../partials/nav-admin.ejs') %>
+    <%- include('../partials/nav-admin.ejs') %>
 
     <main><%- body %></main>
 

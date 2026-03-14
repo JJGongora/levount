@@ -1,0 +1,432 @@
+<style>
+    body {
+        & main {
+            padding: 25px;
+
+            /* Estilos encapsulados para el perfil del cliente */
+            .Content.sys-profile-panel {
+                background-color: transparent;
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+
+                /* Cabecera de la vista */
+                & .view-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 24px;
+                    padding-bottom: 16px;
+                    border-bottom: 1px solid var(--lv-border);
+
+                    & .title-area {
+                        display: flex;
+                        align-items: center;
+                        gap: 16px;
+
+                        & .back-btn {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 36px;
+                            height: 36px;
+                            border-radius: 4px;
+                            background-color: var(--bg-white);
+                            border: 1px solid var(--gray-40);
+                            color: var(--lv-slate);
+                            cursor: pointer;
+                            transition: all 0.2s;
+                            text-decoration: none;
+                            font-size: 1.2rem;
+
+                            &:hover {
+                                background-color: var(--gray-20);
+                                color: var(--lv-obsidian);
+                            }
+                        }
+
+                        & .client-name-group {
+                            & h1 {
+                                font-size: 1.5rem;
+                                color: var(--lv-obsidian);
+                                font-weight: 600;
+                                margin: 0 0 4px 0;
+                                display: flex;
+                                align-items: center;
+                                gap: 12px;
+                            }
+
+                            & p {
+                                font-size: 0.9rem;
+                                color: var(--gray-70);
+                                margin: 0;
+                            }
+                        }
+                    }
+
+                    & .header-actions {
+                        display: flex;
+                        gap: 12px;
+
+                        & .btn-outline {
+                            padding: 8px 16px;
+                            background-color: var(--bg-white);
+                            border: 1px solid var(--gray-40);
+                            color: var(--lv-slate);
+                            border-radius: 4px;
+                            font-weight: 600;
+                            font-size: 0.875rem;
+                            cursor: pointer;
+                            transition: all 0.2s;
+
+                            &:hover {
+                                background-color: var(--gray-20);
+                            }
+                        }
+                    }
+                }
+
+                /* Grid Superior: Resumen y Datos */
+                & .summary-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 2fr;
+                    gap: 24px;
+                    margin-bottom: 24px;
+                }
+
+                /* Tarjetas del sistema */
+                & .sys-card {
+                    background-color: var(--bg-white);
+                    border: 1px solid var(--lv-border);
+                    border-radius: 6px;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+                    & .card-header {
+                        padding: 16px 24px;
+                        border-bottom: 1px solid var(--lv-border);
+                        background-color: var(--gray-10);
+                        border-radius: 6px 6px 0 0;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        & h3 {
+                            font-size: 1rem;
+                            color: var(--lv-obsidian);
+                            font-weight: 600;
+                            margin: 0;
+                        }
+                    }
+
+                    & .card-body {
+                        padding: 15px;
+                    }
+                }
+
+                /* Estilos específicos para la tarjeta de datos de contacto */
+                & .contact-info-list {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                    display: grid;
+                    row-gap: 8px;
+
+                    & .form-group {
+                        display: grid;
+                        row-gap: 3px;
+
+                        & label {
+                            color: var(--gray-70);
+                            font-size: 0.7rem;
+                            text-transform: uppercase;
+                            font-weight: 600;
+                        }
+
+                        & input {
+                            padding: 8px 10px;
+                            box-sizing: border-box;
+                            border-radius: 4px;
+                            border: 1px var(--lv-border) solid;
+                            font-size: 0.9rem;
+                        }
+                    }
+                }
+
+                /* Estilos para las métricas rápidas (KPIs) */
+                & .metrics-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 16px;
+
+                    & .metric-box {
+                        background-color: var(--lv-light);
+                        border: 1px solid var(--lv-border);
+                        border-radius: 6px;
+                        padding: 20px;
+                        text-align: center;
+
+                        & .metric-label {
+                            font-size: 0.8rem;
+                            color: var(--gray-70);
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            margin-bottom: 8px;
+                            display: block;
+                        }
+
+                        & .metric-value {
+                            font-size: 1.5rem;
+                            color: var(--lv-obsidian);
+                            font-weight: bold;
+                            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+                        }
+                    }
+                }
+
+                /* Notas del cliente */
+                & .client-remarks {
+                    margin-top: 16px;
+                    padding: 16px;
+                    background-color: var(--lv-gold-light);
+                    border-left: 4px solid var(--lv-gold);
+                    border-radius: 0 4px 4px 0;
+
+                    & p {
+                        margin: 0;
+                        font-size: 0.9rem;
+                        color: var(--lv-slate);
+                        font-style: italic;
+                    }
+                }
+
+                /* Tabla de Historial de Compras */
+                & .history-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    text-align: left;
+
+                    & th {
+                        background-color: var(--gray-10);
+                        padding: 12px 20px;
+                        font-size: 0.75rem;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                        color: var(--gray-70);
+                        font-weight: 600;
+                        border-bottom: 1px solid var(--lv-border);
+                    }
+
+                    & td {
+                        padding: 16px 20px;
+                        border-bottom: 1px solid var(--lv-border);
+                        vertical-align: middle;
+                        font-size: 0.9rem;
+                        color: var(--text-dark);
+
+                        & .doc-type {
+                            font-weight: 600;
+                            color: var(--lv-obsidian);
+                            display: block;
+                        }
+
+                        & .doc-meta {
+                            font-size: 0.8rem;
+                            color: var(--gray-70);
+                            margin-top: 2px;
+                            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+                        }
+
+                        & .action-btn {
+                            background: none;
+                            border: none;
+                            color: var(--lv-gold-dim);
+                            cursor: pointer;
+                            font-size: 0.85rem;
+                            font-weight: 600;
+                            padding: 0;
+                            transition: color 0.2s;
+
+                            &:hover {
+                                color: var(--lv-gold);
+                            }
+                        }
+                    }
+
+                    & tbody tr {
+                        transition: background-color 0.15s ease;
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: var(--lv-light);
+                        }
+
+                        &:last-child td {
+                            border-bottom: none;
+                        }
+                    }
+                }
+
+                /* Badges */
+                & .badge {
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 4px 10px;
+                    border-radius: 12px;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.02em;
+
+                    &.tier-gold {
+                        background-color: var(--lv-gold-light);
+                        color: var(--lv-gold-dim);
+                        border: 1px solid rgba(197, 160, 89, 0.2);
+                    }
+
+                    &.status-active {
+                        background-color: rgba(16, 185, 129, 0.1);
+                        color: var(--lv-green);
+                    }
+
+                    &.status-cancelled {
+                        background-color: rgba(239, 68, 68, 0.1);
+                        color: var(--lv-error);
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<section class="Content sys-profile-panel">
+
+    <div class="view-header">
+        <div class="title-area">
+            <a href="/admin/clients" class="back-btn" title="Volver al Directorio">←</a>
+            <div class="client-name-group">
+                <h1><%- clientData?.name %><!-- <span class="badge tier-gold">Cliente Oro</span>--></h1>
+                <p>
+                    <%- 
+                        (clientData?.register)
+                            ? `Registrado el
+                                ${clientData?.register?.toLocaleDateString('es-MX', {day: 'numeric' , year: 'numeric', month: 'short' })}
+                                por ${clientData?.registeredBy || 'el Sistema'}.`
+                            : '' 
+                    %>
+                </p>
+                <p style="font-size: 0.7rem; font-style: italic;">
+                    <%- 
+                        (clientData?.edited)
+                            ? `Editado por última vez el
+                                ${clientData?.edited?.toLocaleDateString('es-MX', {day: 'numeric' , year: 'numeric', month: 'short' })}
+                                por ${clientData?.editedBy || 'el Sistema'}.`
+                            : '' 
+                    %>
+                </p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-outline" onclick="window.location.href='/admin/clientes/editar/2'"><i>&#xe1014;</i>Editar Cliente</button>
+        </div>
+    </div>
+
+    <div class="summary-grid">
+
+        <div class="sys-card">
+            <div class="card-header">
+                <h3>Información Personal</h3>
+            </div>
+            <div class="card-body">
+                <form class="contact-info-list">
+                    <div class="form-group">
+                        <label for="">Correo electrónico</label>
+                        <input type="email" name="email" id="" value="<%- clientData?.email %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Teléfono</label>
+                        <input type="tel" name="phone" id="" value="<%- clientData?.phone %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="">País</label>
+                        <input type="text" name="country" value="<%- clientData?.country %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Cumpleaños</label>
+                        <input type="date" name="birthday" id="" value="<%- (clientData?.birthday && (utils.dateToInputDate(clientData?.birthday) != '01/01/1000')) ? utils.dateToInputDate(clientData?.birthday) : '' %>">
+                    </div>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sys-card" style="display: flex; flex-direction: column;">
+            <div class="card-header">
+                <h3>Resumen de Valor</h3>
+            </div>
+            <div class="card-body"
+                style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <span class="metric-label">Total Invertido</span>
+                        <span class="metric-value"><%- utils.toCurrency(clientData?.totalPurchased) %> MXN</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">Piezas Adquiridas</span>
+                        <span class="metric-value">error</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">Ticket Promedio</span>
+                        <span class="metric-value">error</span>
+                    </div>
+                </div>
+
+                <div class="client-remarks">
+                    <p><strong>Notas:</strong> <%- clientData?.remarks %></p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="sys-card">
+        <div class="card-header">
+            <h3>Historial de Movimientos</h3>
+            <select style="padding: 4px 8px; border-radius: 4px; border: 1px solid var(--gray-40); font-size: 0.85rem;">
+                <option value="all">Todos los documentos</option>
+                <option value="sales">Solo Notas de Venta</option>
+                <option value="warranties">Solo Garantías</option>
+            </select>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Tipo de Documento</th>
+                        <th>Sucursal</th>
+                        <th>Atendido por</th>
+                        <th>Monto / Moneda</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% clientData?.history?.forEach(purchase => { %>
+                    <tr onclick="window.location.href='/admin/sales/<%- purchase?.id %>'">
+                        <td style="white-space: nowrap;"><%- purchase?.docDate?.toLocaleDateString('es-MX', {day: 'numeric' , year: 'numeric', month: 'short' }) %></td>
+                        <td>
+                            <span class="doc-type">Nota de Venta</span>
+                            <span class="doc-meta">Folio: #<%- purchase?.documentNumber %></span>
+                        </td>
+                        <td><%- purchase?.store %></td>
+                        <td><%- purchase?.seller %></td>
+                        <td style="font-weight: 600;"><%- utils.toCurrency(purchase?.total) %> MXN</td>
+                        <td><span class="badge status-<%- purchase?.status?.trim() %>"><%- purchase?.status?.trim() %></span></td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>

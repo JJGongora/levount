@@ -83,6 +83,8 @@ const authMiddleware = {
                 res.locals.userSession = decoded.userSession;
             }
 
+            //console.log(req.userSession);
+
             return next();
 
         } catch (error) {

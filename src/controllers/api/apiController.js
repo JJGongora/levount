@@ -16,6 +16,7 @@ import fs from "fs-extra";
 import path from "path";
 import { fileURLToPath } from 'url';
 import productModel from "../../models/productModel.js";
+import userModel from "../../models/userModel.js";
 
 // Variables globales
 const __filename = fileURLToPath(import.meta.url);
@@ -236,6 +237,8 @@ const apiController = {
                     status: "Error",
                     message: "Wrong credentials. Please, verify your user and password."
                 });
+            } else {
+                await userModel.logIn(userSession?.id);
             }
 
             // Se guardan los datos de la sesión en un JWT y se envía como cookie.
@@ -342,7 +345,7 @@ const apiController = {
 
         get: async(req, res, next) => {
             try {
-                const result = await clientModel.getClients(req.query);
+                const result = await clientModel.getClients(filterHelper.cleanEmptyFields(req.query)); console.log(result);
                 return res.status(200).send(result);
                 //return res.status(400).send({success: false, message: "Esta es una prueba."});
             } catch (error) {

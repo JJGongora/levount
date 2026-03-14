@@ -39,7 +39,7 @@ const userModel = {
 
     logIn: async(id) => {
         let query = `UPDATE users SET lastLogin = NOW() WHERE id = ?`;
-        const result = await db.query(query, id);
+        const result = await db.query(query, [id]);
         return result.affectedRows;
     },
 

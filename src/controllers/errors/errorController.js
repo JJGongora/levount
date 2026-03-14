@@ -1,5 +1,5 @@
 const sendErrorAPI = (err, req, res) => {
-    if (process.env.ENVIRONMENT == 'development') {
+    if (process.env.ENVIRONMENT == 'development' || res?.locals?.userSession?.rolesId?.includes('4')) {
         return res.status(err.statusCode).json({
             success: false,
             status: err.status,
@@ -47,7 +47,7 @@ const sendErrorWeb = (err, req, res) => {
     }
     else {
         title = 'A TANGLED CHAIN';
-        description = (res?.locals?.userSession?.accessLevel >= 10) ? err.message : "Our wires got a little tangled behind the scenes. We are carefully unknotting them right now.";
+        description = (res?.locals?.userSession?.rolesId?.includes('4')) ? err.message : "Our wires got a little tangled behind the scenes. We are carefully unknotting them right now.";
     }
 
     res.status(err.statusCode).render('pages/error', {
@@ -70,7 +70,7 @@ const sendErrorWeb = (err, req, res) => {
             }
         },
         metaDescription: null,
-        err: (process.env.ENVIRONMENT == 'development' || res?.locals?.userSession?.accessLevel >= 10) ? err.stack : null
+        err: (process.env.ENVIRONMENT == 'development' || res?.locals?.userSession?.rolesId?.includes('4')) ? err.stack : null
     });
 };
 
@@ -78,7 +78,7 @@ const globalErrorHandler = (err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
 
-    if (process.env.ENVIRONMENT == 'development') {
+    if (process.env.ENVIRONMENT == 'development' || res?.locals?.userSession?.rolesId?.includes('4')) {
         console.error('\n\n\n\n🔥 ERROR LOG:', err);
     }
 

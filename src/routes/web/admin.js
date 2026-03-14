@@ -16,6 +16,10 @@ router.get('/clients',
     permissionsVerification.checkPermission("customers:read"),
     adminController.clients
 );
+router.get('/clients/:id', 
+    permissionsVerification.checkPermission("customers:read"),
+    adminController.client
+);
 router.get('/clients/create',
     permissionsVerification.checkPermission("customers:create"),
     adminController.createClient
@@ -47,6 +51,11 @@ router.get(`/users`,
 router.get([`/labels`, `/labels/:material`],
     permissionsVerification.checkPermission(`inventory:read`),
     adminController.labels.get
+);
+
+router.get(`/sales/:id`, 
+    permissionsVerification.checkPermission("sales:read"),
+    adminController.sales.get
 );
 
 export default router;

@@ -16,13 +16,14 @@ const authModel = {
             if (!users || users?.length == 0) return {success: false, message: "Please, verify your credentials."};
 
             const user = users;
-            const passwordMatch = await authHelpers.comparePasswords(plainPassword, user.password);
-            if (!passwordMatch) return {success: false, message: "Please, verify your credentials."};
+            const passwordMatch = await authHelpers.comparePasswords(plainPassword, user.password); //console.log(passwordMatch);
+            if (!passwordMatch) return { success: false, message: "Please, verify your credentials." };
 
             const queryPermissions = `
                 SELECT 
                     GROUP_CONCAT(DISTINCT r.name) as roleNames,
-                    GROUP_CONCAT(DISTINCT p.slug) as permissionSlugs
+                    GROUP_CONCAT(DISTINCT p.slug) as permissionSlugs,
+                    GROUP_CONCAT(DISTINCT ur.roleId) as rolesId
                 FROM userRoles ur
                     JOIN roles r ON ur.roleId = r.id
                     JOIN rolePermissions rp ON r.id = rp.roleId
@@ -55,6 +56,7 @@ const authModel = {
                 username: user.username,
                 accessLevel: user.accessLevel,
                 roles: permData[0].roleNames ? permData[0].roleNames.split(',') : [],
+                rolesId: permData[0].rolesId ? permData[0].rolesId.split(',') : [],
                 permissions: permData[0].permissionSlugs ? permData[0].permissionSlugs.split(',') : [],
                 allowedStores: [...new Set(allowedStoresIds)],
                 isGlobal: isGlobal,

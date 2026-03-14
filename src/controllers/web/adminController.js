@@ -7,6 +7,8 @@ import shapeModel from "../../models/shapeModel.js";
 import filterHelper from "../../utils/filterHelper.js";
 import authModel from "../../models/authModel.js";
 import userModel from "../../models/userModel.js";
+import utilities from "../../utils/utilities.js";
+import documentModel from "../../models/documentModel.js";
 
 const Today = new Date();
 const pageTitle = `Administración Le Vount`;
@@ -15,14 +17,43 @@ const adminController = {
 
     clients: async(req, res, next) => {
         try {
-            const clients = await clientModel.getClients({registeredDate: Today});
+            const filters = req?.query;
+            let clients = await clientModel.getClients(filters); //console.log(clients);
+
+            const pag = clients?.pagination || { page: 1, limit: 30, totalItems: 0 };
+            let startItem = 0;
+            let endItem = 0;
+
+            if (pag.totalItems > 0) {
+                startItem = (pag.page - 1) * pag.limit + 1;
+                endItem = Math.min(pag.page * pag.limit, pag.totalItems); 
+            }
+            if (clients.pagination) {
+                clients.pagination.startItem = startItem;
+                clients.pagination.endItem = endItem;
+                clients.pagination.pagesArray = utilities.generatePaginationArray(pag.page, pag.totalPages);
+            }
 
             return res.render('pages/admin/clients', {
-                title: `${ pageTitle } | Clientes`,
+                title: `Clientes | ${ pageTitle }`,
                 page: 'clients',
-                utils, Today, clients
+                utils, Today, clients, filters
             });
         } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    },
+    client: async(req, res, next) => {
+        try {
+            let clientData = await clientModel.getClients({id: req?.params?.id}); //console.log(clientData);
+            return res.render('pages/admin/client', {
+                title: `Cliente | ${ pageTitle }`,
+                page: 'clients',
+                utils, Today, clientData
+            });
+        } catch (error) {
+            console.log(error);
             next(error);
         }
     },
@@ -139,6 +170,23 @@ const adminController = {
                     title: `Etiquetas | ${ pageTitle }`,
                     page: 'users',
                     utils, Today
+                });
+            } catch (error) {
+                next(error);
+            }
+        }
+    },
+
+    sales: {
+        get: async(req, res, next) => {
+            try {
+                const branches = await storesModel.getAll();
+                const document = await documentModel.getAllData({documentType: 'sale', id: req?.params?.id});
+                //console.log(document);
+                return res.render('pages/admin/sale', {
+                    title: `Venta | ${ pageTitle }`,
+                    page: 'sale',
+                    utils, Today, branches, countries: countries.getData(), document
                 });
             } catch (error) {
                 next(error);
