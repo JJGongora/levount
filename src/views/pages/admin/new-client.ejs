@@ -1,245 +1,761 @@
 <link rel="stylesheet" href="https://assets.levount.com/flags/css/flag-icons.min.css">
-<link rel="stylesheet" href="https://assets.levount.com/global/styles/admin-forms.css">
 <link rel="stylesheet" href="https://assets.levount.com/intl-input/build/css/intlTelInput.css">
 
-<section class="Content">
-    <h1><%- "Nuevo cliente" //t("pageTitle") %></h1>
+<style>
+    body {
+        & main {
+            padding: 20px;
+        }
+    }
+
+    .fi {
+        margin-right: 4px;
+    }
+
+    .iti {
+        width: 100%;
+        display: block;
+    }
+
+    .iti__tel-input {
+        width: 100%;
+        box-sizing: border-box;
+        padding-left: 56px !important;
+    }
+
+    .iti__flag-container {
+        height: 100%;
+    }
+
+    .iti__country-container {
+        box-sizing: border-box;
+        height: 100%;
+        padding: 0 !important;
+
+        & button {
+            margin: 0 !important;
+        }
+    }
+
+    .iti__search-input {
+        padding-left: 30px !important;
+    }
+
+    /* Estilos encapsulados para el formulario de cliente/documento */
+    .Content.sys-form-panel {
+        background-color: transparent;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+
+        /* Cabecera de la vista */
+        & .view-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--lv-border);
+
+            & h1 {
+                font-size: 1.5rem;
+                color: var(--lv-obsidian);
+                font-weight: 600;
+                margin: 0;
+                margin-bottom: 4px;
+            }
+        }
+
+        /* Tarjetas del sistema */
+        & .sys-card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--lv-border);
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+
+            & .card-header {
+                padding: 10px 20px;
+                border-bottom: 1px solid var(--lv-border);
+                background-color: var(--gray-10);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                & h2,
+                & h3 {
+                    font-size: 1rem;
+                    color: var(--lv-obsidian);
+                    font-weight: 600;
+                    margin: 0;
+                }
+            }
+
+            & .card-body {
+                padding: 20px;
+                box-sizing: border-box;
+
+                & .guests {
+                    display: grid;
+                    row-gap: 5px;
+                }
+            }
+
+            &.containerDocForm {
+                display: none;
+
+                &.active {
+                    display: block;
+                }
+            }
+        }
+
+        /* Sistema de Grid para formularios */
+        & .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+            row-gap: 5px;
+            align-items: end;
+            /* Alinea los inputs abajo cuando no hay label */
+
+            &.itemsContainer, &.payments, &#warrantyItems {
+                grid-template-columns: none;
+            }
+        }
+
+        /* Grupos de inputs (reemplaza a inputContainer) */
+        & .form-group,
+        & .custom-select-container {
+            display: flex;
+            flex-direction: column;
+            row-gap: 3px;
+            width: 100%;
+
+            & label {
+                font-size: 0.7rem;
+                font-weight: 600;
+                color: var(--gray-70);
+                text-transform: uppercase;
+            }
+
+            & input,
+            & select,
+            & textarea {
+                padding: 8px 12px;
+                border: 1px solid var(--gray-40);
+                border-radius: 4px;
+                background-color: var(--bg-white);
+                color: var(--text-dark);
+                font-size: 0.9rem;
+                transition: border-color 0.15s ease, box-shadow 0.15s ease;
+                font-family: inherit;
+                line-height: 1.5;
+
+                &:focus {
+                    outline: none;
+                    border-color: var(--lv-gold);
+                    box-shadow: 0 0 0 3px var(--lv-gold-light);
+                }
+            }
+
+            & textarea {
+                resize: vertical;
+            }
+
+            /* Fix para el input oculto del país */
+            & input[type="hidden"] {
+                display: none;
+            }
+
+            & .options-list {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                border: 1px solid #ccc;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                z-index: 100;
+                max-height: 250px;
+                overflow-y: scroll;
+
+                &.hidden {
+                    display: none;
+                }
+
+                & li {
+                    padding: 10px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+
+                    &:hover {
+                        background-color: #f0f0f0;
+                    }
+
+                    & span {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+
+        /* Sub-secciones internas (Items, Detalles) */
+        & .inner-section {
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--gray-40);
+
+            & .inner-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                margin-bottom: 16px;
+
+                & h4 {
+                    font-size: 0.95rem;
+                    color: var(--lv-slate);
+                    margin: 0;
+                }
+            }
+        }
+
+        /* Botones */
+        & .btn-primary {
+            background-color: var(--lv-obsidian);
+            color: var(--lv-white);
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            &:hover {
+                background-color: var(--lv-slate);
+            }
+        }
+
+        & .btn-outline {
+            background-color: var(--bg-white);
+            border: 1px solid var(--gray-40);
+            color: var(--lv-slate);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            &:hover {
+                background-color: var(--gray-20);
+            }
+        }
+
+        & .btn-icon {
+            background-color: var(--gray-20);
+            border: 1px solid var(--gray-40);
+            color: var(--lv-obsidian);
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:hover {
+                background-color: var(--lv-gold-light);
+                border-color: var(--lv-gold);
+                color: var(--lv-gold-dim);
+            }
+        }
+
+        & .btn-danger {
+            background: transparent;
+            border: none;
+            color: var(--gray-50);
+            cursor: pointer;
+            padding: 4px;
+
+            &:hover {
+                color: var(--lv-error);
+            }
+        }
+
+        /* Estilo para la lista de países (custom select) */
+        & .options-list {
+            position: absolute;
+            background: var(--bg-white);
+            border: 1px solid var(--gray-40);
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+
+            &.hidden {
+                display: none;
+            }
+
+            & li {
+                padding: 8px 12px;
+                cursor: pointer;
+                font-size: 0.85rem;
+
+                &:hover {
+                    background-color: var(--lv-light);
+                }
+            }
+        }
+
+        /* Contenedor del botón final */
+        & .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--lv-border);
+        }
+
+        /* Mensajes de respuesta */
+        & .responseMessage {
+            overflow: hidden;
+            max-height: 0px;
+            transition: max-height 0.4s;
+            position: sticky;
+            bottom: 15px;
+            margin-top: 15px;
+            z-index: 998;
+
+            & ul {
+                row-gap: 0px;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+
+                & li {
+                    background-color: var(--custom-back);
+                    color: var(--custom-font);
+                    padding: 5px 3px;
+                    border-radius: 5px;
+
+                    & i {
+                        margin-right: 3px;
+                        font-size: 20px;
+                    }
+
+                    & span {
+                        font-size: 0.9rem;
+                        line-height: 100%;
+                    }
+
+                    &+li {
+                        margin-top: 5px;
+                    }
+                }
+            }
+
+            &.open {
+                max-height: 1000px;
+            }
+        }
+
+        & .inputContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+
+            & label {
+                font-size: 0.7rem;
+                font-weight: 600;
+                color: var(--gray-70);
+                text-transform: uppercase;
+            }
+
+            & input,
+            & select,
+            & textarea {
+                padding: 8px 12px;
+                border: 1px solid var(--gray-40);
+                border-radius: 4px;
+                background-color: var(--bg-white);
+                color: var(--text-dark);
+                font-size: 0.9rem;
+                font-family: inherit;
+                /* Corrige el texto desalineado */
+                transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+                &:focus {
+                    outline: none;
+                    border-color: var(--lv-gold);
+                    box-shadow: 0 0 0 3px var(--lv-gold-light);
+                }
+            }
+
+            & textarea {
+                height: 20px;
+                resize: vertical;
+            }
+        }
+
+        & .guest,
+        & .item,
+        & .twoInputContainer,
+        & .itemRow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+            row-gap: 5px;
+            align-items: start;
+            padding-bottom: 15px;
+            position: relative;
+            border-bottom: 1px dashed var(--gray-40);
+            padding-left: 45px;
+
+            /* 3. Estilizamos el primer botón (el de eliminar) que inyecta tu JS */
+            &>button:first-child {
+                position: absolute;
+                top: 15px;
+                left: 0;
+                background: transparent;
+                border: none;
+                color: var(--gray-50);
+                cursor: pointer;
+                padding: 4px;
+                font-size: 1.1rem;
+                transition: color 0.2s;
+
+                & i {
+                    font-size: 30px;
+                }
+
+                &:hover {
+                    color: var(--lv-error);
+                }
+            }
+        }
+
+        /* Elimina el borde inferior del último elemento agregado para mayor limpieza */
+        & .guests .guest:last-child,
+        & #warrantyItems .item:last-child,
+        & #payments .twoInputContainer:last-child,
+        & #itemsContainer .itemRow:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            align-items: start;
+        }
+
+        /* Estilo para la clase exchangeCurrency que se inyecta al cambiar de moneda */
+        & .exchangeCurrency {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+        }
+    }
+</style>
+
+<section class="Content sys-form-panel">
+    <div class="view-header">
+        <h1><%- "Nuevo cliente" //t("pageTitle") %></h1>
+    </div>
 
     <form onsubmit="registerClient(event)" id="clientData">
-        <div class="docData">
-            <h3>Datos del documento</h3>
 
-            <div class="containerForm">
-
-                <div class="inputContainer">
-                    <label for="">Tipo de documento</label>
-                    <select name="documentType" id="documentType" onchange="switchForm(this.value)">
-                        <option value="" selected></option>
-                        <option value="sale">Nota de venta</option>
-                        <option value="warranty">Garantía</option>
-                        <option value="gift">Obsequio</option>
-                    </select>
-                </div>
-                <div class="inputContainer">
-                    <label for="">Folio</label>
-                    <input type="number" min="0" max="9999" name="documentNumber" id="documentNumber" onchange="getDocumentData()">
-                </div>
-                <div class="inputContainer">
-                    <label for="">Sucursal</label>
-                    <select name="storeId" id="" onchange="getDocumentData()">
-                        <option value="" selected></option>
-                        <% for (let n=0; n < branches?.length; n++) { %>
-                            <option value="<%- branches?.[n]?.id %>"><%- branches?.[n]?.id + " - " + branches?.[n]?.name
-                                    %></option>
-                            <% } %>
-                    </select>
-                </div>
-                <div class="inputContainer">
-                    <label for="">Fecha de emisión</label>
-                    <input type="date" max="<%- utils.dateToInputDate(Today) %>" name="docDate" onchange="getDocumentData()">
-                </div>
-
-                <div class="inputContainer">
-                    <label for="">Status del documento</label>
-                    <select name="docStatus" id="">
-                        <option value="active" selected>Activo</option>
-                        <option value="cancelled">Cancelado</option>
-                    </select>
-                </div>
-
-                <button type="button" onclick="getDocumentData()"><i>&#xe110D;</i></button>
-
+        <div class="sys-card docData">
+            <div class="card-header">
+                <h3>Datos del documento</h3>
             </div>
 
-            <div class="containerDocForm" id="saleForm">
-                <h3>Nota de venta</h3>                               
-
-                <section class="saleItems">
-
-                    <h4><button type="button" onclick="addItem()"
-                            style="width: fit-content;"><i>&#xe1041</i></button>Artículos vendidos</h4>
-
-                    <div class="itemsContainer" id="itemsContainer">
-                        <!-- Items will be added here dynamically -->
-                    </div>
-                </section>
-
-                <section class="details">
-                    <div class="payment" id="paymentDiv">
-                        <h4>Forma de pago</h4>
-                        
-                        <div class="payments" id="payments">
-                        </div>
-
-                        <button type="button" onclick="addPaymentMethod()"><i>&#xe1041;</i></button>
-
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="documentType">Tipo de documento</label>
+                        <select name="documentType" id="documentType" onchange="switchForm(this.value)">
+                            <option value="" selected>Selecciona un tipo...</option>
+                            <option value="sale">Nota de venta</option>
+                            <option value="warranty">Garantía</option>
+                            <option value="gift">Obsequio</option>
+                        </select>
                     </div>
 
-                    <div class="container">     
-                        <div class="inputContainer">
-                            <label for="">Vendedor</label>
-                            <input type="text" name="sale[preparedBy]" id="" autocomplete="on">
-                        </div>
-
-                        <div class="inputContainer">
-                            <label for="">Turno</label>
-                            <select name="sale[shift]" id="">
-                                <option value="" selected></option>
-                                <option value="morning">Mañana</option>
-                                <option value="afternoon">Tarde</option>
-                            </select>
-                        </div>
-                    </div> 
-                </section>
-            </div>
-
-            <div class="containerDocForm" id="giftForm">
-                <h3>Dijes de obsequio</h3>
-
-                <section class="guests" id="guests">
-                    <div class="guest">
-                        <button type="button" onclick="this.parentElement.remove()"><i>&#xe1118;</i></button>
-                        <div class="inputContainer">
-                            <label>Nombre</label>
-                            <input type="text" name="guest[0][name]">
-                        </div>
-                        <div class="inputContainer">
-                            <label>Correo</label>
-                            <input type="email" name="guest[0][email]">
-                        </div>
-                        <div class="inputContainer">
-                            <label>Teléfono</label>
-                            <input type="tel" class="iti-phone" name="guest[0][phone]">
-                        </div>
-                        <div class="inputContainer">
-                            <label>Habitación</label>
-                            <input type="number" name="guest[0][room]">
-                        </div>
-                        <div class="inputContainer">
-                            <label>Vendedor</label>
-                            <input type="text" name="guest[0][seller]">
-                        </div>
-                        <div class="inputContainer">
-                            <label>Área</label>
-                            <input type="text" name="guest[0][area]">
-                        </div>
-                    </div>
-                </section>
-
-                <button type="button" style="margin-top: 10px;" onclick="addGuest()"><i style="margin-right: 5px;">&#xe1041;</i> Añadir obsequio</button>
-            </div>
-
-            <section class="containerDocForm" id="warrantyForm">
-                <h3>Garantía</h3>
-
-                <section class="details">
-                    <div class="inputContainer">
-                        <label>Fecha/hora de entrega</label>
-                        <input type="datetime-local" name="warranty[deliverDate]" id="">
+                    <div class="form-group">
+                        <label for="documentNumber">Folio</label>
+                        <input type="number" min="0" max="9999" name="documentNumber" id="documentNumber"
+                            onchange="getDocumentData()">
                     </div>
 
-                    <div class="inputContainer">
-                        <label>Elaborado por</label>
-                        <input type="text" name="warranty[seller]" id="">
-                    </div>
-
-                    <div class="inputContainer">
-                        <label>Fecha de compra</label>
-                        <input type="date" name="warranty[purchaseDate]" id="">
-                    </div>
-
-                    <div class="inputContainer">
-                        <label># Nota</label>
-                        <input type="number" name="warranty[purchaseTicket]" id="">
-                    </div>
-
-                    <div class="inputContainer">
-                        <label>Sucursal de compra</label>
-                        <select name="warranty[purchaseBranch]" id="">
-                            <option value="" selected></option>
+                    <div class="form-group">
+                        <label for="storeId">Sucursal</label>
+                        <select name="storeId" id="storeId" onchange="getDocumentData()">
+                            <option value="" selected>Selecciona sucursal...</option>
                             <% for (let n=0; n < branches?.length; n++) { %>
-                                <option value="<%- branches?.[n]?.id %>"><%- branches?.[n]?.id + " - " + branches?.[n]?.name
-                                        %></option>
+                                <option value="<%- branches?.[n]?.id %>"><%- branches?.[n]?.id + " - " +
+                                        branches?.[n]?.name %></option>
                                 <% } %>
                         </select>
                     </div>
 
-                    <div class="inputContainer">
-                        <label>Quien transporta</label>
-                        <input type="text" name="warranty[transportist]" id="">
+                    <div class="form-group">
+                        <label for="docDate">Fecha de emisión</label>
+                        <input type="date" max="<%- utils.dateToInputDate(Today) %>" name="docDate" id="docDate"
+                            onchange="getDocumentData()">
                     </div>
 
-                    <div class="inputContainer">
-                        <label>Quien recibe</label>
-                        <input type="text" name="warranty[receiver]" id="">
+                    <div class="form-group">
+                        <label for="docStatus">Status del documento</label>
+                        <select name="docStatus" id="docStatus">
+                            <option value="active" selected>Activo</option>
+                            <option value="cancelled">Cancelado</option>
+                        </select>
                     </div>
-                </section>
 
-                <section class="warrantyItems">
-                    <div class="title">
-                        <button type="button" onclick="addWarrantyItem()"><i>&#xe1041;</i></button>
-                        <h4>Piezas</h4>
+                    <div class="form-group" style="width: auto; flex-grow: 0;">
+                        <button type="button" class="btn-icon" onclick="getDocumentData()"
+                            title="Buscar Documento"><i>&#xe110D;</i></button>
                     </div>
-                    <div id="warrantyItems"></div>
-                </section>
-            </section>
-        </div>
-
-        <div id="personDataContainer">
-            <hr>
-            <h2>Datos de contacto</h2>
-            <div class="personalData" id="personalData">
-                <div class="inputContainer">
-                    <label for="">Nombre</label>
-                    <input type="text" name="client[name]" id="clientName">
-                </div>
-                <div class="inputContainer">
-                    <label for="">Correo electrónico</label>
-                    <input type="email" name="client[email]">
-                </div>
-                <div class="inputContainer">
-                    <label for="">Teléfono</label>
-                    <input type="tel" id="client[phone]" name="client[phone]" class="iti-phone">
-                </div>
-                <div class="inputContainer">
-                    <label for="">Habitación</label>
-                    <input type="number" name="client[room]">
-                </div>
-                <div class="custom-select-container">
-                    <label for="">País</label>
-                    <input type="hidden" name="client[country]" id="telCountryCode">
-                    <input type="text" id="countrySearch" autocomplete="off" onclick="showList()"
-                        onkeyup="filterCountry(this)">
-                    <ul id="optionsList" class="options-list hidden">
-                        <% countries.forEach(country=> { %>
-                            <li value="<%- country.code %>"
-                                onclick="selectCountry('<%- country.name %>', '<%- country.code %>')">
-                                <span class="fi fi-<%- country.code?.toLowerCase() %>"></span><%- country.name %>
-                            </li>
-                            <% }) %>
-                    </ul>
-                </div>
-                <div class="inputContainer">
-                    <label for="">Estado/Provincia</label>
-                    <input type="text" name="client[state]">
-                </div>
-                <div class="inputContainer">
-                    <label for="">Cumpleaños</label>
-                    <input onchange="searchClient(event)" type="date" max="<%- utils.dateToInputDate(Today) %>"
-                        name="client[birthday]">
-                </div>
-                <div class="inputContainer">
-                    <label for="">Notas del registro</label>
-                    <textarea name="client[remarks]" id=""></textarea>
                 </div>
             </div>
         </div>
-        <button onclick="registerClient(event)" type="submit"><i>&#xe1052;</i>Guardar</button>
+
+        <div class="sys-card containerDocForm" id="saleForm">
+            <div class="card-header">
+                <h3>Detalles de Nota de Venta</h3>
+            </div>
+            <div class="card-body">
+
+                <section class="saleItems inner-section" style="margin-top: 0; border-top: none; padding-top: 0;">
+                    <div class="inner-header">
+                        <h4>Artículos vendidos</h4>
+                        <button type="button" class="btn-outline" onclick="addItem()"><i>&#xe1041;</i> Añadir
+                            Artículo</button>
+                    </div>
+                    <div class="itemsContainer form-grid" id="itemsContainer">
+                    </div>
+                </section>
+
+                <section class="details inner-section">
+                    <div class="form-grid">
+                        <div class="payment" id="paymentDiv" style="grid-column: 1 / -1;">
+                            <div class="inner-header">
+                                <h4>Forma de pago</h4>
+                                <button type="button" class="btn-outline" onclick="addPaymentMethod()"><i>&#xe1041;</i>
+                                    Añadir Pago</button>
+                            </div>
+                            <div class="payments form-grid" id="payments">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="salePreparedBy">Vendedor</label>
+                            <input type="text" name="sale[preparedBy]" id="salePreparedBy" autocomplete="on">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="saleShift">Turno</label>
+                            <select name="sale[shift]" id="saleShift">
+                                <option value="" selected>Selecciona un turno...</option>
+                                <option value="morning">Mañana</option>
+                                <option value="afternoon">Tarde</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="sys-card containerDocForm" id="giftForm">
+            <div class="card-header">
+                <h3>Dijes de obsequio</h3>
+            </div>
+            <div class="card-body">
+                <section class="guests" id="guests">
+                    <div class="guest">
+                            <button type="button" class="btn-danger" onclick="this.parentElement.parentElement.remove()"
+                                title="Eliminar"><i>&#xe1118;</i></button>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" name="guest[0][name]">
+                            </div>
+                            <div class="form-group">
+                                <label>Correo</label>
+                                <input type="email" name="guest[0][email]">
+                            </div>
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <input type="tel" class="iti-phone" name="guest[0][phone]">
+                            </div>
+                            <div class="form-group">
+                                <label>Habitación</label>
+                                <input type="number" name="guest[0][room]">
+                            </div>
+                            <div class="form-group">
+                                <label>Vendedor</label>
+                                <input type="text" name="guest[0][seller]">
+                            </div>
+                            <div class="form-group">
+                                <label>Área</label>
+                                <input type="text" name="guest[0][area]">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div style="margin-top: 16px;">
+                    <button type="button" class="btn-outline" onclick="addGuest()"><i>&#xe1041;</i> Añadir obsequio
+                        extra</button>
+                </div>
+            </div>
+        </div>
+
+        <section class="sys-card containerDocForm" id="warrantyForm">
+            <div class="card-header">
+                <h3>Detalles de Garantía</h3>
+            </div>
+            <div class="card-body">
+                <section class="details form-grid">
+                    <div class="form-group">
+                        <label>Fecha/hora de entrega</label>
+                        <input type="datetime-local" name="warranty[deliverDate]" id="warrantyDeliverDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Elaborado por</label>
+                        <input type="text" name="warranty[seller]" id="warrantySeller">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fecha de compra</label>
+                        <input type="date" name="warranty[purchaseDate]" id="warrantyPurchaseDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label># Nota</label>
+                        <input type="number" name="warranty[purchaseTicket]" id="warrantyTicket">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sucursal de compra</label>
+                        <select name="warranty[purchaseBranch]" id="warrantyBranch">
+                            <option value="" selected>Selecciona sucursal...</option>
+                            <% for (let n=0; n < branches?.length; n++) { %>
+                                <option value="<%- branches?.[n]?.id %>"><%- branches?.[n]?.id + " - " +
+                                        branches?.[n]?.name %></option>
+                                <% } %>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Quien transporta</label>
+                        <input type="text" name="warranty[transportist]" id="warrantyTransportist">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Quien recibe</label>
+                        <input type="text" name="warranty[receiver]" id="warrantyReceiver">
+                    </div>
+                </section>
+
+                <section class="warrantyItems inner-section">
+                    <div class="inner-header">
+                        <h4>Piezas en Garantía</h4>
+                        <button type="button" class="btn-outline" onclick="addWarrantyItem()"><i>&#xe1041;</i> Añadir
+                            Pieza</button>
+                    </div>
+                    <div id="warrantyItems" class="form-grid"></div>
+                </section>
+            </div>
+        </section>
+
+        <div class="sys-card" id="personDataContainer">
+            <div class="card-header">
+                <h2>Datos de contacto</h2>
+            </div>
+            <div class="card-body">
+                <div class="personalData form-grid" id="personalData">                    
+
+                    <div class="form-group">
+                        <label for="clientName">Nombre Completo</label>
+                        <input type="text" name="client[name]" id="clientName">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clientRoom">Habitación</label>
+                        <input type="number" name="client[room]" id="clientRoom">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clientEmail">Correo electrónico</label>
+                        <input type="email" name="client[email]" id="clientEmail">
+                    </div>                    
+
+                    <div class="form-group">
+                        <label for="clientPhone">Teléfono</label>
+                        <input type="tel" id="client[phone]" name="client[phone]" class="iti-phone">
+                    </div>
+
+                    <div class="custom-select-container" style="position: relative;">
+                        <label for="countrySearch">País</label>
+                        <select name="client[country]">
+                            <% countries.forEach(country=> { %>
+                                <option value="<%- country.code %>" <%- (country.code == 'US') ? 'selected' : '' %>>
+                                    <%- country.name %>
+                                </option>
+                            <% }); %>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clientState">Estado/Provincia</label>
+                        <input type="text" name="client[state]" id="clientState">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clientBirthday">Cumpleaños</label>
+                        <input onchange="searchClient(event)" type="date" max="<%- utils.dateToInputDate(Today) %>"
+                            name="client[birthday]" id="clientBirthday">
+                    </div>
+
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label for="clientRemarks">Notas del registro</label>
+                        <textarea name="client[remarks]" id="clientRemarks"
+                            placeholder="Comentarios adicionales sobre el cliente o la venta..."></textarea>
+                    </div>
+
+                    <div class="form-group" style="grid-column: 1 / -1; display: flex; flex-direction: row; align-items: center; gap: 8px;">
+                        <input type="checkbox" name="client[sendEmail]" id="client[sendEmail]" checked>
+                        <label for="client[sendEmail]">Enviar correo</label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button onclick="registerClient(event)" type="submit" class="btn-primary"><i>&#xe1052;</i> Guardar
+                Registro</button>
+        </div>
+
     </form>
 
     <div class="responseMessage" id="responseMessage">
-        <ul>
-        </ul>
+        <ul></ul>
     </div>
 </section>
 
@@ -259,7 +775,7 @@
 
     var itiInstances = [];
     const telInputs = document.querySelectorAll(".iti-phone");
-    telInputs.forEach(function(input) {
+    telInputs.forEach(function (input) {
         var instance = window.intlTelInput(input, {
             initialCountry: "us",
             separateDialCode: false,
@@ -268,7 +784,7 @@
         });
         itiInstances.push(instance);
     });
-    
+
 
     async function registerClient(event) {
         event.preventDefault();
@@ -282,16 +798,16 @@
 
             let errorFound = false;
             telInputs.forEach((input, index) => {
-                const instance = itiInstances[index]; 
+                const instance = itiInstances[index];
 
                 if (instance.isValidNumber()) {
-                    formData.set(input.name, instance.getNumber());                    
-                    input.classList.remove("error-border"); 
+                    formData.set(input.name, instance.getNumber());
+                    input.classList.remove("error-border");
                 } else {
                     errorFound = true;
                     //showResponse("responseMessage", `Error en el campo: ${input.name}`);
                     //setTimeout(hideMessage, 6000);
-                    input.classList.add("error-border"); 
+                    input.classList.add("error-border");
                 }
             });
 
@@ -302,7 +818,7 @@
                 setTimeout(hideMessage, 6000);
             }*/
 
-            const data = Object.fromEntries(formData.entries());
+            const data = Object.fromEntries(formData.entries()); //console.log(data);
             const res = await fetch("/api/clients", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
@@ -323,7 +839,7 @@
                 resetFormExcept(form,
                     [
                         'documentType', 'storeId', 'docDate', 'documentNumber', 'telCountryCode', 'countrySearch',
-                        'docStatus', 'sale[preparedBy]', 'sale[shift]'
+                        'docStatus', 'sale[preparedBy]', 'sale[shift]', 'client[sendEmail]', 'client[country]'
                     ]
                 );
             }
@@ -466,37 +982,39 @@
         const itemDiv = document.createElement('div');
         itemDiv.classList.add('twoInputContainer');
 
-        itemDiv.innerHTML=`               
+        itemDiv.innerHTML = `               
             <button type="button" onclick="deletePayment(this)"><i>&#xe1118;</i></button>
             <div class="inputContainer">
                 <label for="">Método</label>
                 <select name="sale[payment][${paymentIndex}][method]" class="currSelect">
-                    <option value="cash" ${ (data?.method == 'cash') ? 'selected' : '' }>Efectivo</option>
-                    <option value="card" ${ (data?.method == 'card' || !data) ? 'selected' : '' }>Tarjeta</option>
-                    <option value="amex" ${ (data?.method == 'amex') ? 'selected' : '' }>American Express</option>
-                    <option value="roomCharge" ${ (data?.method == 'roomCharge') ? 'selected' : '' }>Habitación</option>
-                    <option value="travelCheck" ${ (data?.method == 'travelCheck') ? 'selected' : '' }>Travel check</option>
+                    <option value="cash" ${(data?.method == 'cash') ? 'selected' : ''}>Efectivo</option>
+                    <option value="cardSantander" ${(data?.method == 'cardSantander' || !data) ? 'selected' : ''}>Tarjeta Santander</option>
+                    <option value="cardBBVA" ${(data?.method == 'cardBBVA') ? 'selected' : ''}>Tarjeta BBVA</option>
+                    <option value="amex" ${(data?.method == 'amex') ? 'selected' : ''}>American Express</option>
+                    <option value="roomCharge" ${(data?.method == 'roomCharge') ? 'selected' : ''}>Cargo habitación</option>
+                    <option value="coupon" ${(data?.method == 'coupon') ? 'selected' : ''}>Cupón de hotel</option>
                 </select>
             </div>
             <div class="inputContainer"> 
                 <label for="">Moneda</label>                                   
                 <select name="sale[payment][${paymentIndex}][currency]" class="currSelect" onchange="changeCurrency(this)">
-                    <option value="mxn" ${ (data?.currency == 'mxn') ? 'selected' : '' }>MXN</option>
-                    <option value="usd" ${ (data?.currency == 'usd' || !data) ? 'selected' : '' }>USD</option>
-                    <option value="eur" ${ (data?.currency == 'eur') ? 'selected' : '' }>EUR</option>
+                    <option value="mxn" ${(data?.currency == 'mxn') ? 'selected' : ''}>MXN</option>
+                    <option value="usd" ${(data?.currency == 'usd' || !data) ? 'selected' : ''}>USD</option>
+                    <option value="eur" ${(data?.currency == 'eur') ? 'selected' : ''}>EUR</option>
+                    <option value="cad" ${(data?.currency == 'cad') ? 'selected' : ''}>CAD</option>
                 </select>
             </div>
             <div class="inputContainer">
                 <label for="">Monto</label>
-                <input type="number" step="0.01" name="sale[payment][${paymentIndex}][amount]" value="${ data?.amount }">
+                <input type="number" step="0.01" name="sale[payment][${paymentIndex}][amount]" value="${data?.amount}">
             </div>
             <div class="inputContainer exchangeCurrency">
                 <label for="">Tipo de cambio</label>
-                <input type="number" step="0.01" name="sale[payment][${paymentIndex}][exchange]" value="${ data?.exchangeRate }">
+                <input type="number" step="0.01" name="sale[payment][${paymentIndex}][exchange]" value="${data?.exchangeRate}">
             </div>  
         `;
         paymentIndex++;
-        
+
         div.appendChild(itemDiv);
         itemDiv.children[3].children[1].focus();
     }
@@ -509,13 +1027,13 @@
         const methodPay = twoInputContainer.children[1].children[1];
         const index = (element.name.match(/\[payment\]\[(\d+)\]/)) ? element.name.match(/\[payment\]\[(\d+)\]/)[1] : 0;
 
-        if (exchangeInputs.length > 0 && exchangeInputs[index]) {exchangeInputs[index].remove()};
-        
+        if (exchangeInputs.length > 0 && exchangeInputs[index]) { exchangeInputs[index].remove() };
+
         const itemDiv = document.createElement('div');
 
         if (currency == 'mxn' || currency == 'eur' || currency == 'usd') {
 
-            if(currency != 'mxn') {
+            if (currency != 'mxn') {
                 itemDiv.classList = ('inputContainer exchangeCurrency');
                 itemDiv.innerHTML = `
                     <label for="">Tipo de cambio</label>
@@ -578,14 +1096,15 @@
 
                 } else {
                     resetFormExcept(form, [
-                        'documentType', 'documentNumber', 'storeId', 'docDate', 'docStatus'
+                        'documentType', 'documentNumber', 'storeId', 'docDate', 'docStatus', 'client[sendEmail]', 'client[country]',
+                        'sale[preparedBy]'
                     ]);
 
                     if (documentType == 'sale') {
-                       document.getElementById("itemsContainer").innerHTML = "";
-                       document.getElementById("payments").innerHTML = "";
-                       productIndex = 0;
-                       paymentIndex = 0;
+                        document.getElementById("itemsContainer").innerHTML = "";
+                        document.getElementById("payments").innerHTML = "";
+                        productIndex = 0;
+                        paymentIndex = 0;
                     } else if (documentType == 'warranty') {
                         document.getElementById("warrantyItems").innerHTML = "";
                         warrantyItemIndex = 0;
@@ -617,10 +1136,10 @@
             if (input) {
                 if (input.type === 'date' && value) {
                     input.value = value.toString().split('T')[0];
-                } 
+                }
                 else if (input.type === 'checkbox' || input.type === 'radio') {
                     if (input.value == value) input.checked = true;
-                } 
+                }
                 else {
                     input.value = (value !== null && value !== undefined) ? value : '';
                 }
@@ -628,7 +1147,7 @@
         });
     }
 
-    
+
 
     function resetFormExcept(formElement, fieldsToKeep = []) {
         Array.from(formElement.elements).forEach(input => {
@@ -689,52 +1208,6 @@
         } else {
             document.getElementById("personDataContainer").style.display = 'block';
         }
-    }
-
-    function showExchange(currencyValue) {
-        const exchangeContainer = document.getElementById('exchange');
-        if (currencyValue === 'mxn') {
-            exchangeContainer.querySelector('input').value = '';
-            exchangeContainer.style.display = 'none';
-        } else {
-            exchangeContainer.style.display = 'grid';
-        }
-    }
-
-    function filterCountry(e) {
-        const list = document.getElementById('optionsList');
-        const options = list.querySelectorAll('li');
-
-        const searchTerm = e.value.toLowerCase();
-        list.classList.remove('hidden');
-        options.forEach(option => {
-            const itemText = option.innerText.toLowerCase();
-            if (itemText.includes(searchTerm)) {
-                option.style.display = 'flex';
-            } else {
-                option.style.display = 'none';
-            }
-        });
-    }
-
-    function showList() {
-        const countryinput = document.getElementById('countrySearch');
-        const list = document.getElementById('optionsList');
-        const options = list.querySelectorAll('li');
-
-        list.classList.remove('hidden');
-        options.forEach(op => op.style.display = 'flex');
-    }
-
-    function selectCountry(name, flag) {
-        const countryinput = document.getElementById('countrySearch');
-        const list = document.getElementById('optionsList');
-        const options = list.querySelectorAll('li');
-        const hiddInput = document.getElementById("telCountryCode");
-
-        countryinput.value = `${name}`;
-        hiddInput.value = flag;
-        list.classList.add('hidden');
     }
 
     function addItem(itemData) {
@@ -801,24 +1274,24 @@
     }
 
 
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function (event) {
 
-        if(event.altKey && event.key.toLowerCase() == 'a') {
-            if(document.getElementById("documentType").value == 'sale') {
+        if (event.altKey && event.key.toLowerCase() == 'a') {
+            if (document.getElementById("documentType").value == 'sale') {
                 addItem();
-            } else if(document.getElementById("documentType").value == 'gift') {
+            } else if (document.getElementById("documentType").value == 'gift') {
                 addGuest();
-            } else if(document.getElementById("documentType").value == 'warranty') {
+            } else if (document.getElementById("documentType").value == 'warranty') {
                 addWarrantyItem();
             }
         };
 
-        if(event.altKey && event.key.toLowerCase() == 'c') {
+        if (event.altKey && event.key.toLowerCase() == 'c') {
             document.getElementById("clientName").focus();
         };
 
-        if(event.altKey && event.key.toLowerCase() == 'x') {
-            if(document.getElementById("documentType").value == 'sale') {
+        if (event.altKey && event.key.toLowerCase() == 'x') {
+            if (document.getElementById("documentType").value == 'sale') {
                 addPaymentMethod();
             }
         };

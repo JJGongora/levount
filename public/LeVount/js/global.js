@@ -123,7 +123,7 @@ async function loadCartDetails() {
             resJson.items.forEach(item => {
                 itemsHTML += `
                     <li>
-                        <img src="https://assets.levount.com/global/images/products/${item.material}/${item.category}/${item.sku}/${item.sku.toLowerCase()}-thumb.webp" alt="" loading="lazy">
+                        <img src="https://assets.levount.com/global/images/products/${item.material}/${item.category}/${item.sku?.toLowerCase()}/${item.sku.toLowerCase()}-thumb.webp" alt="" loading="lazy">
                         <i onclick="deteleCartItem('${item.sku}')">&#xe1118;</i>
                         <div class="description">
                             <div class="details">

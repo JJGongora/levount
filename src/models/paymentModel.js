@@ -17,7 +17,9 @@ const paymentModel = {
             const storeId = cartItems?.storeId;
             const paidAmount = parseFloat(paypalData?.purchaseUnits?.[0]?.payments?.captures?.[0]?.amount?.value).toFixed(2);
             const currency = paypalData?.purchaseUnits?.[0]?.payments?.captures?.[0]?.amount?.currencyCode?.toLowerCase();
-            const exchange = parseFloat(paypalData?.purchaseUnits?.[0]?.payments?.captures?.[0]?.sellerReceivableBreakdown?.exchangeRate?.value).toFixed(4);
+            let exchange = parseFloat(paypalData?.purchaseUnits?.[0]?.payments?.captures?.[0]?.sellerReceivableBreakdown?.exchangeRate?.value || 0)?.toFixed(4) || null;
+            exchange = (exchange == 0.0000) ? null : exchange;
+            
             const containsGold = cartItems?.items?.some(item => item.material == 'gold') || null;
             const paymentStatus = paypalData?.purchaseUnits?.[0]?.payments?.captures?.[0]?.status?.toLowerCase();
             const clientAddress = `${clientData?.clientInfo?.address} ${clientData?.clientInfo?.apartment} ${clientData?.clientInfo?.city} ${clientData?.clientInfo?.zipCode}`;
@@ -83,7 +85,7 @@ const paymentModel = {
 
                 'paypal',
                 currency,
-                exchange,
+                exchange || null,
                 containsGold,
                 insertClientResult?.insertId
             ];
@@ -153,7 +155,7 @@ const paymentModel = {
             await cartModel.deleteCart(paypalData?.purchaseUnits?.[0]?.referenceId); // Se elimina el carrito.
             await connection.commit();
 
-            // Envío de email de confirmación.
+            // Envío de email de confirmación (solo usado para LeVount).
             const emailTempData = {
                 name: clientData?.clientInfo?.firstName,
                 orderNumber: paypalData?.id,
@@ -164,14 +166,22 @@ const paymentModel = {
                 paymentMethod: 'paypal',
                 paymentReference: paypalData?.paymentSource?.card?.lastDigits || paypalData?.payer?.emailAddress // Almacena la cuenta del cliente o los últimos 4 dígitos de la tarjeta con que se pagó.
             };
-            const emailData = {
-                sender: 'levount-noreply',
-                recipient: clientEmail,
-                subject: "Thank your for your purchase!",
-                text: `Your purchase from ${paypalData?.purchaseUnits?.[0]?.description} has been confirmed.`,
-                attachments: null,
-                html: (storeId == 0) ? emailTemplates.leVount_orderConfirm(emailTempData) : null
-            };
+            const emailData = (storeId == 0)
+                ? {
+                    sender: 'levount-noreply',
+                    recipient: clientEmail,
+                    subject: "Thank your for your purchase!",
+                    text: `Your purchase from ${paypalData?.purchaseUnits?.[0]?.description} has been confirmed.`,
+                    attachments: null,
+                    html: emailTemplates.leVount_orderConfirm(emailTempData)
+                } : {
+                    sender: 'silverbest-noreply',
+                    recipient: clientEmail,
+                    subject: "¡Gracias por tu compra!",
+                    text: `Su ${paypalData?.purchaseUnits?.[0]?.description} ha sido confirmada.`,
+                    attachments: null,
+                    html: emailTemplates.SilverBest.orderConfirm(emailTempData)
+                };
             const emailSending = await emailModel.sendEmail(emailData);
 
             return { success: true, purchaseId: paypalData?.id };

@@ -20,7 +20,7 @@ const pageController = {
                 title: 'Le Vount Jewelry | Luxury Handcrafted Jewelry & Fine Diamonds',
                 page: 'home',
                 userSession: res.locals.userSession,
-                outstProducts: await productModel.getProducts({outstanding: true, storeId: 0}),
+                outstProducts: await productModel.getProducts({outstanding: true, storeId: 0, sort: "latest"}),
                 utils,
                 Turnstile: process.env.TURNSTILE_SITE,
                 metaDescription: `Discover Le Vount. Handcrafted 18k gold jewelry designed for the modern muse. Shop rings, necklaces, and bracelets. Free shipping to the US.`,
@@ -34,17 +34,18 @@ const pageController = {
 
     products: async (req, res, next) => {
         try {
-            const { category, page, limit, stoneColor, material, sort = 'latest' } = { ...req.query, ...req.params };
+            const { category, page, limit, stoneColor, material, sort = 'latest', tags, classification } = { ...req.query, ...req.params };
             const active = 0;
             let filters = {
-                page, limit, stoneColor, material, sort, category, active, storeId: 0
+                page, limit, stoneColor, material, sort, category, active, storeId: 0, tags, classification
             }
             const productsPromise = productModel.getProducts(filters);
             const colorsPromise = productModel.getAvailableAttributes(category, "pv.stoneColor", filters);
             const materialsPromise = productModel.getAvailableAttributes(category, "p.material", filters);
+            const classificationsPromise = productModel.getAvailableAttributes(category, "pv.classification", filters);
 
-            const [products, rawColors, rawMaterials] = await Promise.all([
-                productsPromise, colorsPromise, materialsPromise
+            const [products, rawColors, rawMaterials, rawClassifications] = await Promise.all([
+                productsPromise, colorsPromise, materialsPromise, classificationsPromise
             ]); //console.log(products);
             
             let buttonsRange = 2;
@@ -60,6 +61,7 @@ const pageController = {
 
             const colors = filterHelper.processFilters(rawColors);
             const materials = filterHelper.processFilters(rawMaterials);
+            const classifications = filterHelper.processFilters(rawClassifications);
 
             res.render('pages/webstore/products',
                 {
@@ -69,7 +71,7 @@ const pageController = {
                     utils,
                     products, buttonsRange, filters, sorting,
                     availableParams: {
-                        colors, materials
+                        colors, materials, classifications
                     },
                     metaDescription: `Discover Le Vount. Handcrafted 18k gold jewelry designed for the modern muse. Shop rings, necklaces, and bracelets. Free shipping to the US.`,
                     currentUrl: 'https://levount.com' + req.originalUrl,
@@ -84,20 +86,20 @@ const pageController = {
     product: async (req, res, next) => {
         try {
             const { id } = req.params;
-            const product = await productModel.getProducts({productSku: id, storeId: 0}); //console.log(product);
+            const product = await productModel.getProducts({productSku: id, storeId: 0}); //console.log(`https://levount.com/images/products/${ product?.material }/${ product?.variants?.[0]?.category }/${ product?.sku?.toLowerCase() }/${ product?.sku?.toLowerCase() }-large.webp`);
 
             if (product?.active == 0 || !product) { return next(new appError("This product is not still available.", 404)); }
 
             res.render('pages/webstore/product',
                 {
-                    title: `Le Vount Jewelry | ${utils.capitalizeFirstLetter(product?.category)} | ${id}`,
+                    title: `Le Vount Jewelry | ${utils.capitalizeFirstLetter(product?.variants?.[0]?.category)} | ${id?.toUpperCase()}`,
                     page: 'product',
                     userSession: res.locals.userSession,
                     utils,
                     product,
-                    metaDescription: utils.capitalizeFirstLetter(product?.description),
+                    metaDescription: utils.capitalizeFirstLetter(product?.variants?.[0]?.description),
                     currentUrl: 'https://levount.com' + req.originalUrl,
-                    socialImage: `https://levount.com/images/products/${ product?.material }/${ product?.category }/${ product?.sku }/${ product?.sku?.toLowerCase() }-large.webp`
+                    socialImage: `https://assets.levount.com/global/images/products/${ product?.material }/${ product?.variants?.[0]?.category }/${ product?.sku?.toLowerCase() }/${ product?.sku?.toLowerCase() }-large.webp`
                 }
             );
         } catch (error) {

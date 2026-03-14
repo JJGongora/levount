@@ -86,6 +86,53 @@ const filterHelper = {
         const params = {};
     },
 
+    shapeToCategory: {
+        english: (shape) => {
+            switch(shape) {
+                case "A": return "rings"; break;
+                case "B": return "earrings"; break;
+                case "C": return "pendants"; break;
+                case "D": return "necklaces"; break;
+                case "E": return "necklaces"; break;
+                case "F": return "bracelets"; break;
+                case "G": return "bracelets"; break;
+                case "H": return "accesories"; break;
+                case "N": return "earrings"; break;
+                case "Q": return "necklaces"; break;
+                case "R": return "necklaces"; break;
+                case "V": return "accesories"; break;
+                default: return null; break;
+            }
+        },
+        spanish: (shape) => {
+            switch(shape) {
+                case "A": return "anillos"; break;
+                case "B": return "aretes"; break;
+                case "C": return "dijes"; break;
+                case "D": return "collares"; break;
+                case "E": return "collares"; break;
+                case "F": return "brazaletes"; break;
+                case "G": return "brazaletes"; break;
+                case "H": return "accesorios"; break;
+                case "N": return "aretes"; break;
+                case "Q": return "collares"; break;
+                case "R": return "collares"; break;
+                case "V": return "accesorios"; break;
+            }
+        }
+    },
+
+    translation_material: {
+        spanish: (material) => {
+            switch (material) {
+                case "gold": return "oro"; break;
+                case "silver": return "plata"; break;
+                case "steel": return "acero"; break;
+                default: return null; break;
+            }
+        }
+    }
+
 };
 
 export default filterHelper;

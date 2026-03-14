@@ -27,6 +27,7 @@
         "express-ejs-layouts": "^2.5.1",
         "flag-icons": "^7.5.0",
         "fs": "^0.0.1-security",
+        "fs-extra": "^11.3.3",
         "helmet": "^8.1.0",
         "intl-tel-input": "^25.15.0",
         "jsonwebtoken": "^9.0.2",
@@ -41,6 +42,7 @@
         "qrcode": "^1.5.4",
         "qs": "^6.14.1",
         "redis": "^5.10.0",
+        "sharp": "^0.34.5",
         "uuid": "^13.0.0",
         "web-push": "^3.6.7",
         "whatsapp-web.js": "^1.34.4"

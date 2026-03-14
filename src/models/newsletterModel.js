@@ -7,23 +7,30 @@ import emailModel from "./emailModel.js";
 
 const newsletterModel = {
 
-    subscribe: async(email) => {
-        const query = `INSERT IGNORE INTO newsletterSubscribers (address, registerDate, verifiedEmail) VALUES (?, NOW(), 'active');`;
-        const [result] = await db.query(query, [email]); //console.log(result);
+    subscribe: async(email, storeId) => {
+        const confirmationToken = uuidv4();
+        const query = `
+            INSERT IGNORE INTO 
+                newsletterSubscribers
+                    (address, registerDate, verifiedEmail, confirmationToken, storeId)                    
+                VALUES
+                    (?, NOW(), 'active', ?, ?)`;
+        const [result] = await db.query(query, [email, confirmationToken, storeId]); //console.log(result);
         if (result.affectedRows == 0) { 
 
-            return { message: "You're already an Le Vount's Insider."}; 
+            return { message: "You're already an Le Vount's Insider.", success: false, errorType: "user_exists" }; 
 
         } else {
 
-            const emailData = await authHelpers.senderEmailData("levount-noreply");
+            const sender = (storeId == 0) ? `levount-noreply` : `silverbest-noreply`;
+            const emailData = await authHelpers.senderEmailData(sender);
             const emailParams = {
                 username: emailData.user,
                 pass: emailData.pass,
                 display: emailData.display,
                 recipient: email,
-                subject: "Welcome to our inner circle",
-                text: "Welcome to Le Vount's newsletter",
+                subject: (storeId == 0) ? `Welcome to Le Vount's newsletter.` : `¡Bienvenido al club Silver!`,
+                text: (storeId == 0) ? `Welcome to Le Vount's newsletter.` : `¡Bienvenido al club Silver!`,
                 attachments: null /*[
                     {
                         filename: `Logo_KCA-${ data?.Logo }.png`,
@@ -31,9 +38,10 @@ const newsletterModel = {
                         cid: 'logo'
                     }
                 ]*/,
-                html: emailTemplates.newsletterSubscription()
-            }; //console.log(emailParams);
-            const sendingEmail = await sendEmail(emailParams); //console.log(sendingEmail);
+                html: (storeId == 0) ? emailTemplates.newsletterSubscription() : emailTemplates.SilverBest.newsletterSubscription(email, confirmationToken)
+            };
+            const sendingEmail = await sendEmail(emailParams);
+            if (sendingEmail.success) { await emailModel.registerSend(email, emailData.user, email); }
             
         }
 
@@ -49,14 +57,14 @@ const newsletterModel = {
         return result[0];
     },
 
-    registerClientEmail: async(clientId, email) => {
+    registerClientEmail: async(clientId, email, storeId) => {
         const token = uuidv4();
         const query = `
             INSERT IGNORE INTO 
-                newsletterSubscribers (address, registerDate, verifiedEmail, clientId, confirmationToken) 
-            VALUES (?, NOW(), 'pending', ?, ?);
+                newsletterSubscribers (address, registerDate, verifiedEmail, clientId, confirmationToken, storeId) 
+            VALUES (?, NOW(), 'pending', ?, ?, ?);
         `;
-        const [result] = await db.query(query, [email, clientId, token]);
+        const [result] = await db.query(query, [email, clientId, token, storeId]);
         return { affectedRows: result.affectedRows, newsletterToken: token };
     },
 

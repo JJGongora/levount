@@ -12,12 +12,13 @@ function dateToInputDate(date) {
 }
 
 function toTitleCase(phrase, customExceptions = []) {
-    if (!phrase) return "";
+    if (!phrase) return null;
 
     const defaultExceptions = [
         'a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'if', 
         'in', 'nor', 'of', 'on', 'or', 'so', 'the', 'to', 'up', 'yet', 'with',
-        'cultured', 'cultivated', 'de', 'del', 'la', 'las', 'le', 'les', 'van', 'von'
+        'cultured', 'cultivated', 'de', 'del', 'la', 'las', 'le', 'les', 'van', 'von',
+        'con', 'y'
     ];
     // Combinamos las excepciones por defecto con las que tú envíes (si las hay)
     const exceptions = [...defaultExceptions, ...customExceptions];

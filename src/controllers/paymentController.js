@@ -34,7 +34,7 @@ const paymentController = {
                 calculatedItemTotal += unitPrice * qty;
                 return {
                     name: item.name.length > 126 ? item.name.substring(0, 123) + "..." : item.name,
-                    sku: item.sku,
+                    sku: item.sku?.toLowerCase(),
                     quantity: qty.toString(),                    
                     unitAmount: {
                         currencyCode: 'USD',

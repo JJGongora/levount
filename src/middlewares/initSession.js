@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import userModel from "../models/userModel.js";
 import authHelpers from "../utils/authHelpers.js";
 import { env } from "process";
+import { methods as utils } from "../../public/js/utils.js";
 
 const initSession = async (req, res, next) => {
     try {
@@ -19,6 +20,7 @@ const initSession = async (req, res, next) => {
         }        
         res.locals.cartId = req.cartSession;         
         res.locals.userSession = null;
+        res.locals.utils = utils;
         const Logged = await authHelpers.checkCookie(req);
         //console.log(req);
 

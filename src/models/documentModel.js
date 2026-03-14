@@ -20,20 +20,19 @@ const documentModel = {
                     INSERT INTO sales
                         (
                             documentNumber, storeId, docDate, preparedBy,
-                            paymentMethod, status,
+                            status,
                             registeredBy, registeredAt, containsGold,
                             clientId, roomNumber, lastEdition, editedBy, shift
                         )
                     VALUES
                         (
                             ?, ?, ?, ?,
-                            ?, ?,
+                            ?,
                             ?, NOW(), ?,
                             ?, ?, NOW(), ?, ?
                         )
                     ON DUPLICATE KEY UPDATE
                         preparedBy      = COALESCE(VALUES(preparedBy), preparedBy),
-                        paymentMethod   = COALESCE(VALUES(paymentMethod), paymentMethod),
                         status  = COALESCE(VALUES(status), status),
                         containsGold    = COALESCE(VALUES(containsGold), containsGold),
                         clientId        = COALESCE(VALUES(clientId), clientId),
@@ -47,7 +46,6 @@ const documentModel = {
                     data?.storeId || null,
                     data?.docDate || null,
                     data?.sale?.preparedBy || null,
-                    data?.sale?.paymentMethod || null,
                     data?.docStatus || 'active',
                     username || 'System',
                     data?.sale?.containsGold || null,

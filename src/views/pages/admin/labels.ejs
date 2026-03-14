@@ -1,0 +1,368 @@
+<style>
+    /* Estilos encapsulados para el panel de etiquetas */
+    body {
+        & main {
+            padding: 25px;
+
+            & .Content.sys-label-panel {
+                background-color: transparent;
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                display: grid;
+                row-gap: 15px;
+
+                /* Cabecera y controles superiores */
+                & .view-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-bottom: 16px;
+                    border-bottom: 1px solid var(--lv-border);
+
+                    & .title-area {
+                        & h1 {
+                            font-size: 1.5rem;
+                            color: var(--lv-obsidian);
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                        }
+
+                        & p {
+                            font-size: 0.9rem;
+                            color: var(--gray-70);
+                        }
+                    }
+
+                    /* Barra de herramientas: Buscador y Botón de Acción */
+                    & .toolbar-actions {
+                        display: flex;
+                        gap: 16px;
+                        align-items: center;
+
+
+
+                        & .btn-print {
+                            background-color: var(--lv-obsidian);
+                            color: var(--lv-white);
+                            padding: 10px 20px;
+                            font-size: 0.9rem;
+                            font-weight: 600;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            border: none;
+                            transition: background-color 0.2s;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+
+                            &:hover {
+                                background-color: var(--lv-slate);
+                            }
+
+                            &:disabled {
+                                background-color: var(--gray-40);
+                                cursor: not-allowed;
+                            }
+
+                            & .badge-count {
+                                background-color: var(--lv-gold);
+                                color: var(--lv-white);
+                                padding: 2px 6px;
+                                border-radius: 12px;
+                                font-size: 0.75rem;
+                            }
+                        }
+                    }
+                }
+
+                & .search-wrapper {
+                    position: relative;
+                    display: flex;
+                    gap: 15px;
+                    flex-wrap: wrap;
+
+                    & .inputContainer {
+                        display: grid;
+                        row-gap: 4px;
+
+                        & label {
+                            font-size: 0.7rem;
+                            text-transform: uppercase;
+                            color: var(--gray-70);
+                            font-weight: 600;
+                        }
+                        & input {
+                            padding: 8px 10px;
+                            border: 1px solid var(--gray-40);
+                            border-radius: 4px;
+                            font-size: 0.9rem;
+                            color: var(--text-dark);
+                            background-color: var(--bg-white);
+                            transition: all 0.2s ease;
+
+                            &:focus {
+                                outline: none;
+                                border-color: var(--lv-gold);
+                                box-shadow: 0 0 0 3px var(--lv-gold-light);
+                            }
+                        }
+                    }
+                }
+
+                /* Contenedor de la tabla */
+                & .table-card {
+                    background-color: var(--bg-white);
+                    border: 1px solid var(--lv-border);
+                    border-radius: 6px;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                    overflow: hidden;
+
+                    & .table-container {
+                        width: 100%;
+                        overflow-x: auto;
+
+                        & table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            text-align: left;
+
+                            & th,
+                            & td {
+                                padding: 14px 20px;
+                                border-bottom: 1px solid var(--lv-border);
+                                vertical-align: middle;
+                            }
+
+                            & th {
+                                background-color: var(--gray-10);
+                                font-size: 0.75rem;
+                                text-transform: uppercase;
+                                letter-spacing: 0.05em;
+                                color: var(--gray-70);
+                                font-weight: 600;
+                            }
+
+                            & td {
+                                font-size: 0.9rem;
+                                color: var(--text-dark);
+
+                                & .item-name {
+                                    font-weight: 600;
+                                    color: var(--lv-obsidian);
+                                    display: block;
+                                }
+
+                                & .item-meta {
+                                    font-size: 0.8rem;
+                                    color: var(--gray-70);
+                                    margin-top: 2px;
+                                }
+
+                                /* Estilo visual para el código Le Vount / SKU */
+                                & .sku-tag {
+                                    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+                                    background-color: var(--gray-10);
+                                    padding: 2px 6px;
+                                    border-radius: 4px;
+                                    border: 1px solid var(--gray-30);
+                                    font-size: 0.8rem;
+                                    color: var(--gray-80);
+                                }
+
+                                /* Simulación visual de código de barras */
+                                & .barcode-preview {
+                                    font-family: 'Libre Barcode 39', 'Courier New', Courier, monospace;
+                                    font-size: 1.5rem;
+                                    color: var(--gray-80);
+                                    letter-spacing: 2px;
+                                }
+                            }
+
+                            & tbody tr {
+                                transition: background-color 0.15s ease;
+
+                                &:hover {
+                                    background-color: var(--lv-light);
+                                }
+
+                                /* Fila seleccionada */
+                                &.selected {
+                                    background-color: var(--lv-gold-light);
+                                }
+
+                                &:last-child td {
+                                    border-bottom: none;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                /* Estilo para los checkboxes */
+                & .custom-checkbox {
+                    width: 18px;
+                    height: 18px;
+                    cursor: pointer;
+                    accent-color: var(--lv-gold);
+                }
+            }
+        }
+    }
+</style>
+
+<section class="Content sys-label-panel">
+    <div class="view-header">
+        <div class="title-area">
+            <h1>Etiquetas<%- %></h1>
+            <p></p>
+        </div>
+
+        <div class="toolbar-actions">
+            <button class="btn-print" id="printBtn" onclick="printSelectedLabels()">
+                <i>&#xe1014;</i> Imprimir Selección
+                <span class="badge-count" id="selectedCount">0</span>
+            </button>
+        </div>
+    </div>
+    <form id="labelSearch" class="search-wrapper">
+        <div class="inputContainer">
+            <label for="">Código LeVount/Alterno/SKU</label>
+            <input type="search" id="labelSearch" name="search[code]"
+            onkeyup="filterLabels()">
+        </div>
+        <div class="inputContainer">
+            <label for="">No. recepción</label>
+            <input type="search" name="search[reception]">
+        </div>
+        <div class="inputContainer">
+            <label for="">Línea</label>
+            <input type="search" name="search[line]">
+        </div>
+    </form>
+    <div class="table-card">
+
+        <div class="table-container">
+            <table id="labelsTable">
+                <thead>
+                    <tr>
+                        <th style="width: 40px; text-align: center;">
+                            <input type="checkbox" class="custom-checkbox" id="selectAll"
+                                onchange="toggleAllCheckboxes(this)">
+                        </th>
+                        <th>Códigos</th>
+                        <th>Producto</th>
+                        <th>Características</th>
+                        <th>Precio (Etiqueta)</th>
+                        <th>Código de Barras</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: center;">
+                            <input type="checkbox" class="custom-checkbox label-checkbox" value="LV-AN-001"
+                                onchange="updateSelectedCount()">
+                        </td>
+                        <td><span class="sku-tag">LV-AN-001</span></td>
+                        <td>
+                            <span class="item-name">Anillo Solitario Diamante</span>
+                            <span class="item-meta">Anillos</span>
+                        </td>
+                        <td>Oro Blanco 18k<br><span class="item-meta">Talla: 7</span></td>
+                        <td style="font-weight: 600;">$14,500.00</td>
+                        <td><span class="barcode-preview">||||||||||||||||</span></td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: center;">
+                            <input type="checkbox" class="custom-checkbox label-checkbox" value="LV-CO-089"
+                                onchange="updateSelectedCount()">
+                        </td>
+                        <td><span class="sku-tag">LV-CO-089</span></td>
+                        <td>
+                            <span class="item-name">Gargantilla Minimalista</span>
+                            <span class="item-meta">Collares</span>
+                        </td>
+                        <td>Plata .925<br><span class="item-meta">Largo: 45cm</span></td>
+                        <td style="font-weight: 600;">$1,850.00</td>
+                        <td><span class="barcode-preview">||||||||||||||||</span></td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: center;">
+                            <input type="checkbox" class="custom-checkbox label-checkbox" value="LV-PU-034"
+                                onchange="updateSelectedCount()">
+                        </td>
+                        <td><span class="sku-tag">LV-PU-034</span></td>
+                        <td>
+                            <span class="item-name">Pulsera Tenis Zafiros</span>
+                            <span class="item-meta">Pulseras</span>
+                        </td>
+                        <td>Oro Amarillo 14k<br><span class="item-meta">Piedra: Zafiro Azul</span></td>
+                        <td style="font-weight: 600;">$8,200.00</td>
+                        <td><span class="barcode-preview">||||||||||||||||</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<script>
+    function toggleAllCheckboxes(source) {
+        const checkboxes = document.querySelectorAll('.label-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = source.checked;
+            highlightRow(checkbox);
+        });
+        updateSelectedCount();
+    }
+
+    function updateSelectedCount() {
+        const checkboxes = document.querySelectorAll('.label-checkbox:checked');
+        const countSpan = document.getElementById('selectedCount');
+        const printBtn = document.getElementById('printBtn');
+
+        countSpan.innerText = checkboxes.length;
+
+        // Habilitar o deshabilitar el botón según si hay elementos seleccionados
+        if (checkboxes.length > 0) {
+            printBtn.removeAttribute('disabled');
+        } else {
+            printBtn.setAttribute('disabled', 'true');
+        }
+
+        // Actualizar el estilo de las filas individuales
+        document.querySelectorAll('.label-checkbox').forEach(highlightRow);
+    }
+
+    function highlightRow(checkbox) {
+        const row = checkbox.closest('tr');
+        if (checkbox.checked) {
+            row.classList.add('selected');
+        } else {
+            row.classList.remove('selected');
+        }
+    }
+
+    function printSelectedLabels() {
+        const selected = Array.from(document.querySelectorAll('.label-checkbox:checked')).map(cb => cb.value);
+        if (selected.length === 0) return;
+
+        console.log("Imprimiendo etiquetas para:", selected);
+        // Aquí puedes conectar tu lógica para generar el PDF o enviar a la impresora térmica
+        alert(`Preparando impresión para ${selected.length} etiquetas.`);
+    }
+
+    function filterLabels() {
+        // Lógica básica de filtrado para el buscador frontend
+        const input = document.getElementById('labelSearch');
+        const filter = input.value.toLowerCase();
+        const rows = document.querySelectorAll('#labelsTable tbody tr');
+
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(filter) ? '' : 'none';
+        });
+    }
+</script>

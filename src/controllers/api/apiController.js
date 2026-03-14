@@ -7,10 +7,19 @@ import filterHelper from "../../utils/filterHelper.js";
 import documentModel from "../../models/documentModel.js";
 import clientModel from "../../models/clientModel.js";
 import createPayPalClient from "../../config/paypalConfig.js";
-import { OrdersController } from '@paypal/paypal-server-sdk';
+import { ConsoleLogger, OrdersController } from '@paypal/paypal-server-sdk';
 import paymentModel from "../../models/paymentModel.js";
 import authHelpers from "../../utils/authHelpers.js";
 import newsletterModel from "../../models/newsletterModel.js";
+import sharp from "sharp";
+import fs from "fs-extra";
+import path from "path";
+import { fileURLToPath } from 'url';
+import productModel from "../../models/productModel.js";
+
+// Variables globales
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const apiController = {
 
@@ -56,7 +65,7 @@ const apiController = {
                 calculatedItemTotal += unitPrice * qty;
                 return {
                     name: item.name.length > 126 ? item.name.substring(0, 123) + "..." : item.name,
-                    sku: item.sku,
+                    sku: item.sku?.toLowerCase(),
                     quantity: qty.toString(),                    
                     unitAmount: {
                         currencyCode: 'USD',
@@ -170,11 +179,7 @@ const apiController = {
             const { quantity } = req?.params; //console.log(req.headers);
             const sessionId = res?.locals?.cartSession || req?.body?.cartSession; if(!sessionId) { next(new appError("Please, provide a valid cart session Id.", 400)); }
             
-            const storeId = (req?.headers?.origin?.includes("levount.com"))
-                ? 0
-                : (req?.headers?.origin?.includes("silverbestprice.com"))
-                    ? 1
-                    : null;
+            const storeId = 0;
 
             const existingCarts = await cartModel.getCartSession(sessionId);
             let cartId = (existingCarts.length == 0) ? await cartModel.createCart(sessionId, storeId) : existingCarts?.[0]?.id;
@@ -226,7 +231,7 @@ const apiController = {
             // Se verifican las credenciales del usuario y, de ser correctas, se devuelven los datos de la sesión.
             const userSession = await authModel.authenticateUser(usernameInput, password); //console.log("======= Sesión de usuario (authController.login):", userSession);    
             
-            if (!userSession) {
+            if (!userSession || userSession.success == false) {
                 return res.status(401).send({
                     status: "Error",
                     message: "Wrong credentials. Please, verify your user and password."
@@ -266,7 +271,10 @@ const apiController = {
     signUp: async (req, res, next) => {
         try {
             const username = res?.locals?.userSession?.id || null;
-            const signUpResult = await authModel.signup(filterHelper.cleanEmptyFields(req.body));
+            console.log(req.get('Referer'));
+            const data = filterHelper.cleanEmptyFields(req.body);
+            data.storeId = 0;
+            const signUpResult = await authModel.signup(data);
             return res.status(201).send(signUpResult);
         } catch (error) {
             next(error);
@@ -323,7 +331,7 @@ const apiController = {
 
                 //console.log("\n\n\n\n", data, "\n\n\n\n", data?.sale?.payment);
 
-                const result = await clientModel.register(data, res.locals.userSession.name);
+                const result = await clientModel.register(data, res.locals.userSession.name, 0);
                 return res.status(200).send(result);
                 //return res.status(400).send({success: false, message: "Esta es una prueba."});
             } catch (error) {
@@ -362,6 +370,125 @@ const apiController = {
             }
         }
     },
+
+    products: {
+        create: async(req, res, next) => {
+            try {                
+                const data = filterHelper.cleanEmptyFields(req?.body); //console.log(req?.body);
+                const productSku = data?.product?.sku?.toLowerCase();
+                const files = req?.files;
+                const username = res?.locals?.userSession?.name || req?.body?.username || 'System';
+
+                if (!data?.product?.shape || !data?.product?.material || !data?.product?.sku) {
+                    return next(new appError("Por favor, ingrese todos los datos obligatorios (*)."));
+                } 
+                
+                const result = await productModel.create(data?.product, username);                
+
+                // Se procesan las imágenes.
+                if (result?.[0]?.status == "success" && files && files?.length > 0) {
+
+                    const productFolder = path.join(__dirname, 
+                        `../../../public/images/products/${data?.product?.material?.toLowerCase()}/${filterHelper.shapeToCategory.english(data?.product?.shape)}/${productSku?.toLowerCase()}`
+                    ); console.log(productFolder);
+                    await fs.ensureDir(productFolder); // Se verifica que el directorio exista.
+
+                    // Se procesa cada imagen subida.
+                    const imageProcessingPromises = files?.map(async (file, index) => {
+                        const timestamp = Date.now();
+                        const baseName = (index == 0)
+                            ? `${productSku?.toLowerCase()}`
+                            : `${productSku?.toLowerCase()}-${index}`;
+
+                        const sizes = [
+                            { suffix: 'thumb', width: 500, quality: 60 },
+                            { suffix: 'medium', width: 1000, quality: 85 },
+                            { suffix: 'large', width: 1500, quality: 85 }
+                        ];
+
+                        await Promise.all(sizes.map(size => {
+                            return sharp(file.buffer)
+                                .resize({ width: size.width })
+                                .toFormat('webp')
+                                .webp({ quality: size.quality })
+                                .toFile(path.join(productFolder, `${baseName}-${size.suffix}.webp`));
+                        }));
+                    });
+                }
+
+                res.status(200).send(result);
+            } catch (error) {
+                console.log(error);
+                next(error);
+            }
+        },
+
+        update: async(req, res, next) => {
+            try {
+                //console.log(req.params);
+                const data = filterHelper.cleanEmptyFields(req?.body);
+
+            } catch (error) {
+                next(error);
+            }
+        },
+
+        images: {
+            delete: async(req, res, next) => {
+
+            },
+        },
+
+        get: async(req, res, next) => {
+            try {
+                const { search } = req?.query; //console.log(search);
+                const products = await productModel.getProducts({search: search, storeId: 0, limit: 10});
+                res.status(200).send(products);
+            } catch (error) {
+               next(error); 
+            }
+        }
+    },
+
+    user: {
+        get: {
+            userVersion: async(req, res, next) => {
+                try {
+                    const username = req?.query;
+                    const result = await authModel.userVersion(username);
+                    res.status(200).send(result);
+                } catch (error) {
+                    next(error);
+                }
+            },
+        },
+
+        post: {
+            authenticateUser: async(req, res, next) => {
+                try {
+                    const { username, password } = req?.body; //console.log(username, password);
+                    const result = await authModel.authenticateUser(username, password); //console.log(result);
+                    res.status(200).send(result);
+                } catch (error) {
+                    next(error);
+                }
+            },
+        }
+    },
+
+    admin: {
+        signUp: async (req, res, next) => {
+            try {
+                const username = res?.locals?.userSession?.id || null;
+                let data = filterHelper.cleanEmptyFields(req.body);
+                data.isAdmin == true;
+                const signUpResult = await authModel.signup(data, null, true);
+                return res.status(201).send(signUpResult);
+            } catch (error) {
+                next(error);
+            }
+        },
+    }
 
 };
 

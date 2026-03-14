@@ -11,6 +11,7 @@ const authMiddleware = {
         // Inicializamos variables locales para la vista
         res.locals.userSession = null;
         res.locals.cartId = null;
+        res.locals.storeId = 0;
 
         // ---------------------------------------------------------
         // 1. GESTIÓN DEL CARRITO (Lógica Síncrona - Muy Rápida)

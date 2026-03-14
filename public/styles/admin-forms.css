@@ -82,47 +82,7 @@ body {
             flex: 999 1 400px;
             position: relative;
 
-            & .responseMessage {
-                overflow: hidden;
-                max-height: 0px;
-                transition: max-height 0.4s;
-                position: sticky;
-                bottom: 15px;
-                margin-top: 15px;
-                z-index: 998;
-
-                & ul {
-                    row-gap: 0px;
-                    list-style: none;
-                    padding: 0;
-                    margin: 0;
-
-                    & li {
-                        background-color: var(--custom-back);
-                        color: var(--custom-font);
-                        padding: 5px 3px;
-                        border-radius: 5px;
-
-                        & i {
-                            margin-right: 3px;
-                            font-size: 20px;
-                        }
-
-                        & span {
-                            font-size: 0.9rem;
-                            line-height: 100%;
-                        }
-
-                        &+li {
-                            margin-top: 5px;
-                        }
-                    }
-                }
-
-                &.open {
-                    max-height: 1000px;
-                }
-            }
+            
 
             & h1 {
                 margin: 0;

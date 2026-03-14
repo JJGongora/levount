@@ -1,0 +1,109 @@
+<aside class="adminMenuContainer">
+
+    <nav>
+        
+        <section class="userAdmin">
+            <div class="userProfile">
+                <i>&#xe1031;</i>
+            </div>
+            <div class="userData">
+                <h3><%- userSession?.name %></h3>
+                <h6><%- userSession?.roles?.[0] %></h6>
+            </div>
+        </section>
+
+        <section class="menuOptions">
+            <ul>
+                <% if(userSession?.permissions?.some(permission => permission.includes("customers"))) { %>                
+                <li>
+                    <a href=""><i>&#xe1030;</i>Clientes</a>
+                    <div class="subMenu">
+                        <ul>
+                            <% if(userSession?.permissions?.includes("customers:read")) { %>
+                            <li><a href="/admin/clients">Registros</a></li>
+                            <% } if(userSession?.permissions?.includes("customers:create")) { %>
+                            <li><a href="/admin/clients/create">Nuevo</a></li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </li>
+                <% } %>
+                
+                <% if(userSession?.permissions?.some(permission => permission.includes("labels"))) { %>
+                <li>
+                    <a href=""><i>&#xe1051;</i>Etiquetas</a>
+                    <div class="subMenu">
+                        <ul>
+                            <li><a href="/admin/labels/silver">Plata</a></li>
+                            <li><a href="/admin/labels/gold">Oro</a></li>
+                            <li><a href="/admin/labels">Registros</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <% } %>
+
+                <% if(userSession?.permissions?.some(permission => permission.includes("inventory"))) { %>
+                <li>
+                    <a href=""><i>&#xe106d;</i>Inventario</a>
+                    <div class="subMenu">
+                        <ul>
+                            <% if(userSession?.permissions?.includes("inventory:silver:read")) { %>
+                            <li><a href="/admin/inventory/silver">Plata</a></li>
+                            <% } if(userSession?.permissions?.includes("inventory:gold:read")) { %>
+                            <li><a href="/admin/inventory/gold">Oro</a></li>
+                            <% } if(userSession?.permissions?.includes("reports:inventory")) { %>
+                            <li><a href="/admin/inventory/reports">Reportes</a></li>
+                            <% } if(userSession?.permissions?.includes("inventory:transfers")) { %>
+                            <li><a href="/admin/inventory/transfers">Traspasos</a></li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </li>
+                <% } %>
+                
+                <% if(userSession?.permissions?.some(permission => permission.includes("inventory"))) { %>
+                <li>
+                    <a href=""><i>&#xe1044;</i>Productos</a>
+                    <div class="subMenu">
+                        <ul>
+                            <% if(userSession?.permissions?.includes("inventory:read")) { %>
+                            <li><a href="/admin/products">Registros</a></li>
+                            <% } if(userSession?.permissions?.includes("inventory:create")) { %>
+                            <li><a href="/admin/products/create">Nuevo</a></li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </li>
+                <% } %>
+                
+                <li>
+                    <a href=""><i>&#xe1092;</i>Ventas</a>
+                    <div class="subMenu">
+                        <ul>
+                            <li><a href="/admin/sales">Registros</a></li>
+                            <li><a href="/admin/sales/create">Nuevo</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <li>
+                    <a href=""><i>&#xe103e;</i>Sistema</a>
+                    <div class="subMenu">
+                        <ul>
+                            <li><a href="/admin/users">Usuarios</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+    </nav>
+
+    <div class="websites">
+        <ul>
+            <li><a href="https://levount.com"><i>&#xe111f;</i>levount.com</a></li>
+            <li><a href="https://silverbestprice.com"><i>&#xe111f;</i>silverbestprice.com</a></li>
+        </ul>
+    </div>
+
+</aside>

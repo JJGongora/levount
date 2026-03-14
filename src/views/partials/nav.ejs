@@ -639,18 +639,152 @@
                 }
             }
         }
-        & .cartOverlay {
+        & .cartOverlay, & .searchOverlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5);
             z-index: 999;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s;
+            transition: all 0.3s ease-in-out;
 
-            &.open {
+            &.open, &.active {
                 opacity: 1;
                 visibility: visible;
+            }
+        }
+
+        & .searchDrawer {
+            padding: 70px 30px;
+            visibility: hidden;
+            height: fit-content;
+            transition: all 0.3s ease-in-out;
+            position: fixed;
+            z-index: 1000;
+            opacity: 0;
+            left: 0;
+            right: 0;
+            width: 90%;
+            max-width: 800px;
+            box-sizing: border-box;
+            margin: auto;
+
+            & form {
+                box-sizing: border-box;
+                display: flex;
+
+                & .inputContainer {
+                    box-sizing: border-box;
+                    width: 100%;
+                    display: flex;
+                    position: relative;
+
+                    & input {
+                        width: 100%;
+                        box-sizing: border-box;
+                        min-height: 40px;
+                        font-size: 1rem;
+                        font-family: "Montserrat", sans-serif;
+                        padding: 10px 15px;
+                        outline: 0;
+                        border: 1px var(--gray-80) solid;
+                    }
+
+                    & i {
+                        position: absolute;
+                        right: 15px;
+                        top: 6px;
+                        bottom: 0px;
+                        height: fit-content;
+                        font-size: 30px;
+                        color: var(--gray-80);
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            & .searchResults {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                background-color: var(--lv-white);
+
+                & li {
+                    display: flex;
+                    gap: 10px;
+                    padding: 8px;
+                    cursor: pointer;
+                    transition: all 0.3s ease-in-out;
+
+                    &.emptyResults {
+                        display: grid;
+                        cursor: auto;
+
+                        & img {
+                            margin: 0 auto;
+                        }
+
+                        & h2 {
+                            margin: 0 auto;
+                            font-size: 1rem;
+                            font-weight: 500;
+                        }
+
+                        & span {
+                            margin: 0 auto;
+                            color: var(--gray-80);
+                        }
+                    }
+
+                    &:hover {
+                        background-color: var(--gray-10);
+                    }
+
+                    & img {
+                        height: 50px;
+                        width: 50px;
+                        object-fit: cover;
+                    }
+
+                    & .resultDetails {
+                        flex-grow: 1;
+                        display: grid;
+
+                        & h2 {
+                            margin: 0;
+                            font-size: 0.8rem;
+                            font-family: "Bodoni Moda", serif;
+                            font-weight: 600;
+                        }
+
+                        & span {
+                            color: var(--gray-70);
+                            font-size: 0.7rem;
+                        }
+                    }
+
+                    & .resultPrice {
+                        align-items: center;
+                        margin: auto 0;
+                        padding: 0 15px;
+
+                        & h5, & h4 {
+                            margin: 0;
+                            font-family: "Montserrat", sans-serif;
+                            font-weight: 500;                            
+                        }
+
+                        & h5 {
+                            color: var(--gray-80);
+                            text-decoration: line-through;
+                        }
+                    }
+                }
+            }
+
+            &.active {
+                visibility: visible;
+                opacity: 1;
             }
         }
     }
@@ -740,7 +874,7 @@
     <nav>
         <section class="upperBar">
             <div class="leftIcons">
-                <i id="mailButton">&#xe10da;</i>
+                <i id="mailButton" onclick="toggleDrawer('search')">&#xe110d;</i>
                 <i id="menuButton1" onclick="openLateralMenu()">&#xe1120;</i>
             </div>
             <div class="logoContainer" onclick="window.location.href=`/`">
@@ -921,3 +1055,90 @@
     </div>
 </section>
 <section class="cartOverlay" id="cartOverlay" onclick="toggleCart()"></section>
+
+<section class="searchDrawer" id="searchDrawer">
+    <form id="searchProducts">
+        <div class="inputContainer">
+            <input type="search" id="searchProductInput">
+            <i>&#xe110d;</i>
+        </div>
+    </form>
+    <ul class="searchResults" id="searchResults">
+    </ul>
+</section>
+<section class="searchOverlay" id="searchOverlay" onclick="toggleDrawer('search')"></section>
+
+<script>
+    function toggleDrawer(type) {
+        document.getElementById(`${type}Drawer`).classList.toggle('active');
+        document.getElementById(`${type}Overlay`).classList.toggle('active');
+    }
+
+    async function searchProducts() {
+
+        const searchString = document.getElementById("searchProductInput").value;
+        const res = await fetch(`/api/products?search=${searchString}`, {
+            method: "GET",
+            headers: { 'Accept': 'application/json' }
+        });
+        const resJson = await res.json();
+        const resultContainer = document.getElementById("searchResults");
+        resultContainer.innerHTML = "";
+        let htmlResults = ``;
+        if (resJson?.products?.length > 0) {            
+
+            resJson?.products?.forEach(product => {
+                htmlResults += `
+                    <li onclick="window.location.href='/products/${product?.variants?.[0]?.category}/${product?.sku?.toLowerCase()}'">
+                        <img 
+                            src="https://assets.levount.com/global/images/products/${product?.material}/${product?.variants?.[0]?.category}/${product?.sku?.toLowerCase()}/${product?.sku?.toLowerCase()}-thumb.webp"
+                            onerror="this.parentElement.remove();"
+                        >
+                        <div class="resultDetails">
+                            <h2>${ toTitleCase(product?.variants?.[0]?.shortName || product?.variants?.[0]?.name) }</h2>
+                            <span><strong>Category:</strong> ${ toTitleCase(product?.variants?.[0]?.category) }</span>
+                            <span>${ toTitleCase(`${product?.material} | ${product?.purity}`) }</span>
+                        </div>
+                        <div class="resultPrice">
+                            ${ (product?.variants?.[0]?.discountPrice) ? `<h5>$${product?.variants?.[0]?.tagPrice}</h5>` : `` }
+                            <h4>$${product?.variants?.[0]?.finalUnitPrice} USD</h4>
+                        </div>
+                    </li>
+                `;
+            });
+
+
+        } else {
+
+            htmlResults += `
+                <li class="emptyResults">
+                    <img src=''>
+                    <h2>We can't find <strong>'${searchString}'</strong></h2>
+                    <span>Please, try another search.</span>
+                </li>
+            `;
+
+        }
+
+        resultContainer.innerHTML = htmlResults;
+    }
+
+    function debounce(func, delay) {
+        let timeoutId;
+        return function(...args) {
+            clearTimeout(timeoutId);
+            
+            timeoutId = setTimeout(() => {
+                func.apply(this, args);
+            }, delay);
+        };
+    }
+    const buscadorConDebounce = debounce(searchProducts, 500);
+    const inputBuscador = document.getElementById('searchProductInput');
+    inputBuscador.addEventListener('input', (event) => {
+        const palabra = event.target.value;
+        if (palabra.length >= 3 || palabra.length === 0) {
+            buscadorConDebounce(palabra);
+        }
+    });
+</script>

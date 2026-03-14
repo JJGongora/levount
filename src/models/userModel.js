@@ -43,6 +43,33 @@ const userModel = {
         return result.affectedRows;
     },
 
+    getAll: async(filters) =>{
+        const limit = filters?.limit ? parseInt(filters?.limit) : 30;
+        const page = filters?.page ? parseInt(filters?.page) : 1;
+        const offset = (page - 1) * limit;
+
+        let conditions = []; let params = [];
+        let sort = "";
+
+        const query = `
+            SELECT 
+                u.id, u.username, u.email, u.active, u.passwordReset,
+                p.displayName, u.lastLogin, r.name as role
+            FROM users u
+            LEFT JOIN
+                persons p
+                    ON p.id = u.personId
+            LEFT JOIN
+                userRoles ur
+                    ON ur.userId = u.id
+            LEFT JOIN
+                roles r
+                    ON r.id = ur.roleId;
+        `;
+        const [result] = await db.query(query);
+        return result;        
+    },
+
 }
 
 export default userModel;

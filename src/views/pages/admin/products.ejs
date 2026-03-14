@@ -1,0 +1,505 @@
+<style>
+    body {
+        & main {
+            padding: 25px;
+        }
+    }
+
+    /* Contenedor principal de la tabla de productos */
+    .sys-list-panel {
+        background-color: var(--bg-white);
+        border: 1px solid var(--lv-border);
+        border-radius: 6px;
+        width: 100%;
+        max-width: 1100px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        margin: auto;
+
+        /* Cabecera y controles superiores */
+        & .sys-panel-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--lv-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            & .header-info {
+                & h2 {
+                    font-size: 1.125rem;
+                    color: var(--lv-obsidian);
+                    font-weight: 600;
+                }
+
+                & p {
+                    font-size: 0.85rem;
+                    color: var(--gray-70);
+                    margin-top: 4px;
+                }
+            }
+
+            /* Controles de búsqueda y botón nuevo */
+            & .header-actions {
+                display: flex;
+                gap: 16px;
+                align-items: center;
+
+                & .search-box {
+                    padding: 8px 12px;
+                    border: 1px solid var(--gray-40);
+                    border-radius: 4px;
+                    font-size: 0.875rem;
+                    width: 250px;
+
+                    &:focus {
+                        outline: none;
+                        border-color: var(--lv-gold);
+                        box-shadow: 0 0 0 3px var(--lv-gold-light);
+                    }
+                }
+
+                & .btn-primary {
+                    background-color: var(--lv-obsidian);
+                    color: var(--lv-white);
+                    padding: 8px 16px;
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    border: none;
+                    transition: background-color 0.2s;
+
+                    &:hover {
+                        background-color: var(--lv-slate);
+                    }
+                }
+            }
+        }
+
+        & .filters {
+            box-sizing: border-box;
+            height: fit-content;
+            max-height: calc(100dvh - 70px);
+            top: 80px;
+            padding: 10px;
+
+            & form {
+                display: flex;
+                gap: 10px;
+                align-items: end;
+
+                & .inputContainer {
+                    display: grid;
+                    flex-grow: 1;
+
+                    & label {
+                        font-size: 0.9rem;
+                        color: var(--gray-60);
+                        margin-bottom: 3px;
+                        font-family: "Nunito Sans", sans-serif;
+                        font-weight: 600;
+                    }
+
+                    & input,
+                    & select {
+                        height: 35px;
+                        padding: 5px;
+                        border: 1px var(--gray-40) solid;
+                        font-family: "Nunito Sans", sans-serif;
+                        box-sizing: border-box;
+                    }
+
+                    &+.inputContainer {
+                        margin-top: 8px;
+                    }
+                }
+
+                & button {
+                    background-color: var(--gray-40);
+                    font-family: "Nunito Sans", sans-serif;
+                    border: 1px var(--gray-60) solid;
+                    height: 35px;
+                    margin-top: 15px;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    padding: 0 20px;
+
+                    &:hover {
+                        background-color: var(--gray-80);
+                        color: var(--font-light);
+                        border-color: var(--gray-40);
+                    }
+                }
+            }
+        }
+
+        /* Estilos de la tabla */
+        & .table-container {
+            width: 100%;
+            overflow-x: auto;
+
+            & table {
+                width: 100%;
+                border-collapse: collapse;
+                text-align: left;
+
+                & th {
+                    background-color: var(--gray-10);
+                    padding: 12px 24px;
+                    font-size: 0.75rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    color: var(--gray-70);
+                    font-weight: 600;
+                    border-bottom: 1px solid var(--lv-border);
+                }
+
+                & td {
+                    padding: 12px 24px;
+                    font-size: 0.9rem;
+                    vertical-align: middle;
+
+                    /* Agrupación de Imagen y Detalles */
+                    & .product-meta {
+                        display: flex;
+                        align-items: center;
+                        gap: 16px;
+
+                        /* Miniatura de la pieza */
+                        & .product-thumb {
+                            width: 48px;
+                            height: 48px;
+                            background-color: var(--bg-stone);
+                            border-radius: 4px;
+                            border: 1px solid var(--gray-30);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: var(--gray-50);
+                            font-size: 0.7rem;
+                            text-align: center;
+                            overflow: hidden;
+
+                            & img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            }
+                        }
+
+                        & .product-info {
+                            display: flex;
+                            flex-direction: column;
+
+                            & .product-name {
+                                font-weight: 600;
+                                color: var(--lv-obsidian);
+                            }
+
+                            & .product-category {
+                                font-size: 0.8rem;
+                                color: var(--gray-70);
+                                margin-top: 2px;
+                            }
+                        }
+                    }
+
+                    /* SKU estilizado */
+                    & .sku-code {
+                        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+                        background-color: var(--gray-10);
+                        padding: 2px 6px;
+                        border-radius: 4px;
+                        border: 1px solid var(--gray-30);
+                        font-size: 0.8rem;
+                        color: var(--gray-80);
+                    }
+
+                    /* Botones de acción */
+                    & .action-links {
+                        display: flex;
+                        gap: 12px;
+
+                        & button {
+                            background: none;
+                            border: none;
+                            cursor: pointer;
+                            font-size: 0.85rem;
+                            font-weight: 500;
+                            padding: 0;
+                            transition: color 0.2s;
+
+                            &.edit-btn {
+                                color: var(--lv-gold-dim);
+
+                                &:hover {
+                                    color: var(--lv-gold);
+                                }
+                            }
+
+                            &.delete-btn {
+                                color: var(--gray-60);
+
+                                &:hover {
+                                    color: var(--lv-error);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                /* Efecto hover en filas */
+                & tbody tr {
+                    transition: background-color 0.15s ease;
+                    border-bottom: 1px solid var(--lv-border);
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: var(--bg-alabaster);
+                    }
+
+                    &:last-child td {
+                        border-bottom: none;
+                    }
+                }
+            }
+        }
+
+        /* Badges para el control de stock */
+        & .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+
+            /* Indicador de color estilo "punto" */
+            &::before {
+                content: '';
+                display: block;
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+            }
+
+            &.stock-ok {
+                background-color: rgba(16, 185, 129, 0.1);
+                color: var(--lv-slate);
+
+                &::before {
+                    background-color: var(--lv-green);
+                }
+            }
+
+            &.stock-low {
+                background-color: var(--lv-gold-light);
+                color: var(--lv-slate);
+
+                &::before {
+                    background-color: var(--lv-gold);
+                }
+            }
+
+            &.stock-out {
+                background-color: rgba(239, 68, 68, 0.1);
+                color: var(--lv-slate);
+
+                &::before {
+                    background-color: var(--lv-error);
+                }
+            }
+        }
+
+        & .navButtons {
+            display: flex;
+            justify-content: center;
+            margin: 20px auto;
+
+            & button {
+                outline: none;
+                border: 1px var(--gray-50) solid;
+                cursor: pointer;
+                height: 35px;
+                font-family: "Nunito Sans", sans-serif;
+                aspect-ratio: 1 / 1;
+
+                &.selected {
+                    background-color: var(--accent-gold);
+                    color: var(--font-light);
+                }
+
+                &.inactive {
+                    pointer-events: none;
+                    opacity: 0.5;
+                }
+
+                &+button {
+                    border-left: 0px;
+                }
+            }
+        }
+    }
+</style>
+
+<div class="sys-list-panel">
+    <div class="sys-panel-header">
+        <div class="header-info">
+            <h2>Catálogo e Inventario</h2>
+            <p>Gestiona las piezas, precios y disponibilidad en tienda.</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn-primary" onclick="window.location.href='products/create'">+ Nuevo Producto</button>
+        </div>
+    </div>
+
+    <div class="filters">
+        <form action="" method="get" id="filtersForm">
+            <div class="inputContainer">
+                <label for="">Ordenar por</label>
+                <select name="sort" id="" onchange="submit()">
+                    <option value="priceLow" <%- (sorting?.sort == 'priceLow') ? 'selected' : '' %>>Precio (menor a mayor)</option>
+                    <option value="priceHigh" <%- (sorting?.sort == 'priceHigh') ? 'selected' : '' %>>Precio (mayor a menor)</option>
+                    <option value="material" <%- (sorting?.sort == 'material') ? 'selected' : '' %>>Material</option>
+                    <option value="latest" <%- (sorting?.sort == 'latest' || !sorting?.sort) ? 'selected' : '' %>>Nuevos</option>
+                </select>
+            </div>
+
+            <div class="inputContainer">
+                <label for="">Material</label>
+                <select name="material" id="" onchange="submit()">
+                    <option value="<%- filters?.material%>" selected hidden><%- utils.toTitleCase(filterHelper.translation_material.spanish(filters?.material?.toLowerCase()))
+                            || "Seleccione" %></option>
+                    <% availableParams?.materials?.forEach(material=> { %>
+                        <option value="<%- material %>"><%- utils.toTitleCase(filterHelper.translation_material.spanish(material?.toLowerCase())) %></option>
+                    <% }); %>
+                </select>
+            </div>
+
+            <div class="inputContainer">
+                <label for="">Color</label>
+                <select name="stoneColor" id="" onchange="submit()">
+                    <option value="" hidden>Seleccione</option>
+                    <% availableParams?.colors?.forEach(color=> { %>
+                        <option value="<%- color %>" <%- (filters?.stoneColor == color) ? 'selected' : '' %>><%- utils.toTitleCase(color) %></option>
+                    <% }); %>
+                </select>
+            </div>
+
+            <div class="inputContainer">
+                <label for="">Categoría</label>
+                <select name="classification" id="" onchange="submit()">
+                    <option value="<%- filters?.classification %>" selected hidden>
+                        <%- utils.capitalize(filters?.classification) || "Seleccione" %>
+                    </option>
+                    <% availableParams?.classifications?.forEach(classification=> { %>
+                        <option value="<%- classification %>"><%- utils.toTitleCase(classification) %></option>
+                        <% }); %>
+                </select>
+            </div>
+
+            <div class="inputContainer">
+                <label for="">SKU / Código Le Vount/Alterno</label>
+                <input type="text" name="code" onchange="submit()" value="<%- filters?.code %>">
+            </div>
+            <input type="hidden" name="page" id="pageInput">
+            <button type="button" onclick="window.location.href = window.location.pathname">Reset</button>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>SKU</th>
+                    <th>Precio de Venta</th>
+                    <th>Inventario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% products?.products?.forEach(product=> { %>
+                    <tr onclick="window.open('products/<%- product?.sku %>', '_blank')">
+                        <td>
+                            <div class="product-meta">
+                                <div class="product-thumb">
+                                    <img src="https://assets.levount.com/global/images/products/<%- `${product?.material}/${product?.variants?.[storeId]?.category}/${product?.sku?.toLowerCase()}/${product?.sku?.toLowerCase()}-thumb.webp` %>"
+                                        alt="<%- utils.toTitleCase(product?.name || product?.variants?.[0]?.shortName || product?.variants?.[0]?.name) %>">
+                                </div>
+                                <div class="product-info">
+                                    <span class="product-name"><%- utils.toTitleCase(product?.name ||
+                                            product?.variants?.[0]?.shortName || product?.variants?.[0]?.name) %></span>
+                                    <span class="product-category"><%- `${utils.toTitleCase(filterHelper.shapeToCategory.spanish(product?.shape?.toUpperCase()) || product?.variants?.[0]?.category)} | ${utils.toTitleCase(filterHelper.translation_material.spanish(product?.material?.toLowerCase()))} ${product?.purity}` %></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="sku-code"><%- product?.sku?.toUpperCase() %></span></td>
+                        <td style="font-weight: 500;"><%- `${utils.toCurrency(product?.finalUnitPrice||
+                                product?.variants?.[0]?.finalUnitPrice)} ${(!product?.tagPrice) ?
+                                product?.variants?.[0]?.currency?.toUpperCase() : 'USD' }` %></td>
+                        <td>
+                            <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
+                                <!-- cambiar la clase del elemento de abajo por 'stock-low' o 'stock-out' -->
+                                <span class="badge stock-ok">1 disp.</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+    <% if (products?.pagination?.totalPages> 1) { %>
+        <section class="navButtons">
+            <% if (products?.pagination?.page> 1) { %>
+                <button type="button"
+                    onclick="filterProducts(event, '<%- products?.pagination?.page - 1 %>')">&lt;</button>
+                <% } else { %>
+                    <button type="button" class="inactive">&lt;</button>
+                    <% } %>
+
+                        <% let current=parseInt(products?.pagination?.page); let
+                            total=parseInt(products?.pagination?.totalPages); let range=1; %>
+
+                            <% for(let j=1; j <=total; j++) { %>
+
+                                <% if (j===1 || j===total || (j>= current - range && j <= current + range)) { %>
+
+                                        <button type="button" class="<%= j === current ? 'selected' : '' %>"
+                                            onclick="filterProducts(event, '<%- j %>')">
+                                            <%= j %>
+                                        </button>
+
+                                        <% } else if (j===current - range - 1 || j===current + range + 1) { %>
+                                            <button type="button" class="inactive">...</button>
+                                            <% } %>
+
+                                                <% } %>
+
+                                                    <% if (products?.pagination?.page <
+                                                        products?.pagination?.totalPages) { %>
+                                                        <button type="button"
+                                                            onclick="filterProducts(event, '<%- products?.pagination?.page + 1 %>')">&gt;</button>
+                                                        <% } else { %>
+                                                            <button type="button" class="inactive">&gt;</button>
+                                                            <% } %>
+        </section>
+        <% } %>
+</div>
+
+<script>
+    function filterProducts(event, page) {
+        event.preventDefault();
+        try {
+            const form = document.getElementById("filtersForm");
+            const pageInput = document.getElementById("pageInput");
+
+            pageInput.value = page;
+            form.submit();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+</script>

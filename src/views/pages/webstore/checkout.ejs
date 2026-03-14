@@ -507,7 +507,7 @@
             
                 <div class="product-item">
                     <div class="product-img-wrapper">
-                        <img src="https://assets.levount.com/global/images/products/<%- `${item?.material}/${item?.category}/${item?.sku}/${item?.sku?.toLowerCase()}-thumb.webp` %>" alt="Hera Ring" class="product-img">
+                        <img src="https://assets.levount.com/global/images/products/<%- `${item?.material}/${item?.category}/${item?.sku?.toLowerCase()}/${item?.sku?.toLowerCase()}-thumb.webp` %>" alt="Hera Ring" class="product-img">
                     </div>
                     <div class="product-info">
                         <h4><%- utils.toTitleCase(item?.shortName || item?.name) %></h4>
@@ -554,6 +554,7 @@
 
         <div class="checkout">
             <div id="paypal-button-container"></div>
+            <div id="oxxo-button-container" style="margin-top: 20px;"></div>
         </div>
 
         <div style="display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #888;">
@@ -565,7 +566,7 @@
 </div>
 
 <script
-    src="https://www.paypal.com/sdk/js?client-id=<%- ppClient %>&currency=USD">
+    src="https://www.paypal.com/sdk/js?client-id=<%- ppClient %>&currency=MXN&enable-funding=oxxo">
 </script>
 <script src="https://assets.levount.com/intl-input/build/js/intlTelInput.js"></script>
 <script>
@@ -712,7 +713,7 @@
                     itemsDivContent += `
                         <div class="product-item">
                             <div class="product-img-wrapper">
-                                <img src="https://assets.levount.com/global/images/products/${item?.material}/${item?.category}/${item?.sku}/${item?.sku?.toLowerCase()}-thumb.webp" alt="Hera Ring" class="product-img">
+                                <img src="https://assets.levount.com/global/images/products/${item?.material}/${item?.category}/${item?.sku?.toLowerCase()}/${item?.sku?.toLowerCase()}-thumb.webp" alt="Hera Ring" class="product-img">
                             </div>
                             <div class="product-info">
                                 <h4>${toTitleCase(item?.shortName || item?.name) }</h4>

@@ -22,7 +22,7 @@
                 /*background-attachment: fixed;*/
                 height: calc(80dvh - 95px);
                 background-position: 20% 20%;
-                background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('https://assets.levount.com/images/frontpages/2026-02-001.webp');
+                background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('https://assets.levount.com/images/frontpages/2026-03-001.webp');
                 display: flex;
                 align-items: center;
                 box-sizing: border-box;
@@ -877,7 +877,11 @@
         body {
             & main {
                 & .frontPage {
+                    background-position: 50% 20%;
+                    align-items: start;
+
                     & .container {
+
                         & h1 {
                             font-size: 2.8rem;
                         }
@@ -1076,9 +1080,9 @@
 
 <section class="frontPage reveal-on-scroll">
     <div class="container">
-        <h1>Make this Valentine's unforgettable</h1>
-        <p>Celebrate your love with handcrafted elegance. Discover the perfect ring and matching accessories for a moment that lasts forever.</p>
-        <button type="button" onclick="window.location.href=`/products`">Shop Gifts</button>
+        <h1>Spring is in Bloom, and So is Love</h1>
+        <p>Discover beautiful pieces to celebrate the season of new beginnings.</p>
+        <button type="button" onclick="window.location.href=`/products`">Shop now</button>
     </div>
 </section>
 
@@ -1142,28 +1146,75 @@
 <h2 class="animatedTitle">THE LE VOUNT CLASSICS</h2>
 <hr>
 <section class="outstandingProducts" id="outstandingProducts">
-    <button class="btn-prev">&#xe1015;</button>
+    <button class="btn-prev">&#xe1106;</button>
     <div class="scrollContainer" id="scrollContainer">
         <% for(let j=0; j < 2; j++) { %>
             <div class="carouselTrack">
                 <% for(let i=0; i < outstProducts?.products?.length; i++) { %>
                     <a class="productCard"
-                        href="/products/<%- outstProducts?.products?.[i]?.category + '/' + outstProducts?.products?.[i]?.sku %>">
+                        href="/products/<%- outstProducts?.products?.[i]?.variants?.[storeId]?.category + '/' + outstProducts?.products?.[i]?.sku?.toLowerCase() %>">
                         <div class="imgContainer">
-                            <img src="https://assets.levount.com/global/images/products/<%- `${outstProducts?.products?.[i]?.material}/${outstProducts?.products?.[i]?.category}/${outstProducts?.products?.[i]?.sku}/${outstProducts?.products?.[i]?.sku?.toLowerCase()}-thumb.webp` %>"
-                                alt="<%= outstProducts?.products?.[i]?.shortProductName %>" loading="lazy">
+                            <img src="https://assets.levount.com/global/images/products/<%- `${outstProducts?.products?.[i]?.material}/${outstProducts?.products?.[i]?.variants?.[0]?.category}/${outstProducts?.products?.[i]?.sku?.toLowerCase()}/${outstProducts?.products?.[i]?.sku?.toLowerCase()}-thumb.webp` %>"
+                                alt="<%= outstProducts?.products?.[i]?.variants?.[storeId]?.shortProductName %>" loading="lazy">
                         </div>
-                        <h6 class="product-name"><%- utils.capitalize(outstProducts?.products?.[i]?.shortName) || utils.capitalize(outstProducts?.products?.[i]?.name) %>
+                        <h6 class="product-name"><%- utils.capitalize(outstProducts?.products?.[i]?.variants?.[storeId]?.shortName) || utils.capitalize(outstProducts?.products?.[i]?.variants?.[storeId]?.name) %>
                         </h6>
-                        <h5 class="old-price"><%- `${utils.toCurrency(outstProducts?.products?.[i]?.tagPrice)}` %></h5>
+                        <% if(outstProducts?.products?.[i]?.variants?.[storeId]?.discountPrice) { %>
+                        <h5 class="old-price"><%- `${utils.toCurrency(outstProducts?.products?.[i]?.variants?.[storeId]?.tagPrice)}` %></h5>
+                        <% } %>
                         <h3 class="current-price"><%-
-                                `${utils.toCurrency(outstProducts?.products?.[i]?.discountPrice)} USD` %></h3>
+                                `${utils.toCurrency(outstProducts?.products?.[i]?.variants?.[storeId]?.discountPrice || outstProducts?.products?.[i]?.variants?.[storeId]?.tagPrice)} USD` %></h3>
                     </a>
                     <% } %>
             </div>
             <% } %>
     </div>
-    <button class="btn-next">&#xe1016;</button>
+    <button class="btn-next">&#xe1105;</button>
+</section>
+
+<section class="giftGuide">
+    <div class="container">
+        <div class="title">
+            <h2>The Art of Gifting</h2>
+            <hr>
+            <p>Curated collections for every occasion</p>
+        </div>
+
+        <div class="giftGrid">
+            <a href="/products?classification=women,unisex" class="giftCard cardLarge reveal-on-scroll">
+                <div class="imgWrapper">
+                    <img src="https://assets.levount.com/images/gifts/for-her-001.webp" alt="Gifts for Her">
+                    <div class="overlay"></div>
+                </div>
+
+                <div class="giftContent">
+                    <span class="label">The Collection</span>
+                    <h3 class="title">For Her</h3>
+                    <span class="falseButton">Shop Now</span>
+                </div>
+            </a>
+
+            <a href="/products?classification=men,gentlemen" class="giftCard reveal-on-scroll">
+                <div class="imgWrapper">
+                    <img src="https://assets.levount.com/images/gifts/for-him-001.webp" alt="Gifts for Him">
+                    <div class="overlay"></div>
+                </div>
+                <div class="giftContent">
+                    <h3 class="title">For Him</h3>
+                </div>
+            </a>
+
+            <a href="/products?sort=priceLow" class="giftCard reveal-on-scroll">
+                <div class="imgWrapper">
+                    <img src="https://assets.levount.com/images/gifts/under-500-001.webp" alt="Luxury Under $500">
+                    <div class="overlay"></div>
+                </div>
+                <div class="giftContent">
+                    <h3 class="title">Luxury Under $500</h3>
+                </div>
+            </a>
+        </div>
+    </div>
 </section>
 
 <section class="editorial">
@@ -1186,51 +1237,6 @@
                 your jewelry is not just an accessory,
                 but a modern heirloom.
             </p>
-        </div>
-    </div>
-</section>
-
-<section class="giftGuide">
-    <div class="container">
-        <div class="title">
-            <h2>The Art of Gifting</h2>
-            <hr>
-            <p>Curated collections for every occasion</p>
-        </div>
-
-        <div class="giftGrid">
-            <a href="" class="giftCard cardLarge reveal-on-scroll">
-                <div class="imgWrapper">
-                    <img src="https://assets.levount.com/images/gifts/for-her-001.webp" alt="Gifts for Her">
-                    <div class="overlay"></div>
-                </div>
-
-                <div class="giftContent">
-                    <span class="label">The Collection</span>
-                    <h3 class="title">For Her</h3>
-                    <span class="falseButton">Shop Now</span>
-                </div>
-            </a>
-
-            <a href="" class="giftCard reveal-on-scroll">
-                <div class="imgWrapper">
-                    <img src="https://assets.levount.com/images/gifts/for-him-001.webp" alt="Gifts for Him">
-                    <div class="overlay"></div>
-                </div>
-                <div class="giftContent">
-                    <h3 class="title">For Him</h3>
-                </div>
-            </a>
-
-            <a href="" class="giftCard reveal-on-scroll">
-                <div class="imgWrapper">
-                    <img src="https://assets.levount.com/images/gifts/under-500-001.webp" alt="Luxury Under $500">
-                    <div class="overlay"></div>
-                </div>
-                <div class="giftContent">
-                    <h3 class="title">Luxury Under $500</h3>
-                </div>
-            </a>
         </div>
     </div>
 </section>

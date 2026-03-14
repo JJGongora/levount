@@ -428,7 +428,7 @@ const emailTemplates = {
                                                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                                         <tr>
                                                             <td width="70" style="padding-right: 15px; vertical-align: top;">
-                                                                <img src="https://assets.levount.com/products/${item?.material}/${item?.category}/${item?.sku?.toUpperCase()}/${item?.sku?.toLowerCase()}-thumb.webp" alt="Product" class="mobile-img" style="width: 70px; height: 70px; object-fit: cover; border: 1px solid #F0F0F0; display: block;">
+                                                                <img src="https://assets.levount.com/products/${item?.material}/${item?.category}/${item?.sku?.toLowerCase()}/${item?.sku?.toLowerCase()}-thumb.webp" alt="Product" class="mobile-img" style="width: 70px; height: 70px; object-fit: cover; border: 1px solid #F0F0F0; display: block;">
                                                             </td>
                                                             <td style="vertical-align: top;">
                                                                 <span style="font-family: Georgia, serif; font-size: 15px; color: #1A1A1A; display: block; margin-bottom: 5px;">${item?.shortName || item?.name}</span>
@@ -475,7 +475,7 @@ const emailTemplates = {
                                                     <h4 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; text-transform: uppercase; color: #999999; letter-spacing: 1px; margin: 0 0 10px 0;">Payment</h4>
                                                     <p style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; color: #1A1A1A; line-height: 1.5; margin: 0;">
                                                         ${data?.paymentMethod?.toUpperCase() || 'Credit Card'}<br>
-                                                        <span style="color: #666;">${ (data?.paymentMethod != 'paypal') ? 'Ending in:' : 'Account:' } ${ data?.paymentReference }</span>
+                                                        <span style="color: #666;">${(data?.paymentMethod != 'paypal') ? 'Ending in:' : 'Account:'} ${data?.paymentReference}</span>
                                                     </p>
                                                 </td>
                                             </tr>
@@ -706,8 +706,452 @@ const emailTemplates = {
                 </body>
                 </html>
             `;
-        }
+        },
 
+        newAdminAccount: (data) => {
+            return `
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Bienvenido al equipo - Silver Best Price</title>
+            </head>
+            <body style="margin: 0; padding: 0; background-color: #f8fafc;">
+
+                <div style="font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; padding: 40px 20px; color: #334155; line-height: 1.6;">
+                    
+                    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        
+                        <div style="background-color: #fafafa; padding: 30px 20px; text-align: center; border-bottom: 4px solid #c5a059;">
+                            <img src="https://assets.levount.com/images/logos/LeVount_Logo.png" alt="Logo Le Vount" style="max-width: 180px; height: auto; display: block; margin: 0 auto; border: 0;">
+                        </div>
+
+                        <div style="padding: 40px 30px;">
+                            <h1 style="font-size: 1.5rem; color: #0f172a; margin-top: 0; margin-bottom: 16px; font-weight: 600;">¡Bienvenid${ (data?.gender == 'm') ? 'o' : 'a' } al equipo!</h1>
+                            
+                            <p style="margin-top: 0; margin-bottom: 20px; font-size: 0.95rem;">Hola <strong style="color: #0f172a;">${ data?.name }</strong>,</p>
+                            
+                            <p style="margin-top: 0; margin-bottom: 20px; font-size: 0.95rem;">Se ha creado exitosamente tu cuenta de acceso para el panel administrativo del sistema interno de Le Vount.</p>
+                            
+                            <p style="margin-top: 0; margin-bottom: 20px; font-size: 0.95rem;">A continuación, te proporcionamos tus credenciales temporales. Te recomendamos guardar este enlace en tus marcadores para un acceso rápido en tu día a día.</p>
+
+                            <div style="background-color: #fdf6e7; border-left: 4px solid #c5a059; padding: 20px; border-radius: 0 4px 4px 0; margin-bottom: 30px;">
+                                <p style="margin: 0 0 10px 0; font-size: 0.9rem;">
+                                    <strong style="color: #0f172a;">Enlace de acceso:</strong> 
+                                    <a href="https://levount.com/admin" style="color: #c5a059; text-decoration: none; font-weight: 600;">levount.com/admin</a>
+                                </p>
+                                <p style="margin: 0 0 10px 0; font-size: 0.9rem;">
+                                    <strong style="color: #0f172a;">Usuario / Correo:</strong> 
+                                    <span style="font-family: ui-monospace, SFMono-Regular, Consolas, monospace; background-color: #ffffff; padding: 2px 6px; border: 1px solid #e2e8f0; border-radius: 4px; font-weight: bold; color: #0f172a;">${ data?.email }</span>
+                                </p>
+                                <p style="margin: 0 0 10px 0; font-size: 0.9rem;">
+                                    <strong style="color: #0f172a;">Contraseña temporal:</strong> 
+                                    <span style="font-family: ui-monospace, SFMono-Regular, Consolas, monospace; background-color: #ffffff; padding: 2px 6px; border: 1px solid #e2e8f0; border-radius: 4px; font-weight: bold; color: #0f172a;">${ data?.password }</span>
+                                </p>
+                                <p style="margin: 0; font-size: 0.9rem;">
+                                    <strong style="color: #0f172a;">Rol asignado:</strong> ${ data?.rol }
+                                </p>
+                            </div>
+
+                            <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+                                <a href="https://levount.com/admin" style="display: inline-block; background-color: #0f172a; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 4px; font-weight: 600; font-size: 0.95rem;">Acceder al Sistema</a>
+                            </div>
+
+                            <p style="font-size: 0.85rem; color: #646464; border-top: 1px dashed #dadada; padding-top: 16px; margin-top: 24px; margin-bottom: 0;">
+                                <em style="color: #c5a059;">Nota de seguridad:</em> Por políticas internas, el sistema te pedirá que cambies esta contraseña temporal por una personal y segura la primera vez que inicies sesión.
+                            </p>
+                        </div>
+
+                        <div style="background-color: #fafafa; padding: 20px 30px; text-align: center; border-top: 1px solid #e2e8f0;">
+                            <p style="margin: 0 0 4px 0; font-size: 0.8rem; color: #818181;">Este es un mensaje automático generado por el Sistema Administrativo de Le Vount.</p>
+                            <p style="margin: 0; font-size: 0.8rem; color: #818181;">Por favor, no respondas directamente a esta dirección.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </body>
+            </html>
+        `},
+
+    },
+
+    SilverBest: {
+        orderConfirm: (data) => {
+            return `
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Tu tesoro está en camino - Silver Best Price</title>
+                </head>
+                <body style="margin: 0; padding: 0; background-color: #f8efe5; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td align="center" style="padding: 30px 10px;">
+                                
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #FFFFFF; max-width: 600px; width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 45px rgba(89, 86, 87, 0.1);">
+                                    
+                                    <tr>
+                                        <td align="center" style="background-color: #EDB7B7; padding: 12px; color: #FFFFFF; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                                            Hecho con amor en México ✦
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align="center" style="padding: 40px 0 20px 0;">
+                                            <img src="https://assets.silverbestprice.com/images/logos/Silver_Logo_Horizontal.png" alt="Silver Best Price" style="width: 200px; display: block; border: 0;">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 0 50px 30px 50px; text-align: center;">
+                                            <h1 style="font-family: 'Georgia', serif; font-size: 28px; color: #595657; margin: 0 0 15px 0; font-style: italic; font-weight: normal;">
+                                                Desde el corazón de nuestro taller, para ti, ${data?.name || 'de nuevo'}.
+                                            </h1>
+                                            <p style="font-size: 15px; line-height: 1.7; color: rgba(89, 86, 87, 0.85); margin: 0;">
+                                                Tu pedido ha sido confirmado. En nuestro taller ya se siente la emoción; estamos preparando tu pieza para que brille tanto como el momento en que la uses.
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 0 40px;">
+                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #FAFAFA; border: 1px dashed #BCBCBC; border-radius: 8px;">
+                                                <tr>
+                                                    <td style="padding: 25px;">
+                                                        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td style="font-size: 11px; text-transform: uppercase; color: #BCBCBC; letter-spacing: 1px;">Referencia</td>
+                                                                <td align="right" style="font-size: 11px; text-transform: uppercase; color: #BCBCBC; letter-spacing: 1px;">Resumen</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="font-family: 'Georgia', serif; font-size: 18px; color: #595657; padding-top: 5px; font-weight: bold;">#${data?.orderNumber}</td>
+                                                                <td align="right" style="font-family: 'Georgia', serif; font-size: 18px; color: #D68F8F; padding-top: 5px; font-weight: bold;">${utils.toCurrency(data?.total)}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 40px 50px 20px 50px;">
+                                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                                ${data?.items?.map(item => `
+                                                <tr>
+                                                    <td style="padding-bottom: 20px;">
+                                                        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td width="60" style="vertical-align: top;">
+                                                                    <img src="https://assets.silverbestprice.com/products/${item?.material?.toLowerCase()}/${item?.category?.toLowerCase()}/${item?.sku?.toLowerCase()}/${item?.sku?.toLowerCase()}-thumb.webp" alt="${item?.name || 'Joyería'}" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #EED0B6;">
+                                                                </td>
+                                                                <td style="padding-left: 15px; vertical-align: middle;">
+                                                                    <div style="font-size: 13px; color: #595657; font-weight: 600;">${utils.toTitleCase(item?.shortName || item?.name)}</div>
+                                                                    <div style="font-size: 12px; color: rgba(89, 86, 87, 0.60);">${item.quantity} unidad(es) • ${item?.material?.toLowerCase()}</div>
+                                                                </td>
+                                                                <td align="right" style="vertical-align: middle; font-size: 14px; color: #595657; font-weight: 500;">
+                                                                    ${utils.toCurrency(item?.rowTotal)}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                `).join('')}
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align="center" style="padding: 10px 0 40px 0;">
+                                            <a href="https://silverbestprice.com/order/${data?.orderNumber}" style="background-color: #595657; color: #FFFFFF; display: inline-block; padding: 16px 35px; font-size: 12px; font-weight: bold; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; border-radius: 30px;">
+                                                Ver mi tesoro
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 30px 50px; background-color: #f8efe5; border-top: 1px solid #EED0B6;">
+                                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td style="vertical-align: top;">
+                                                        <h4 style="font-size: 10px; text-transform: uppercase; color: #D68F8F; letter-spacing: 1px; margin: 0 0 8px 0;">Destino</h4>
+                                                        <p style="font-size: 12px; color: #595657; line-height: 1.5; margin: 0;">
+                                                            ${data?.address}
+                                                        </p>
+                                                    </td>
+                                                    <td width="40"></td>
+                                                    <td style="vertical-align: top;">
+                                                        <h4 style="font-size: 10px; text-transform: uppercase; color: #D68F8F; letter-spacing: 1px; margin: 0 0 8px 0;">Promesa</h4>
+                                                        <p style="font-size: 12px; color: #595657; line-height: 1.5; margin: 0;">
+                                                            Envío asegurado con empaque de regalo incluido.
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="max-width: 600px; width: 100%;">
+                                    <tr>
+                                        <td align="center" style="padding: 30px; color: #adadad; font-size: 11px;">
+                                            <p style="margin: 0 0 10px 0; letter-spacing: 1px;">SILVER BEST PRICE — JOYERÍA MEXICANA</p>
+                                            <p style="margin: 0;">Recibes este correo porque realizaste una compra en nuestra tienda. <br> 
+                                            <a href="#" style="color: #adadad; text-decoration: underline;">Ver en el navegador</a></p>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                        </tr>
+                    </table>
+
+                </body>
+                </html>
+            `;
+        },
+        newAccount: (clientName) => {
+            return `
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Bienvenida a Silver Best Price</title>
+                </head>
+                <body style="margin: 0; padding: 0; background-color: #FAFAFA; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td align="center" style="padding: 20px 0;">
+                                
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #FFFFFF; max-width: 600px; width: 100%; border: 1px solid #dddddd; border-collapse: collapse;">
+                                    
+                                    <tr>
+                                        <td style="height: 6px; background: #EDB7B7;"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align="center" style="padding: 40px 0 20px 0;">
+                                            <img src="https://assets.silverbestprice.com/images/logos/Silver_Logo_Horizontal.png" alt="Silver Best Price" height="70" style="display: block; border: 0;">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 20px 50px 10px 50px; text-align: center;">
+                                            <h1 style="font-family: 'Georgia', serif; font-size: 28px; color: #595657; margin: 0; font-style: italic; font-weight: normal;">
+                                                ¡Qué alegría tenerte aquí, ${clientName}!
+                                            </h1>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 20px 50px 30px 50px; text-align: center;">
+                                            <p style="font-size: 16px; line-height: 1.6; color: #747273; margin: 0;">
+                                                Tu cuenta ha sido creada con éxito. Ahora eres parte de una comunidad que valora el brillo, la tradición y el arte hecho a mano en México.
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 0 50px;">
+                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8efe5; border-radius: 8px;">
+                                                <tr>
+                                                    <td style="padding: 30px;">
+                                                        <p style="margin: 0 0 15px 0; font-size: 14px; color: #595657; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; text-align: center;">
+                                                            Por ser parte de nosotros, ahora puedes:
+                                                        </p>
+                                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                            <tr>
+                                                                <td style="padding: 5px 0; font-size: 14px; color: #595657;">✦ Guardar tus piezas favoritas en tu wishlist.</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 5px 0; font-size: 14px; color: #595657;">✦ Rastrear tus pedidos en tiempo real.</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 5px 0; font-size: 14px; color: #595657;">✦ Acceso anticipado a nuevas colecciones.</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align="center" style="padding: 40px 0;">
+                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td align="center" bgcolor="#595657" style="border-radius: 30px;">
+                                                        <a href="https://silverbestprice.com/productos" target="_blank" style="font-size: 14px; font-weight: bold; color: #EED0B6; text-decoration: none; padding: 15px 40px; border-radius: 30px; border: 1px solid #595657; display: inline-block; text-transform: uppercase; letter-spacing: 2px;">
+                                                            Explorar Tesoros
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 0 50px;">
+                                            <hr style="border: 0; border-top: 1px solid #eeeeee;">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 30px 50px; text-align: center;">
+                                            <p style="font-size: 13px; color: #929292; margin: 0;">
+                                                ¿Tienes alguna duda sobre nuestras piezas o procesos? <br>
+                                                Responde a este correo o escríbenos por WhatsApp.
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align="center" style="padding: 30px; background-color: #FAFAFA; border-top: 1px solid #eeeeee;">
+                                            <p style="font-size: 11px; color: #adadad; margin: 0; letter-spacing: 1px; text-transform: uppercase;">
+                                                SILVER BEST PRICE — JOYERÍA MEXICANA
+                                            </p>
+                                            <p style="font-size: 11px; color: #adadad; margin: 10px 0 0 0;">
+                                                &copy; 2026 Todos los derechos reservados.
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                                
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="max-width: 600px; width: 100%;">
+                                    <tr>
+                                        <td align="center" style="padding: 20px; font-size: 10px; color: #adadad;">
+                                            <p>Recibes este correo porque creaste una cuenta en Silver Best Price.</p>
+                                            <p><a href="#" style="color: #adadad; text-decoration: underline;">Configurar notificaciones</a> | <a href="#" style="color: #adadad; text-decoration: underline;">Aviso de privacidad</a></p>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                        </tr>
+                    </table>
+
+                </body>
+                </html>
+            `;
+        },
+        newsletterSubscription: (email, confirmationToken) => {
+            return `
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Bienvenida a Silver Best Price</title>
+                </head>
+                <body style="margin: 0; padding: 0; background-color: #f8efe5; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td align="center" style="padding: 40px 10px;">
+                                
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #FFFFFF; max-width: 600px; width: 100%; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 20px rgba(89, 86, 87, 0.05);">
+                                    
+                                    <tr>
+                                        <td align="center" style="padding: 50px 0 30px 0;">
+                                            <img src="https://assets.silverbestprice.com/images/logos/Silver_Logo_Horizontal.png" alt="Silver Best Price" height="70" style="display: block; border: 0;">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 0 60px 20px 60px; text-align: center;">
+                                            <h1 style="font-family: 'Georgia', serif; font-size: 24px; color: #595657; margin: 0; font-style: italic; font-weight: normal; letter-spacing: 1px;">
+                                                "La plata tiene memoria, y hoy guarda tu nombre."
+                                            </h1>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 0 60px 40px 60px; text-align: center;">
+                                            <p style="font-size: 15px; line-height: 1.8; color: #747273; margin: 0;">
+                                                Gracias por permitirnos entrar en tu espacio personal. No queremos ser un correo más; queremos ser ese pequeño recordatorio del brillo artesanal que nace en México. 
+                                                <br><br>
+                                                A partir de hoy, recibirás historias desde nuestro taller, adelantos de nuevas colecciones y consejos para que tus tesoros duren toda la vida.
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 0 60px;">
+                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top: 1px solid #dddddd; padding-top: 40px;">
+                                                <tr>
+                                                    <td style="padding-bottom: 30px;">
+                                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                            <tr>
+                                                                <td width="40" valign="top" style="font-size: 20px; color: #EDB7B7;">✦</td>
+                                                                <td>
+                                                                    <p style="margin: 0; font-weight: bold; font-size: 14px; color: #595657; text-transform: uppercase; letter-spacing: 1px;">Historias de Origen</p>
+                                                                    <p style="margin: 5px 0 0 0; font-size: 13px; color: #929292;">Conoce a los maestros artesanos detrás de cada martillado.</p>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-bottom: 30px;">
+                                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                            <tr>
+                                                                <td width="40" valign="top" style="font-size: 20px; color: #B7DEEA;">✦</td>
+                                                                <td>
+                                                                    <p style="margin: 0; font-weight: bold; font-size: 14px; color: #595657; text-transform: uppercase; letter-spacing: 1px;">Secretos de Cuidado</p>
+                                                                    <p style="margin: 5px 0 0 0; font-size: 13px; color: #929292;">Aprende a mantener el brillo eterno de tu plata .925.</p>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align="center" style="padding: 20px 0 60px 0;">
+                                            <a href="https://silverbestprice.com/productos" style="background-color: transparent; color: #595657; border: 1px solid #595657; text-decoration: none; padding: 15px 35px; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; display: inline-block;">
+                                                Ver últimas piezas
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 40px; background-color: #FAFAFA; text-align: center;">
+                                            <p style="font-family: 'Georgia', serif; font-size: 13px; font-style: italic; color: #595657; margin-bottom: 20px;">
+                                                "Cada joya cuenta una historia. Gracias por ser parte de la nuestra."
+                                            </p>
+                                            <p style="font-size: 10px; color: #adadad; margin-top: 30px; letter-spacing: 1px;">
+                                                SILVER BEST PRICE &copy; 2026
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                </table>
+
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="width: 100%;">
+                                    <tr>
+                                        <td align="center" style="padding: 30px; font-size: 10px; color: #adadad;">
+                                            <p>¿Deseas dejar de recibir estas notas? <a href="https://silverbestprice.com/newsletter/unsusbcribe/${email}/${confirmationToken}" style="color: #adadad; text-decoration: underline;">Haz clic aquí</a>.</p>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                        </tr>
+                    </table>
+
+                </body>
+                </html>
+            `;
+        },
     }
 };
 

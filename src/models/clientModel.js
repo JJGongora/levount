@@ -36,8 +36,8 @@ const clientModel = {
         return result[0]; 
     },
 
-    register: async(data, username) => {
-
+    register: async(data, username, storeId) => {
+        //console.log(data?.client);
         if (!data?.client?.name || data.client.name == null) { data.clientName = 'Sin Nombre'; }
         const responseSteps = [];
 
@@ -61,7 +61,7 @@ const clientModel = {
                 editedBy        = COALESCE(VALUES(editedBy), editedBy)
         `;
         const insertData = [
-            utils.toTitleCase(data?.client?.name) || null,
+            utils.toTitleCase(data?.client?.name) || 'Sin nombre',
             data?.client?.email || null,
             data?.client?.phone || null,
             data?.client?.country || data?.telCountryCode || 'US',
@@ -81,10 +81,11 @@ const clientModel = {
         }
 
         let newsletterRow = null;
-        if (result?.affectedRows != 0 && data?.client?.email) {
-            newsletterRow = await newsletterModel.registerClientEmail(result?.insertId, data?.client?.email);
+        if (result?.affectedRows != 0 && data?.client?.email && data?.client?.sendEmail) {
+            newsletterRow = await newsletterModel.registerClientEmail(result?.insertId, data?.client?.email, storeId);
             responseSteps.push(filterHelper.dbResultStatus(newsletterRow, "el correo al newsletter"));
-        }
+            console.log(newsletterRow);
+        } 
         
         //Si se insertó el cliente como nuevo...
         if (newsletterRow?.affectedRows == 1) {

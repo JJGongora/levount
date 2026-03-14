@@ -4,6 +4,7 @@ import apiController from "../../controllers/api/apiController.js";
 import clientController from "../../controllers/clientController.js";
 import authMiddleware from "../../middlewares/authMiddleware.js";
 import queryParser from "../../middlewares/queryParser.js";
+import multer from "multer";
 
 const router = express.Router();
 //router.use(apiTokenVerification);
@@ -27,8 +28,11 @@ router.delete(['/cart', '/cart/:quantity'], apiController.delete);
 // ===================================
 router.post('/auth/login', apiController.login);
 router.post('/auth/signup', apiController.signUp);
+router.post(`/auth/admin/signup`, permissionsVerification.checkPermission("users:create"), apiController.admin.signUp)
 router.get('/auth/logout', apiController.logout);
 router.post('/signup', apiController.signUp);
+router.get('/auth/userVersion', apiController.user.get.userVersion);
+router.post('/auth/authenticateUser', apiController.user.post.authenticateUser);
 
 // ===================================
 //          GESTIÓN DE CLIENTES
@@ -43,6 +47,28 @@ router.get(['/clients', '/clients/:id'],
     queryParser,
     apiController.clients.get
 );
+
+// ===================================
+//        GESTIÓN DE PRODUCTOS
+// ===================================
+const upload = multer({ storage: multer.memoryStorage() });
+router.post('/products',
+    permissionsVerification.checkPermission('inventory:create'),
+    upload.array("product[photos]", 5), // 'product[photos]' es el nombre del input que contiene las imágenes. El número a un lado es el máximo de elementos por subida.
+    apiController.products.create
+);
+router.put(`/products/:material/:sku`,
+    permissionsVerification.checkPermission(`inventory:update`), 
+    upload.array("product[photos]", 5),
+    apiController.products.create
+);
+router.delete(`/products/:material/:sku/image/:index`,
+    (req, res, next) => {
+        return permissionsVerification.checkPermission(`inventory:${ (req?.params?.material == 'gold') ? 'gold' : 'silver' }:update`)(req, res, next);
+    },
+    apiController.products.images.delete
+);
+router.get(`/products`, apiController.products.get);
 
 // ===================================
 //       GESTIÓN DE NEWSLETTER

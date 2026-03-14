@@ -259,18 +259,18 @@
 
 <section class="gallery">
 
-    <% const cleanSku=product?.sku?.trim().replace(/\s+/g, '-' ).toLowerCase(); const category=product?.category; %>
+    <% const cleanSku=product?.sku?.trim().replace(/\s+/g, '-' ).toLowerCase(); const category=product?.variants?.[storeId]?.category; %>
 
         <div class="item hero-img">
-            <img src="https://assets.levount.com/global/images/products/<%= product?.material %>/<%= category %>/<%= product?.sku %>/<%= cleanSku %>-large.webp"
-                alt="<%= product.name %> Main View" onerror="this.src='/images/errors/jewel-placeholder.webp'"
+            <img src="https://assets.levount.com/global/images/products/<%= product?.material %>/<%= category %>/<%= cleanSku %>/<%= cleanSku %>-large.webp"
+                alt="<%= product.name %> Main View" onerror="console.log(this.src); this.src='https://assets.levount.com/images/errors/jewel-placeholder.webp'"
                 loading="eager">
         </div>
 
         <% for (let i=1; i <=4; i++) { %>
             <div class="item extra-img">
-                <img src="https://assets.levount.com/global/images/products/<%= product?.material %>/<%= category %>/<%= product?.sku %>/<%= cleanSku %>-<%= i %>-large.webp"
-                    alt="<%= product?.shortProductName %> Detail <%= i %>" onerror="this.closest('.item').remove()"
+                <img src="https://assets.levount.com/global/images/products/<%= product?.material %>/<%= category %>/<%= cleanSku %>/<%= cleanSku %>-<%= i %>-large.webp"
+                    alt="<%= product?.variants?.[storeId]?.shortProductName %> Detail <%= i %>" onerror="this.closest('.item').remove()"
                     loading="eager">
             </div>
         <% } %>
@@ -282,14 +282,14 @@
 
     </div>
     <div class="head">
-        <h1><%- utils.toTitleCase(product?.shortName) || utils.toTitleCase(product?.name) || "err" %></h1>
-        <% if(product?.discountPrice != product?.tagPrice) { %>
-            <h3><%- utils.toCurrency(product?.tagPrice) %></h3>
+        <h1><%- utils.toTitleCase(product?.variants?.[storeId]?.shortName) || utils.toTitleCase(product?.variants?.[storeId]?.name) || "err" %></h1>
+        <% if(product?.variants?.[storeId]?.discountPrice) { %>
+            <h3><%- utils.toCurrency(product?.variants?.[storeId]?.tagPrice) %></h3>
         <% } %>
-            <h2><%- utils.toCurrency(product?.finalUnitPrice) %> USD</h2>
+            <h2><%- utils.toCurrency(product?.variants?.[storeId]?.finalUnitPrice) %> USD</h2>
     </div>
     <hr>
-    <p><%- utils.capitalize(product?.description) %></p>
+    <p><%- utils.capitalize(product?.variants?.[storeId]?.description) %></p>
 
     <div class="purchase">
         <div class="buttons">
@@ -301,7 +301,7 @@
         <div class="labels">
             <hr>
             <div class="items">
-                <% if(product?.discountPrice> 250) { %>
+                <% if(product?.variants?.[storeId]?.finalUnitPrice> 250) { %>
                     <div class="label">
                         <i>&#xe1067;</i>
                         <span>Free shipping</span>
@@ -318,13 +318,13 @@
 
         <div class="productDetails">
             <ul>
-                <li><b>SKU:</b> <%- product?.sku %></li>
+                <li><b>SKU:</b> <%- product?.sku?.toUpperCase() %></li>
                 <li><b>Material:</b> <%- `${product?.purity} ${utils.toTitleCase(product?.material)}` %></li>
-                <% if (product?.gems) { %>
-                    <li><b>Gems:</b> <%- utils.toTitleCase(product?.gems) %></li>
+                <% if (product?.variants?.[storeId]?.gems) { %>
+                    <li><b>Gems:</b> <%- utils.toTitleCase(product?.variants?.[storeId]?.gems) %></li>
                     <% } %>
-                        <% if (product?.stoneColor) { %>
-                            <li><b>Stone color:</b> <%- product?.stoneColor %></li>
+                        <% if (product?.variants?.[storeId]?.stoneColor) { %>
+                            <li><b>Stone color:</b> <%- product?.variants?.[storeId]?.stoneColor %></li>
                             <% } %>
             </ul>
         </div>

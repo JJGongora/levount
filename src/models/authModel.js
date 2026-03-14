@@ -3,6 +3,9 @@ import userModel from './userModel.js';
 import authHelpers from "../utils/authHelpers.js";
 import appError from '../utils/appError.js';
 import bcrypt from 'bcryptjs';
+import emailTemplates from '../utils/emailTemplates.js';
+import sendEmail from '../services/emailSending.js';
+import emailModel from './emailModel.js';
 
 const authModel = {
     authenticateUser: async (usernameInput, plainPassword) => {
@@ -10,11 +13,11 @@ const authModel = {
 
             const users = await userModel.getUserLoginData(usernameInput); //console.log(users);
 
-            if (users.length == 0) return null;
+            if (!users || users?.length == 0) return {success: false, message: "Please, verify your credentials."};
 
             const user = users;
             const passwordMatch = await authHelpers.comparePasswords(plainPassword, user.password);
-            if (!passwordMatch) return null;
+            if (!passwordMatch) return {success: false, message: "Please, verify your credentials."};
 
             const queryPermissions = `
                 SELECT 
@@ -66,17 +69,20 @@ const authModel = {
         }
     },
 
-    signup: async(data, user) => {
+    signup: async(data, user, isAdmin) => {
         const conn = await db.getConnection();
+        
         try {
             let { 
                 name, lastname, phone, address, gender, birthDate, rfc, nss, displayName,
-                username, email, password
-            } = data;
+                username, email, password, storeId = 0, roleId = 0 // Por defecto, el usuario a crear será cliente.
+            } = data; //console.log(data);
             username = username || email;
 
+            password = (!password && isAdmin) ? Math.random().toString(36).slice(-8) : password;
+
             if (!name || !password || !lastname || !email) {
-                throw new appError('Por favor, ingrese los campos obligatorios.', 400);
+                return { success: false, message: "Please, provide all required fields.", errorType: "empty_fields" };
             }
 
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -89,21 +95,17 @@ const authModel = {
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
                 `;
                 const personInsertValues = [
-                    name, lastname, phone, address, gender, birthDate, rfc, nss, displayName || `${name} ${lastname}`
+                    name, lastname, phone, address, gender, birthDate, rfc, nss, displayName || `${name?.split(' ')?.[0] || name} ${lastname?.split(' ')?.[0] || lastname}`
                 ];
                 const [personResult] = await conn.query(personInsertQuery, personInsertValues);
-                const personId = personResult?.insertId;
+                const personId = personResult?.insertId; //console.log(personResult);
                 
                 const userInsertQuery = `
-                    INSERT INTO users (username, email, password, active, createdAt, createdBy, phone)
-                    VALUES (?, ?, ?, ?, NOW(), ?, ?)
+                    INSERT INTO users (username, email, password, active, createdAt, createdBy, personId, passwordReset)
+                    VALUES (?, ?, ?, ?, NOW(), ?, ?, ?)
                 `;
-                const [userResult] = await conn.query(userInsertQuery, [username, email, hashedPassword, 1, user || 'System', phone]);
+                const [userResult] = await conn.query(userInsertQuery, [username, email, hashedPassword, 1, user || 'System', personId, (isAdmin) ? true : null]);
                 const userId = userResult.insertId;
-
-                let roleId = 2; // Vendedor por defecto.
-                if (role === 'admin') roleId = 1;
-                if (role === 'manager') roleId = 3;
 
                 const userRoleInsertQuery = `
                     INSERT INTO userRoles (userId, roleId)
@@ -113,16 +115,45 @@ const authModel = {
 
             await conn.commit();
 
+            // ============================================
+            // Envío del correo electrónico de nueva cuenta.
+            // ============================================
+
+            const sender = (storeId == 0) ? `levount-noreply` : `silverbest-noreply`;
+            const emailData = await authHelpers.senderEmailData(sender);
+            const emailParams = {
+                username: emailData.user,
+                pass: emailData.pass,
+                display: emailData.display,
+                recipient: email,
+                subject: (storeId == 0) ? `Your Le Vount's new user account is ready.` : `Tu nueva cuenta en Silver Best Price está lista.`,
+                text: (storeId == 0) ? `Your Le Vount's new user account is ready.` : `Tu nueva cuenta en Silver Best Price está lista.`,
+                attachments: null /*[
+                    {
+                        filename: `Logo_KCA-${ data?.Logo }.png`,
+                        path: `/public/images/email/`,
+                        cid: 'logo'
+                    }
+                ]*/,
+                html: (isAdmin) 
+                    ? emailTemplates.LeVount.newAdminAccount({ name: name, email: email, password: password, gender: gender })  
+                    : (storeId == 0) 
+                        ? emailTemplates.LeVount.newAccount(name, email) 
+                        : emailTemplates.SilverBest.newAccount(name)
+            };
+            const sendingEmail = await sendEmail(emailParams);
+            if (sendingEmail.success) { await emailModel.registerSend(email, emailData.user, username); }
+
             return {
                 success: true,
-                message: 'Usuario creado correctamente',
+                message: (isAdmin) ? 'Se ha creado el usuario exitosamente. Se han enviado instrucciones a la dirección ingresada.' : 'User created successfully. A confirmation email has sent to your address.',
                 userId: userId
             };
         } catch (error) {
             await conn.rollback();
             
             if (error.code == 'ER_DUP_ENTRY') {
-                throw new appError('El usuario o correo ya están registrados.', 400);
+                return { success: false, message: "This user already exists.", errorType: "user_exists" };
             }
 
             throw error;
@@ -180,6 +211,15 @@ const authModel = {
             active: user.active,
             passwordReset: user.passwordReset
         };
+    },
+
+    getRoles: async() => {
+        const query = `
+            SELECT id, name FROM
+                roles
+        `;
+        const [result] = await db.query(query);
+        return result;
     }
 };
 

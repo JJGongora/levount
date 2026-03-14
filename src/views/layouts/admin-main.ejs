@@ -12,13 +12,195 @@
     <% } %>
 
     <%- style %>
+    <style>
+        body {
+            display: flex;
+            height: 100dvh;
+            box-sizing: border-box;
+
+            & aside {
+                flex: 1 1 260px;
+                background-color: var(--lv-white);
+                border-right: 1px var(--gray-40) solid;
+                display: grid;
+                grid-template-rows: auto max-content;
+
+                & nav {
+
+                    & .userAdmin {
+                        display: flex;
+                        gap: 15px;
+                        padding: 20px;
+
+                        & .userProfile {
+                            & i {
+                                font-size: 30px;
+                            }
+                        }
+
+                        & .userData {
+                            & h3, & h6 {
+                                margin: 0;
+                                font-family: "Google Sans", sans-serif;
+                            }
+                        }
+                    }
+
+
+                    & .menuOptions {
+                        padding: 0;
+                        & ul {
+                            list-style: none;
+                            padding: 0;
+                            margin: 0;
+
+                            & li {
+                                font-family: "Google Sans", sans-serif;
+                                display: flex;
+                                align-items: center;
+                                transition: all 0.3s ease-in-out;
+                                padding: 8px 15px;
+                                cursor: pointer;
+                                position: relative;
+
+                                & a {
+                                    display: flex;
+                                    align-items: center;
+                                    color: var(--gray-80);
+                                    transition: all 0.3s ease-in-out;
+                                    text-decoration: none;
+
+                                    & i {
+                                        margin-right: 8px;
+                                        font-size: 25px;
+                                    }
+                                }
+
+                                &+ li {
+                                    margin-top: 8px;
+                                }
+
+                                &:hover {
+                                    background-color: #f8f5ef;
+
+                                    & a {
+                                        color: var(--lv-gold);
+                                        transform: translateX(5px);
+                                    }
+
+                                    & .subMenu {
+                                        visibility: visible;
+                                        opacity: 1;
+                                    }
+                                }
+
+                                & .subMenu {
+                                    position: absolute;
+                                    left: 100%;
+                                    visibility: hidden;
+                                    opacity: 0;
+                                    top: 0;
+                                    background-color: var(--lv-white);
+                                    transition: all 0.3s ease-in-out;
+                                    border: 1px var(--gray-40) solid;
+                                    z-index: 999;
+
+                                    & li {
+                                        background-color: none;
+                                        padding: 0;
+
+                                        & a {
+                                            color: var(--gray-80);
+                                            transform: none;
+                                            padding: 10px 20px;
+                                        }
+
+                                        &+ li {
+                                            margin-top: 0;
+                                        }
+
+                                        &:hover {
+                                            & a {
+                                                color: var(--lv-gold);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                & .websites {
+                    padding: 10px 15px;
+                    & ul {
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+
+                        & li {
+                            cursor: pointer;
+                            font-family: "Google Sans", sans-serif;
+                            transition: all 0.3s ease-in-out;
+
+                            & a {
+                                color: var(--gray-60);
+                                transition: all 0.3s ease-in-out;
+                                text-decoration: none;
+
+                                & i {
+                                    margin-right: 5px;
+                                    font-size: 20px;
+                                }
+                            }
+
+                            &+ li {
+                                margin-top: 5px;
+                            }
+
+                            &:hover {
+                                & a {
+                                    color: var(--gray-80);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            & main {
+                flex: 999 1 1200px;
+                overflow-y: scroll;
+            }
+        }
+
+        @media only screen and (max-width: 560px) {
+        
+        body {
+            & aside {
+                position: fixed;
+                z-index: 1000;
+                left: -260px;
+                transition: left 0.3s ease;
+                box-shadow: 4px 0 15px rgba(0,0,0,0.5);
+
+                &.open {
+                    left: 0;
+                }
+            }
+
+            & main {
+                width: 100%;
+            }
+        }
+        
+        }
+    </style>
 </head>
 <body>
-    <%- include ('../partials/nav.ejs') %>
+    <%- include ('../partials/nav-admin.ejs') %>
 
     <main><%- body %></main>
-
-    <%- include ('../partials/footer.ejs') %>
 
     <%- script %>
 </body>

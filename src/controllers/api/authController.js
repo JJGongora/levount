@@ -2,9 +2,7 @@ import authModel from "../../models/authModel.js";
 import userModel from "../../models/userModel.js";
 import jwt from "jsonwebtoken"; 
 
-const authController = {
-
-    
+const authController = {    
 
     getLogin: async (req, res, next) => {
         try {

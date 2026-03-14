@@ -28,5 +28,25 @@ router.get('/products/create',
     permissionsVerification.checkPermission("inventory:create"),
     adminController.products.create
 );
+router.get(`/products`,
+    permissionsVerification.checkPermission("inventory:read"),
+    adminController.products.getAll
+);
+router.get(`/products/:sku`,
+    permissionsVerification.checkPermission("inventory:read"),
+    adminController.products.get
+);
+
+// ===========================
+//          USUARIOS
+// ===========================
+router.get(`/users`,
+    permissionsVerification.checkPermission("users:read"),
+    adminController.users.get
+);
+router.get([`/labels`, `/labels/:material`],
+    permissionsVerification.checkPermission(`inventory:read`),
+    adminController.labels.get
+);
 
 export default router;

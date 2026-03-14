@@ -2,15 +2,15 @@ import nodemailer from "nodemailer";
 
 async function sendEmail(params) {
     const transporter = nodemailer.createTransport({
-        host: params?.host || process.env.EMAIL_HOST,
+        host: params?.host || process.env.EMAIL_HOST || process.env.SMTP_SERVER,
         port: params?.port || process.env.SMTP_PORT,
-        secure: true,
+        secure: (process.env.SMTP_PORT == 587) ? false : true,
         tls: {
             rejectUnauthorized: false
         },
         auth: {
-            user: params.username,
-            pass: params.pass,
+            user: process.env.SMTP_USER || params.username,
+            pass: process.env.SMTP_KEY || params.pass,
         }
     }); //console.log(transporter);
 

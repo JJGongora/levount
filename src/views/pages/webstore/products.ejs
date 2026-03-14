@@ -259,6 +259,18 @@
                     <% }); %>
                 </select>
             </div>
+
+            <div class="inputContainer">
+                <label for="">Category</label>
+                <select name="classification" id="" onchange="submit()">
+                    <option value="<%- filters?.classification %>" selected hidden>
+                        <%- utils.capitalize(filters?.classification) || "Select" %>
+                    </option>
+                    <% availableParams?.classifications?.forEach(classification => { %>
+                        <option value="<%- classification %>"><%- utils.toTitleCase(classification) %></option>
+                    <% }); %>
+                </select>
+            </div>
             <input type="hidden" name="page" id="pageInput">
             <button type="button" onclick="window.location.href = window.location.pathname">Reset</button>
         </form>
@@ -272,63 +284,63 @@
         <section class="products">
             <% for (let i=0; i < products?.products?.length; i++) { %>
                 <a class="productCard"
-                    href="/products/<%- `${products?.products?.[i]?.category}/${products?.products?.[i]?.sku}` %>">
+                    href="/products/<%- `${products?.products?.[i]?.variants?.[storeId]?.category}/${products?.products?.[i]?.sku?.toLowerCase()}` %>">
                     <div class="imgContainer">
-                        <img src="https://assets.levount.com/global/images/products/<%- `${products?.products?.[i]?.material}/${products?.products?.[i]?.category}/${products?.products?.[i]?.sku}/${products?.products?.[i]?.sku?.toLowerCase()}-thumb.webp` %>"
+                        <img src="https://assets.levount.com/global/images/products/<%- `${products?.products?.[i]?.material}/${products?.products?.[i]?.variants?.[storeId]?.category}/${products?.products?.[i]?.sku?.toLowerCase()}/${products?.products?.[i]?.sku?.toLowerCase()}-thumb.webp` %>"
                             onerror="this.parentElement.parentElement.remove()" alt="">
                     </div>
                     <div class="price">
-                        <h6><%- utils.capitalizeFirstLetter(products?.products?.[i]?.shortName) ||
-                                utils.capitalizeFirstLetter(products?.products?.[i]?.name) %></h6>
+                        <h6><%- utils.capitalizeFirstLetter(products?.products?.[i]?.variants?.[storeId]?.shortName) ||
+                                utils.capitalizeFirstLetter(products?.products?.[i]?.variants?.[storeId]?.name) %></h6>
                         <div class="middleCard">
                             <h5><%- `${products?.products?.[i]?.purity} ${utils.capitalizeFirstLetter(products?.products?.[i]?.material)}` %></h5>
-                            <% if(products?.products?.[i]?.discountPrice) { %>
+                            <% if(products?.products?.[i]?.variants?.[storeId]?.discountPrice) { %>
                                 <span>|</span>
-                                <h4><%- utils.toCurrency(products?.products?.[i]?.tagPrice) %></h4>
+                                <h4><%- utils.toCurrency(products?.products?.[i]?.variants?.[storeId]?.tagPrice) %></h4>
                                 <% } %>
                         </div>
-                        <h2><%- utils.toCurrency(products?.products?.[i]?.finalUnitPrice) %> USD</h2>
+                        <h2><%- utils.toCurrency(products?.products?.[i]?.variants?.[storeId]?.finalUnitPrice) %> USD</h2>
                     </div>
                 </a>
                 <% } %>
         </section>
 
         <% if (products?.pagination?.totalPages> 1) { %>
-            <section class="navButtons">
-                <% if (products?.pagination?.page> 1) { %>
-                    <button type="button"
-                        onclick="filterProducts(event, '<%- products?.pagination?.page - 1 %>')">&lt;</button>
-                    <% } else { %>
-                        <button type="button" class="inactive">&lt;</button>
-                        <% } %>
+        <section class="navButtons">
+            <% if (products?.pagination?.page> 1) { %>
+                <button type="button"
+                    onclick="filterProducts(event, '<%- products?.pagination?.page - 1 %>')">&lt;</button>
+                <% } else { %>
+                    <button type="button" class="inactive">&lt;</button>
+                    <% } %>
 
-                            <% let current=parseInt(products?.pagination?.page); let
-                                total=parseInt(products?.pagination?.totalPages); let range=1; %>
+                        <% let current=parseInt(products?.pagination?.page); let
+                            total=parseInt(products?.pagination?.totalPages); let range=1; %>
 
-                                <% for(let j=1; j <=total; j++) { %>
+                            <% for(let j=1; j <=total; j++) { %>
 
-                                    <% if (j===1 || j===total || (j>= current - range && j <= current + range)) { %>
+                                <% if (j===1 || j===total || (j>= current - range && j <= current + range)) { %>
 
-                                            <button type="button" class="<%= j === current ? 'selected' : '' %>"
-                                                onclick="filterProducts(event, '<%- j %>')">
-                                                <%= j %>
-                                            </button>
+                                        <button type="button" class="<%= j === current ? 'selected' : '' %>"
+                                            onclick="filterProducts(event, '<%- j %>')">
+                                            <%= j %>
+                                        </button>
 
-                                            <% } else if (j===current - range - 1 || j===current + range + 1) { %>
-                                                <button type="button" class="inactive">...</button>
+                                        <% } else if (j===current - range - 1 || j===current + range + 1) { %>
+                                            <button type="button" class="inactive">...</button>
+                                            <% } %>
+
                                                 <% } %>
 
-                                                    <% } %>
-
-                                                        <% if (products?.pagination?.page <
-                                                            products?.pagination?.totalPages) { %>
-                                                            <button type="button"
-                                                                onclick="filterProducts(event, '<%- products?.pagination?.page + 1 %>')">&gt;</button>
-                                                            <% } else { %>
-                                                                <button type="button" class="inactive">&gt;</button>
-                                                                <% } %>
-            </section>
-            <% } %>
+                                                    <% if (products?.pagination?.page <
+                                                        products?.pagination?.totalPages) { %>
+                                                        <button type="button"
+                                                            onclick="filterProducts(event, '<%- products?.pagination?.page + 1 %>')">&gt;</button>
+                                                        <% } else { %>
+                                                            <button type="button" class="inactive">&gt;</button>
+                                                            <% } %>
+        </section>
+        <% } %>
     </section>
 </section>
 

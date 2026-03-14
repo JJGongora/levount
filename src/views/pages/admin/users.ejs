@@ -1,0 +1,491 @@
+<style>
+    body {
+        & main {
+            padding: 20px;
+            position: relative;
+            box-sizing: border-box;
+
+            & .sys-list-panel {
+                background-color: var(--bg-white);
+                border: 1px solid var(--lv-border);
+                border-radius: 6px;
+                width: 100%;
+                max-width: 1000px;
+                /* Más ancho para acomodar columnas */
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                margin: auto;
+
+                /* Cabecera del panel con botón de acción principal */
+                & .sys-panel-header {
+                    padding: 16px 24px;
+                    border-bottom: 1px solid var(--lv-border);
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    & .header-info {
+                        & h2 {
+                            font-size: 1.125rem;
+                            color: var(--lv-obsidian);
+                            font-weight: 600;
+                        }
+
+                        & p {
+                            font-size: 0.85rem;
+                            color: var(--gray-70);
+                            margin-top: 4px;
+                        }
+                    }
+
+                    & .btn-primary {
+                        background-color: var(--lv-obsidian);
+                        color: var(--lv-white);
+                        padding: 8px 16px;
+                        font-size: 0.875rem;
+                        font-weight: 600;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        border: none;
+                        transition: background-color 0.2s;
+
+                        &:hover {
+                            background-color: var(--lv-slate);
+                        }
+                    }
+                }
+
+                /* Estilos anidados de la tabla */
+                & .table-container {
+                    width: 100%;
+                    overflow-x: auto;
+                    /* Para pantallas pequeñas */
+
+                    & table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        text-align: left;
+
+                        & th {
+                            background-color: var(--gray-10);
+                            padding: 12px 24px;
+                            font-size: 0.75rem;
+                            text-transform: uppercase;
+                            letter-spacing: 0.05em;
+                            color: var(--gray-70);
+                            font-weight: 600;
+                            border-bottom: 1px solid var(--lv-border);
+                        }
+
+                        & td {
+                            padding: 16px 24px;
+                            border-bottom: 1px solid var(--lv-border);
+                            font-size: 0.9rem;
+                            vertical-align: middle;
+
+                            /* Información del usuario agrupada */
+                            & .user-meta {
+                                display: flex;
+                                flex-direction: column;
+
+                                & .user-name {
+                                    font-weight: 600;
+                                    color: var(--lv-obsidian);
+                                }
+
+                                & .user-email {
+                                    font-size: 0.8rem;
+                                    color: var(--gray-70);
+                                    margin-top: 2px;
+                                }
+                            }
+
+                            /* Botones de acción en la tabla */
+                            & .action-links {
+                                display: flex;
+                                gap: 12px;
+
+                                & button {
+                                    background: none;
+                                    border: none;
+                                    cursor: pointer;
+                                    font-size: 0.85rem;
+                                    font-weight: 500;
+                                    padding: 0;
+                                    transition: color 0.2s;
+
+                                    &.edit-btn {
+                                        color: var(--lv-gold-dim);
+
+                                        &:hover {
+                                            color: var(--lv-gold);
+                                        }
+                                    }
+
+                                    &.delete-btn {
+                                        color: var(--gray-60);
+
+                                        &:hover {
+                                            color: var(--lv-error);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        /* Efecto hover en las filas */
+                        & tbody tr {
+                            transition: background-color 0.15s ease;
+
+                            &:hover {
+                                background-color: var(--bg-alabaster);
+                            }
+
+                            /* Elimina el borde inferior de la última fila */
+                            &:last-child td {
+                                border-bottom: none;
+                            }
+                        }
+                    }
+                }
+
+                /* Sistema de Badges (Etiquetas) */
+                & .badge {
+                    display: inline-block;
+                    padding: 4px 8px;
+                    border-radius: 9999px;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+
+                    /* Variantes de Roles */
+                    &.role-admin {
+                        background-color: var(--lv-obsidian);
+                        color: var(--lv-white);
+                    }
+
+                    &.role-support {
+                        background-color: var(--lv-gold-light);
+                        color: var(--lv-gold-dim);
+                    }
+
+                    &.role-inventory {
+                        background-color: var(--gray-20);
+                        color: var(--lv-slate);
+                    }
+
+                    /* Variantes de Estado */
+                    &.status-active {
+                        background-color: rgba(16, 185, 129, 0.1);
+                        color: var(--lv-green);
+                    }
+
+                    &.status-inactive {
+                        background-color: var(--gray-20);
+                        color: var(--gray-70);
+                    }
+                }
+            }
+
+            & .signupOverlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1099;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease-in-out;
+
+                &.active {
+                    opacity: 1;
+                    visibility: visible;
+                }
+            }
+
+            & .signupDrawer {
+                opacity: 0;
+                visibility: hidden;
+                z-index: 1100;
+                position: absolute;
+                transition: all 0.3s ease-in-out;
+                box-sizing: border-box;
+                left: 0;
+                right: 0;
+                top: 50px;
+                margin: auto;
+                width: 100%;
+                max-width: 500px;
+
+                &.active {
+                    opacity: 1;
+                    visibility: visible;
+                }
+
+                & .admin-form-container {
+                    background-color: #ffffff;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    padding: 35px;
+                    margin: auto;
+                    box-sizing: border-box;
+
+                    & form {                        
+                        display: grid;
+                        row-gap: 10px;
+                    }
+
+                    /* CSS Nesting aplicado a la tarjeta principal */
+                    & h2 {
+                        color: #2c3e50;
+                        margin-bottom: 24px;
+                        text-align: center;
+                        font-weight: 600;
+                    }
+
+                    & .form-group {
+                        box-sizing: border-box;
+                        flex-grow: 1;
+                        display: grid;
+                        row-gap: 4px;
+
+                        & label {
+                            display: block;
+                            color: var(--gray-70);
+                            font-weight: 500;
+                            font-size: 0.7rem;
+                            text-transform: uppercase;
+                        }
+
+                        & input,
+                        & select {
+                            box-sizing: border-box;
+                            width: 100%;
+                            padding: 8px 10px;
+                            border: 1px solid #dcdde1;
+                            border-radius: 4px;
+                            font-size: 0.9rem;
+                            color: #2c3e50;
+                            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                            font-family: "Google Sans", sans-serif;
+
+                            /* Estado focus anidado */
+                            &:focus {
+                                outline: none;
+                                border-color: #d4af37;
+                                /* Acento dorado */
+                                box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+                            }
+
+                            /* Placeholder anidado */
+                            &::placeholder {
+                                color: #a4b0be;
+                            }
+                        }
+                    }
+
+                    & .two-form-group {
+                        display: flex;
+                        gap: 15px;
+                    }
+
+                    & .form-actions {
+                        display: flex;
+                        gap: 15px;
+                        margin-top: 30px;
+
+                        & button {
+                            flex: 1;
+                            padding: 12px;
+                            border: none;
+                            border-radius: 4px;
+                            font-size: 1rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: background-color 0.3s ease, transform 0.1s ease;
+
+                            &:active {
+                                transform: translateY(1px);
+                            }
+
+                            &.btn-submit {
+                                background-color: #2c3e50;
+                                color: #ffffff;
+
+                                &:hover {
+                                    background-color: #1a252f;
+                                }
+                            }
+
+                            &.btn-cancel {
+                                background-color: #ecf0f1;
+                                color: #7f8c8d;
+
+                                &:hover {
+                                    background-color: #bdc3c7;
+                                    color: #2c3e50;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /* Contenedor principal de la tabla */
+</style>
+
+<section class="signupDrawer active" id="signupDrawer">
+    <div class="admin-form-container">
+        <h2>Registrar nuevo usuario</h2>
+        <form onsubmit="signUp(this, event)">
+            <div class="two-form-group">
+                <div class="form-group">
+                    <label for="nombre">* Nombre(s)</label>
+                    <input type="text" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="nombre">* Apellidos</label>
+                    <input type="text" name="lastname" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">* Correo electrónico</label>
+                <input type="email" name="email" required>
+            </div>
+
+            <div class="two-form-group">
+                <div class="form-group">
+                    <label for="nombre">Teléfono</label>
+                    <input type="tel" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="nombre">Sexo</label>
+                    <select type="text" name="gender" required>
+                        <option value="m">Hombre</option>
+                        <option value="f">Mujer</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="rol">Fecha de nacimiento</label>
+                <input type="date" name="birthDate">
+            </div>
+
+            <div class="form-group">
+                <label for="rol">* Rol del sistema</label>
+                <select id="rol" name="roleId" required>
+                    <% roles?.forEach(role => { %>
+                        <option value="<%- role?.id %>"><%- role?.name %></option>
+                    <% }); %>
+                </select>
+            </div>
+
+            <div class="signupBackupResponse" id="signupBackupResponse"></div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="openSignUp()">Cancelar</button>
+                <button type="submit" class="btn-submit">Crear usuario</button>
+            </div>
+        </form>
+    </div>
+</section>
+<section class="signupOverlay active" id="signupOverlay" onclick="openSignUp()"></section>
+
+<div class="sys-list-panel">
+    <div class="sys-panel-header">
+        <div class="header-info">
+            <h2>Gestión de usuarios</h2>
+            <p>Administra los accesos y permisos del personal en el sistema.</p>
+        </div>
+        <button class="btn-primary" onclick="openSignUp()">+ Nuevo Usuario</button>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Rol Principal</th>
+                    <th>Estado</th>
+                    <th>Último Acceso</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <% users?.forEach(user => { %>
+                <tr>
+                    <td>
+                        <div class="user-meta">
+                            <span class="user-name"><%- user?.displayName %></span>
+                            <span class="user-email"><%- user?.email %></span>
+                        </div>
+                    </td>
+                    <td><span class="badge role-admin"><%- user?.role %></span></td>
+                    <td><span class="badge status-<%- (user?.active) ? '' : 'in' %>active"><%- (user?.active) ? 'Activo' : 'Inactivo' %></span></td>
+                    <td style="color: var(--gray-70); font-size: 0.85rem;">Hoy, 08:30 AM</td>
+                    <td>
+                        <div class="action-links">
+                            <button class="edit-btn">Editar</button>
+                        </div>
+                    </td>
+                </tr>
+                <% }); %>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function openSignUp() {
+        const overlay = document.getElementById("signupOverlay");
+        const drawer = document.getElementById("signupDrawer");
+
+        overlay.classList.toggle(`active`);
+        drawer.classList.toggle(`active`);
+    }
+
+    async function signUp(form, event) {
+        try {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries()); //console.log(data);
+            const res = await fetch("/api/auth/admin/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const resJson = await res.json();
+        } catch (error) {
+            
+        }
+    }
+
+    function showBackendResponse(messageDivId, response) {
+        const element = document.getElementById(messageDivId);
+        const responseContainer = element;
+        let htmlResponse = "";
+
+            const icon = (response.success == true) ? '&#xe1062;' : ((response.sucess == 'warning') ? '&#xe1063;' : '&#xe1064;');
+            const color = (response.success == true) ? '--custom-back: #c6dfc7; --custom-font: #416b4b;' : ((response.success == 'warning') ? '--custom-back: #ffedb2; --custom-font: #e65100;' : '--custom-back: #E9ADAD; --custom-font: #881414;');
+            htmlResponse += `
+                    <i>${icon}</i>
+                    <p>${response.message}</p>
+            `;
+        responseContainer.style = color;
+        responseContainer.innerHTML = htmlResponse;
+        element.classList.toggle("open", true);
+    }
+
+    function hideMessage(messageDivId) {
+        const element = document.getElementById(messageDivId);
+        element.classList.toggle("open", false);
+    }
+</script>
