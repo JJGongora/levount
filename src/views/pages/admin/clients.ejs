@@ -370,7 +370,7 @@
         </div>
 
         <div class="toolbar-actions">
-            <button class="btn-primary" onclick="window.location.href='/admin/clientes/nuevo'">+ Nuevo Cliente</button>
+            <button class="btn-primary" onclick="window.location.href='/admin/clients/create'">+ Nuevo Cliente</button>
         </div>
     </div>
 
@@ -411,8 +411,7 @@
                                     <div class="avatar"><%- client?.name.split(' ').slice(0, 2).map(p => p.slice(0, 1)).join(''); %></div>
                                     <div class="info">
                                         <p class="name"><%- client?.name %></p>
-                                        <span class="email"><%- client?.email || `<i
-                                                style="font-style: italic;">error</i>` %></span>
+                                        <span class="email"><%- client?.email || `<i style="font-style: italic;">error</i>` %></span>
                                     </div>
                                 </div>
                             </td>

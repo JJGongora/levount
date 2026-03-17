@@ -38,14 +38,16 @@ const authMiddleware = {
         if (!token) return next();
 
         try {
-            
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const decoded = jwt.verify(token, process.env.JWT_SECRET); //console.log(decoded);
             const username = decoded.userSession.username;
             const tokenVersion = decoded.userSession.sessionVersion;
 
-            let currentVersion = await redisClient.get(`session_v:${username}`);
+            // 1. Vamos a Redis PRIMERO
+            let currentVersion = await redisClient.get(`session_v:${username}`); 
+            
+            // 2. SOLO si Redis no lo tiene, vamos a la Base de Datos
             if (!currentVersion) {
-                const dbUser = await authModel.userVersion(username);
+                const dbUser = await authModel.userVersion(username); 
                 
                 if (!dbUser || dbUser.active !== 1) {
                     res.clearCookie('jwt');
@@ -54,42 +56,37 @@ const authMiddleware = {
                 
                 currentVersion = dbUser.sessionVersion.toString();
                 await redisClient.set(`session_v:${username}`, currentVersion, {
-                    EX: 3600 // Tiempo de vida de la variable: 1 hora.
+                    EX: 3600 // Tiempo de vida: 1 hora.
                 });
             }
 
-            if (currentVersion != tokenVersion) {
+            // 3. Comparación de versiones
+            if (currentVersion.toString() !== tokenVersion.toString()) {
                 
                 // La versión cambió, hay que actualizar el token
-                // Aquí sí consultamos la DB completa porque necesitamos todos los datos nuevos
                 const updatedSession = await authModel.getFullUserSession(username);
                 
-                // Actualizamos Redis con la nueva versión (por si acaso)
                 await redisClient.set(`session_v:${username}`, updatedSession.sessionVersion.toString(), { EX: 3600 });
 
-                // Generamos nuevo token y cookie
                 const newToken = jwt.sign({ userSession: updatedSession }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
+                
                 res.cookie("jwt", newToken, {
-                     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRATION * 24 * 60 * 60 * 1000),
-                     path: "/", httpOnly: true
+                     expires: new Date(Date.now() + parseInt(process.env.JWT_COOKIE_EXPIRATION) * 24 * 60 * 60 * 1000),
+                     path: "/", 
+                     httpOnly: true,
+                     secure: process.env.NODE_ENV === 'production'
                 });
                 
                 req.userSession = updatedSession;
                 res.locals.userSession = updatedSession;
             } else {
-                // CAMINO FELIZ: Todo coincide, usamos datos del token.
-                // TIEMPO TOTAL: < 1ms
                 req.userSession = decoded.userSession;
                 res.locals.userSession = decoded.userSession;
-            }
-
-            //console.log(req.userSession);
+            } //console.log(res.locals.userSession);
 
             return next();
 
         } catch (error) {
-            // Si el token expiró o es inválido, simplemente limpiamos y seguimos como invitado
-            // No hacemos console.error para no ensuciar logs con "Token ExpiredError" que es normal
             res.clearCookie('jwt');
             return next();
         }

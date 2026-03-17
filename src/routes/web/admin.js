@@ -16,25 +16,24 @@ router.get('/clients',
     permissionsVerification.checkPermission("customers:read"),
     adminController.clients
 );
-router.get('/clients/:id', 
-    permissionsVerification.checkPermission("customers:read"),
-    adminController.client
-);
 router.get('/clients/create',
     permissionsVerification.checkPermission("customers:create"),
     adminController.createClient
+);router.get('/clients/:id', 
+    permissionsVerification.checkPermission("customers:read"),
+    adminController.client
 );
 
 // ===========================
 //          PRODUCTOS
 // ===========================
-router.get('/products/create',
-    permissionsVerification.checkPermission("inventory:create"),
-    adminController.products.create
-);
 router.get(`/products`,
     permissionsVerification.checkPermission("inventory:read"),
     adminController.products.getAll
+);
+router.get('/products/create',
+    permissionsVerification.checkPermission("inventory:create"),
+    adminController.products.create
 );
 router.get(`/products/:sku`,
     permissionsVerification.checkPermission("inventory:read"),
@@ -48,11 +47,22 @@ router.get(`/users`,
     permissionsVerification.checkPermission("users:read"),
     adminController.users.get
 );
+router.get([`/user`, `/user/:id`],
+    permissionsVerification.checkPermission("users:read"),
+    adminController.users.getIndividual
+)
+
+// ===========================
+//          ETIQUETAS
+// ===========================
 router.get([`/labels`, `/labels/:material`],
     permissionsVerification.checkPermission(`inventory:read`),
     adminController.labels.get
 );
 
+// ===========================
+//            VENTAS
+// ===========================
 router.get(`/sales/:id`, 
     permissionsVerification.checkPermission("sales:read"),
     adminController.sales.get

@@ -135,6 +135,7 @@
                         /* Efecto hover en las filas */
                         & tbody tr {
                             transition: background-color 0.15s ease;
+                            cursor: pointer;
 
                             &:hover {
                                 background-color: var(--bg-alabaster);
@@ -336,7 +337,7 @@
     /* Contenedor principal de la tabla */
 </style>
 
-<section class="signupDrawer active" id="signupDrawer">
+<section class="signupDrawer" id="signupDrawer">
     <div class="admin-form-container">
         <h2>Registrar nuevo usuario</h2>
         <form onsubmit="signUp(this, event)">
@@ -393,7 +394,7 @@
         </form>
     </div>
 </section>
-<section class="signupOverlay active" id="signupOverlay" onclick="openSignUp()"></section>
+<section class="signupOverlay" id="signupOverlay" onclick="openSignUp()"></section>
 
 <div class="sys-list-panel">
     <div class="sys-panel-header">
@@ -418,7 +419,7 @@
             <tbody>
 
                 <% users?.forEach(user => { %>
-                <tr>
+                <tr onclick="window.open('/admin/user/<%- user?.id %>')">
                     <td>
                         <div class="user-meta">
                             <span class="user-name"><%- user?.displayName %></span>

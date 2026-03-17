@@ -5,6 +5,51 @@
         padding: 0;
     }
 
+    & .backendMessage {
+        display: flex;
+        gap: 5px;
+        background-color: var(--custom-back) !important;
+        color: var(--custom-font) !important;
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
+        visibility: hidden;
+        max-height: 0px;
+        overflow: hidden;
+        opacity: 0;
+
+        & * {
+            box-sizing: border-box !important;
+        }
+
+        & p {
+            margin: 0 !important;
+            margin-bottom: 0 !important;
+            line-height: 100%;
+            font-size: 0.8rem;
+            padding: 10px 10px 10px 0;
+            display: flex;
+            color: var(--custom-font) !important;
+            align-items: center;
+        }
+
+        & i {
+            padding: 8px 0 8px 10px;
+            color: var(--custom-font) !important;
+            font-size: 25px;
+            margin-right: 8px;
+        }
+
+        &.open {
+            opacity: 1;
+            visibility: visible;
+            max-height: 500px;
+        }
+
+        &#backendMessageNews {
+            margin-bottom: 15px;
+        }
+    }
+
     .auth-container {
         display: flex;
         width: 100%;
@@ -42,6 +87,33 @@
         flex-direction: column;
         justify-content: center;
         position: relative;
+
+        & form {
+            row-gap: 15px;
+            display: grid;
+
+            & .form-group {
+                position: relative;
+                display: grid;
+                row-gap: 4px;
+
+                & label {
+                    display: block;
+                    font-size: 12px;
+                    color: #888;
+                    font-weight: 600;
+                }
+
+                & i {
+                    position: absolute;
+                    bottom: 15px;
+                    right: 10px;
+                    cursor: pointer;
+                    font-size: 25px;
+                    color: var(--gray-50);
+                }
+            }
+        }
     }
 
     h1 {
@@ -58,27 +130,7 @@
         margin-bottom: 40px;
     }
 
-    .form-group {
-        margin-bottom: 25px;
-        position: relative;
 
-        & label {
-            display: block;
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        & i {
-            position: absolute;
-            bottom: 15px;
-            right: 10px;
-            cursor: pointer;
-            font-size: 25px;
-            color: var(--gray-50);
-        }
-    }    
 
     input[type="text"],
     input[type="email"],
@@ -102,7 +154,6 @@
     .checkbox-group {
         display: flex;
         align-items: center;
-        margin-bottom: 30px;
     }
 
     .checkbox-group input {
@@ -203,58 +254,78 @@
                 <label for="newsletter">Subscribe to our newsletter for updates and exclusive offers.</label>
             </div>
 
-            <button type="submit" class="btn-submit">Create Account</button>
+            <div class="backendMessage" id="signupBackResponse"></div>
+            <div class="cf-turnstile" data-sitekey="<%- turnstileSiteKey %>"></div>
+            <button type="submit" class="btn-submit" id="signUpButton">Create Account</button>
         </form>
-        <div class="backResponse">
-
-        </div>
         <div class="auth-footer">
             Already have an account? <a onclick="openUserMenu()">Sign In</a>
         </div>
     </div>
 </div>
 
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
 <script>
     async function signup(event) {
-        event.preventDefault();
-        const form = document.getElementById("accountData");
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
+        event.preventDefault();        
+        const signUpButton = document.getElementById("signUpButton");
 
         try {
+            const form = document.getElementById("accountData");
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            const turnstileToken = formData.get("cf-turnstile-response");
+            if (!turnstileToken) {
+                showBackendResponse("signupBackResponse", { success: false, message: "Please, wait to the automatic security verification to finish." });
+                setTimeout(() => {hideMessage("signupBackResponse")}, 4000);
+                signUpButton.disabled = false;
+                return;
+            }
+            data.token = turnstileToken;
+
             const res = await fetch('/api/signup', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json', 
+                    'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
             const resJson = await res.json();
+            if (resJson.success) {
+                form.reset();
+            }
+            showBackendResponse("signupBackResponse", resJson);
+            setTimeout(() => {hideMessage("signupBackResponse")}, 6000);
+            turnstile.reset();
+            signUpButton.disabled = false;
         } catch (error) {
-
+            showBackendResponse("signupBackResponse", { success: false, message: error });
+            setTimeout(() => {hideMessage("signupBackResponse")}, 6000);
+            signUpButton.disabled = false;
         }
     }
 
-    function showError(feedback, msg) {
-        feedback.innerHTML = `<div class="feedback-error">${msg}</div>`;
-        feedback.classList.add('animate-in');
-        setTimeout(() => {
-            feedback.classList.remove('animate-in');
-            feedback.style.opacity = '0';
-        }, 4000);
+    function showBackendResponse(messageDivId, response) {
+        const element = document.getElementById(messageDivId);
+        const responseContainer = element;
+        let htmlResponse = "";
+
+        const icon = (response.success == true) ? '&#xe1062;' : ((response.sucess == 'warning') ? '&#xe1063;' : '&#xe1064;');
+        const color = (response.success == true) ? '--custom-back: #c6dfc7; --custom-font: #416b4b;' : ((response.success == 'warning') ? '--custom-back: #ffedb2; --custom-font: #e65100;' : '--custom-back: #E9ADAD; --custom-font: #881414;');
+        htmlResponse += `
+                    <i>${icon}</i>
+                    <p>${response.message}</p>
+            `;
+        responseContainer.style = color;
+        responseContainer.innerHTML = htmlResponse;
+        element.classList.toggle("open", true);
     }
 
-    function showSuccess(form, feedback) {
-        form.classList.add('animate-out');
-        setTimeout(() => {
-            form.style.display = 'none';
-            feedback.innerHTML = `
-                <div class="feedback-success">
-                    <span style="display:block; font-size: 2rem; margin-bottom: 10px;">&#10024;</span> Welcome to the Inner Circle.
-                </div>
-                `;
-            feedback.classList.add('animate-in');
-        }, 450);
+    function hideMessage(messageDivId) {
+        const element = document.getElementById(messageDivId);
+        element.classList.toggle("open", false);
     }
 </script>

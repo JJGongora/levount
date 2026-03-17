@@ -962,18 +962,36 @@
         itemDiv.children[1].children[1].focus();
     }
 
-
-
-
-    function setUnitPrice(element) {
+    function processItemCode(element) {
         const levountCode = element.value;
-        const index = (element.name.match(/\[saleItems\]\[(\d+)\]/)) ? element.name.match(/\[saleItems\]\[(\d+)\]/)[1] : 0;
-        const match = levountCode.match(/(\d+)$/);
-        const unitPrice = match ? match[0] : null;
+        
+        const indexMatch = element.name.match(/\[saleItems\]\[(\d+)\]/);
+        const index = indexMatch ? indexMatch[1] : 0;
 
-        if (unitPrice) {
-            document.getElementsByName(`sale[saleItems][${index}][tagPrice]`)[0].value = unitPrice;
+        const match = levountCode.match(/^(.*)([a-zA-Z])(\d+)$/);
+
+        if (match) {
+            const itemLeftSection = match[1];
+            const unitPrice = match[3];
+            const itemShape = match[2];
+
+            const itemProvider = itemLeftSection.charAt(0);
+            const itemMaterial = itemLeftSection.charAt(1);
+            const itemLine = itemLeftSection.substring(2);
+            
+            const priceInput = document.getElementsByName(`sale[saleItems][${index}][tagPrice]`)[0];
+            if (priceInput) priceInput.value = unitPrice;
+
+            const altCodeInput = document.getElementsByName(`sale[saleItems][${index}][altCode]`)[0];
+            if (altCodeInput) altCodeInput.value = itemLine;
         }
+    }
+
+    function skipCursorToEnd(element) {
+        setTimeout(function() {
+            const length = element.value.length;
+            element.setSelectionRange(length, length);
+        }, 0);
     }
 
     function addPaymentMethod(data) {
@@ -1226,12 +1244,12 @@
             
             <div class="inputContainer">
                 <label>Cód. Le Vount</label>
-                <input type="text" name="sale[saleItems][${productIndex}][levCode]" onchange=setUnitPrice(this) value="${itemData?.levountCode || ''}"/>
+                <input type="text" name="sale[saleItems][${productIndex}][levCode]" onchange="processItemCode(this);" value="${itemData?.levountCode || ''}"/>
             </div> 
 
             <div class="inputContainer">
                 <label>Cód. alterno</label>
-                <input type="text" name="sale[saleItems][${productIndex}][altCode]" value="${itemData?.alternateCode || ''}"/>
+                <input type="text" name="sale[saleItems][${productIndex}][altCode]" onfocus="skipCursorToEnd(this)" value="${itemData?.alternateCode || ''}"/>
             </div> 
 
             <div class="inputContainer">

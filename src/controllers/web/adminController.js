@@ -17,7 +17,8 @@ const adminController = {
 
     clients: async(req, res, next) => {
         try {
-            const filters = req?.query;
+            let filters = req?.query;
+            //if (!filters?.captured) { filters.captured = utils.dateToInputDate(Today); }
             let clients = await clientModel.getClients(filters); //console.log(clients);
 
             const pag = clients?.pagination || { page: 1, limit: 30, totalItems: 0 };
@@ -156,6 +157,21 @@ const adminController = {
                     title: `Usuarios | ${ pageTitle }`,
                     page: 'users',
                     utils, Today, roles, users
+                });
+            } catch (error) {
+                next(error);
+            }
+        },
+
+        getIndividual: async(req, res, next) => {
+            try {
+                const roles = await authModel.getRoles();
+                const branches = await storesModel.getAll();
+                const user = await userModel.getAllUserData(req?.params?.id); //console.log(user);
+                return res.render('pages/admin/user', {
+                    title: `Usuario: ${user?.displayName} | ${ pageTitle }`,
+                    page: 'users',
+                    utils, Today, roles, branches, user
                 });
             } catch (error) {
                 next(error);

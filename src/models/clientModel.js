@@ -108,6 +108,7 @@ const clientModel = {
                     stores st
                         ON s.storeId = st.id
                 ${whereClause}
+                ORDER BY c.registeredDate DESC
                 LIMIT ? OFFSET ?;
             `;
             queryParams = [...params, limit, offset];

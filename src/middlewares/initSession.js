@@ -25,7 +25,7 @@ const initSession = async (req, res, next) => {
         //console.log(req);
 
         if (Logged) {
-            const sessionData = await userModel.getSession(Logged.Id);
+            const sessionData = await userModel.getSession(Logged.Id); //console.log(sessionData);
             
             if (sessionData && sessionData[0]) {
                 const user = sessionData[0];

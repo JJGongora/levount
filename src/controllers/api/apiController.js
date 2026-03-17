@@ -274,7 +274,7 @@ const apiController = {
     signUp: async (req, res, next) => {
         try {
             const username = res?.locals?.userSession?.id || null;
-            console.log(req.get('Referer'));
+            //console.log(req.get('Referer'));
             const data = filterHelper.cleanEmptyFields(req.body);
             data.storeId = 0;
             const signUpResult = await authModel.signup(data);

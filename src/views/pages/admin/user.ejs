@@ -1,0 +1,653 @@
+<style>
+    body {
+        & main {
+            padding: 25px;
+
+            & * {
+                box-sizing: border-box !important;
+            }
+
+            /* Estilos encapsulados para la edición de usuario */
+            .Content.sys-user-edit-panel {
+                background-color: transparent;
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+
+                /* Cabecera de la vista */
+                & .view-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 24px;
+                    padding-bottom: 16px;
+                    border-bottom: 1px solid var(--lv-border);
+
+                    & .title-area {
+                        display: flex;
+                        align-items: center;
+                        gap: 16px;
+
+                        & .back-btn {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 36px;
+                            height: 36px;
+                            border-radius: 4px;
+                            background-color: var(--bg-white);
+                            border: 1px solid var(--gray-40);
+                            color: var(--lv-slate);
+                            cursor: pointer;
+                            transition: all 0.2s;
+                            text-decoration: none;
+                            font-size: 1.2rem;
+
+                            &:hover {
+                                background-color: var(--gray-20);
+                                color: var(--lv-obsidian);
+                            }
+                        }
+
+                        & h1 {
+                            font-size: 1.5rem;
+                            color: var(--lv-obsidian);
+                            font-weight: 600;
+                            margin: 0;
+                        }
+                    }
+
+                    & .header-actions {
+                        display: flex;
+                        gap: 12px;
+
+                        & .btn-outline {
+                            padding: 8px 16px;
+                            background-color: var(--bg-white);
+                            border: 1px solid var(--gray-40);
+                            color: var(--lv-slate);
+                            border-radius: 4px;
+                            font-weight: 600;
+                            font-size: 0.875rem;
+                            cursor: pointer;
+                            transition: all 0.2s;
+
+                            &:hover {
+                                background-color: var(--gray-20);
+                            }
+                        }
+
+                        & .btn-save {
+                            padding: 8px 16px;
+                            background-color: var(--lv-obsidian);
+                            color: var(--lv-white);
+                            border: 1px solid transparent;
+                            border-radius: 4px;
+                            font-weight: 600;
+                            font-size: 0.875rem;
+                            cursor: pointer;
+                            transition: background-color 0.2s;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+
+                            &:hover {
+                                background-color: var(--lv-slate);
+                            }
+                        }
+                    }
+                }
+
+                /* Layout Superior: Info y Seguridad */
+                & .edit-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 24px;
+                    margin-bottom: 32px;
+                }
+
+                /* Tarjetas base */
+                & .sys-card {
+                    background-color: var(--bg-white);
+                    border: 1px solid var(--lv-border);
+                    border-radius: 6px;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                    height: 100%;
+
+                    & .card-header {
+                        padding: 16px 24px;
+                        border-bottom: 1px solid var(--lv-border);
+                        background-color: var(--gray-10);
+                        border-radius: 6px 6px 0 0;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        & h3 {
+                            font-size: 1rem;
+                            color: var(--lv-obsidian);
+                            font-weight: 600;
+                            margin: 0;
+                        }
+                    }
+
+                    & .card-body {
+                        padding: 24px;
+                        display: grid;
+                        row-gap: 8px;
+
+                        & .form-row {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 16px;
+
+                            &.full {
+                                grid-template-columns: 1fr;
+                            }
+                        }
+
+                        & .form-group {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 3px;
+
+                            & label {
+                                font-size: 0.7rem;
+                                font-weight: 600;
+                                color: var(--gray-70);
+                                text-transform: uppercase;
+                                font-family: "Google Sans", sans-serif;
+                            }
+
+                            & input,
+                            & select,
+                            & textarea {
+                                width: 100%;
+                                resize: vertical;
+                                padding: 10px 12px;
+                                border: 1px solid var(--gray-40);
+                                border-radius: 4px;
+                                background-color: var(--bg-white);
+                                color: var(--text-dark);
+                                font-size: 0.9rem;
+                                font-family: inherit;
+                                line-height: 1.5;
+                                transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+                                &:focus {
+                                    outline: none;
+                                    border-color: var(--lv-gold);
+                                    box-shadow: 0 0 0 3px var(--lv-gold-light);
+                                }
+                            }
+
+                            & input:not([type="checkbox"]):not([type="radio"]),
+                            & select {
+                                height: 42px;
+                            }
+
+                            & input[disabled] {
+                                background-color: var(--gray-10);
+                                color: var(--gray-60);
+                                cursor: not-allowed;
+                            }
+                        }
+                    }
+                }
+
+                /* SECCIÓN INFERIOR: PERMISOS AVANZADOS */
+                & .permissions-section {
+                    background-color: var(--bg-white);
+                    border: 1px solid var(--lv-border);
+                    border-radius: 6px;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+                    & .permissions-header {
+                        padding: 20px 24px;
+                        border-bottom: 1px solid var(--lv-border);
+                        background-color: var(--gray-10);
+                        border-radius: 6px 6px 0 0;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 16px;
+
+                        & .title {
+                            & h3 {
+                                font-size: 1.1rem;
+                                color: var(--lv-obsidian);
+                                font-weight: 600;
+                                margin: 0 0 4px 0;
+                            }
+
+                            & p {
+                                font-size: 0.85rem;
+                                color: var(--gray-70);
+                                margin: 0;
+                            }
+                        }
+
+                        /* Buscador de permisos */
+                        & .search-wrapper {
+                            position: relative;
+
+                            & input[type="search"] {
+                                padding: 10px 16px 10px 36px;
+                                border: 1px solid var(--gray-40);
+                                border-radius: 4px;
+                                width: 300px;
+                                font-size: 0.9rem;
+                                color: var(--text-dark);
+
+                                &:focus {
+                                    outline: none;
+                                    border-color: var(--lv-gold);
+                                    box-shadow: 0 0 0 3px var(--lv-gold-light);
+                                }
+                            }
+
+                            &::before {
+                                content: '⌕';
+                                position: absolute;
+                                left: 12px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                font-size: 1.2rem;
+                                color: var(--gray-60);
+                                font-weight: bold;
+                            }
+                        }
+                    }
+
+                    /* Contenedor de las categorías */
+                    & .permissions-body {
+                        padding: 24px;
+                    }
+
+                    & .perm-category {
+                        margin-bottom: 32px;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+
+                        & .category-title {
+                            font-size: 1rem;
+                            color: var(--lv-obsidian);
+                            font-weight: 600;
+                            margin: 0 0 16px 0;
+                            padding-bottom: 8px;
+                            border-bottom: 2px solid var(--gray-20);
+                        }
+
+                        /* Grid de permisos: Se adapta automáticamente al ancho */
+                        & .perm-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                            gap: 16px;
+                        }
+
+                        & .permission-item {
+                            display: flex;
+                            align-items: flex-start;
+                            gap: 12px;
+                            padding: 12px;
+                            border: 1px solid var(--gray-30);
+                            border-radius: 6px;
+                            background-color: var(--lv-light);
+                            transition: border-color 0.2s, background-color 0.2s;
+                            cursor: pointer;
+
+                            &:hover {
+                                border-color: var(--lv-gold-dim);
+                                background-color: var(--lv-gold-light);
+                            }
+
+                            /* Efecto visual cuando está chequeado */
+                            &:has(input:checked) {
+                                border-color: var(--lv-gold);
+                                background-color: #fdfaf3;
+                            }
+
+                            & .perm-checkbox {
+                                width: 18px;
+                                height: 18px;
+                                margin-top: 2px;
+                                cursor: pointer;
+                                accent-color: var(--lv-gold);
+                            }
+
+                            & .perm-details {
+                                display: flex;
+                                flex-direction: column;
+
+                                & .perm-name {
+                                    font-weight: 600;
+                                    color: var(--lv-obsidian);
+                                    font-size: 0.9rem;
+                                }
+
+                                & .perm-desc {
+                                    font-size: 0.8rem;
+                                    color: var(--gray-70);
+                                    margin-top: 2px;
+                                    line-height: 1.3;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<section class="Content sys-user-edit-panel">
+
+    <div class="view-header">
+        <div class="title-area">
+            <a href="/admin/usuarios" class="back-btn" title="Volver al equipo">←</a>
+            <h1>Perfil de Cuenta: <%- user?.firstName %> <%- user?.lastName %></h1>
+        </div>
+        <div class="header-actions">
+            <button type="button" class="btn-outline">Descartar</button>
+            <button type="button" class="btn-save" onclick="document.getElementById('editUserForm').submit()">
+                <i>&#xe1052;</i> Guardar Cambios
+            </button>
+        </div>
+    </div>
+
+    <form id="editUserForm" action="/admin/usuarios/editar/<%- user?.id %>" method="POST">
+
+        <div class="edit-grid">
+
+            <div class="sys-card">
+                <div class="card-header">
+                    <h3>Datos personales</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" name="person[name]" value="<%- user?.name %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="apellido">Apellido</label>
+                            <input type="text" name="person[lastname]" value="<%- user?.lastname %>" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="telefono">Nombre de display</label>
+                            <input type="tel" name="person[displayName]" value="<%- user?.displayName %>">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="tel" name="person[phone]" value="<%- user?.phone %>">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="apellido">Dirección</label>
+                            <textarea name="person[lastname]"><%- user?.address %></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Género</label>
+                            <select name="person[gender]" required>
+                                <option value="m" <%- user?.gender=='m' ? 'selected' : '' %>>Hombre</option>
+                                <option value="f" <%- user?.gender=='f' ? 'selected' : '' %>>Mujer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de nacimiento</label>
+                            <input type="date" name="person[birthDate]"
+                                value="<%- utils.dateToInputDate(user?.birthDate) %>">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombre">RFC</label>
+                            <input type="text" name="person[rfc]" value="<%- user?.rfc %>">
+                        </div>
+                        <div class="form-group">
+                            <label for="apellido">NSS</label>
+                            <input type="number" name="person[nss]" value="<%- user?.nss %>">
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" name="user[email]" value="<%- user?.email %>" disabled>
+                            <span style="font-size: 0.75rem; color: var(--gray-60); margin-top: 4px;">
+                                Solo el titular de la cuenta puede modificar su correo electrónico.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sys-card">
+                <div class="card-header">
+                    <h3>Rol Global y Seguridad</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="branchSelect">Sucursal Base</label>
+                            <select id="branchSelect" name="user[branch]">
+                                <option value="all">Todas las sucursales (Global)</option>
+                                <% branches?.forEach(branch=> { %>
+                                    <option value="<%- branch.id %>" <%- user?.branch==branch.id ? 'selected' : '' %>>
+                                        <%- branch.name %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="mainRole">Rol Principal del Sistema</label>
+                            <select id="mainRole" name="user[role]">
+                                <option value="admin" <%- user?.role=='admin' ? 'selected' : '' %>>Administrador Total
+                                </option>
+                                <option value="manager" <%- user?.role=='manager' ? 'selected' : '' %>>Gerente</option>
+                                <option value="sales" <%- user?.role=='sales' ? 'selected' : '' %>>Ventas</option>
+                            </select>
+                            <span style="font-size: 0.75rem; color: var(--gray-60); margin-top: 4px;">El rol premarca
+                                ciertos permisos abajo, pero puedes ajustarlos individualmente.</span>
+                        </div>
+                    </div>
+
+                    <hr style="border: 0; border-top: 1px solid var(--lv-border); margin: 20px 0;">
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="forcePassword" name="user[force_pwd_change]"
+                                style="width: 16px; height: 16px; accent-color: var(--lv-gold);">
+                            Forzar cambio de contraseña en próximo inicio
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="permissions-section">
+            <div class="permissions-header">
+                <div class="title">
+                    <h3>Matriz de Permisos Detallada</h3>
+                    <p>Habilita o deshabilita accesos específicos por módulo (+50 opciones).</p>
+                </div>
+                <div class="search-wrapper">
+                    <input type="search" id="permissionSearch" placeholder="Ej. 'eliminar cliente', 'inventario'..."
+                        onkeyup="filterPermissions()">
+                </div>
+            </div>
+
+            <div class="permissions-body" id="permissionsContainer">
+
+                <div class="perm-category">
+                    <h4 class="category-title">Catálogo e Inventarios</h4>
+                    <div class="perm-grid">
+
+                        <label class="permission-item">
+                            <input type="checkbox" name="permissions[inv_view]" class="perm-checkbox" <%-
+                                user?.permissions?.inv_view ? 'checked' : '' %>>
+                            <div class="perm-details">
+                                <span class="perm-name">Ver Inventario</span>
+                                <span class="perm-desc">Permite buscar y ver detalles de productos en stock.</span>
+                            </div>
+                        </label>
+
+                        <label class="permission-item">
+                            <input type="checkbox" name="permissions[inv_create]" class="perm-checkbox" <%-
+                                user?.permissions?.inv_create ? 'checked' : '' %>>
+                            <div class="perm-details">
+                                <span class="perm-name">Crear Producto</span>
+                                <span class="perm-desc">Permite dar de alta nuevas piezas y SKUs al sistema.</span>
+                            </div>
+                        </label>
+
+                        <label class="permission-item">
+                            <input type="checkbox" name="permissions[inv_edit_price]" class="perm-checkbox" <%-
+                                user?.permissions?.inv_edit_price ? 'checked' : '' %>>
+                            <div class="perm-details">
+                                <span class="perm-name">Editar Precios</span>
+                                <span class="perm-desc">Modificar precio etiqueta y precio de venta de una pieza.</span>
+                            </div>
+                        </label>
+
+                        <label class="permission-item">
+                            <input type="checkbox" name="permissions[inv_delete]" class="perm-checkbox" <%-
+                                user?.permissions?.inv_delete ? 'checked' : '' %>>
+                            <div class="perm-details">
+                                <span class="perm-name">Eliminar Producto</span>
+                                <span class="perm-desc">Permiso crítico. Elimina piezas permanentemente.</span>
+                            </div>
+                        </label>
+
+                        <label class="permission-item">
+                            <input type="checkbox" name="permissions[inv_print_labels]" class="perm-checkbox" <%-
+                                user?.permissions?.inv_print_labels ? 'checked' : '' %>>
+                            <div class="perm-details">
+                                <span class="perm-name">Impresión de Etiquetas</span>
+                                <span class="perm-desc">Acceso al módulo generador de códigos ZPL.</span>
+                            </div>
+                        </label>
+
+                    </div>
+                </div>
+
+                <div class="perm-category">
+                    <h4 class="category-title">Ventas y Documentos (POS)</h4>
+                    <div class="perm-grid">
+
+                        <label class="permission-item">
+                            <input type="checkbox" name="permissions[pos_create_sale]" class="perm-checkbox" <%-
+                                user?.permissions?.pos_create_sale ? 'checked' : '' %>>
+                            <div class="perm-details">
+                                <span class="perm-name">Crear Nota de Venta</span>
+                                <span class="perm-desc">Permite registrar transacciones y cobros.</span>
+                            </div>
+                        </label>
+
+                        <label class="permission-item">
+                            <input type="checkbox" name="permissions[pos_void_sale]" class="perm-checkbox" <%-
+                                user?.permissions?.pos_void_sale ? 'checked' : '' %>>
+                            <div class="perm-details">
+                                <span class="perm-name">Cancelar Ventas</span>
+                                <span class="perm-desc">Permite anular notas y devolver el stock al inventario.</span>
+                            </div>
+                        </label>
+
+                        <label class="permission-item">
+                            <input type="checkbox" name="permissions[pos_warranty]" class="perm-checkbox" <%-
+                                user?.permissions?.pos_warranty ? 'checked' : '' %>>
+                            <div class="perm-details">
+                                <span class="perm-name">Emitir Garantías</span>
+                                <span class="perm-desc">Creación de documentos de póliza y recepción de piezas.</span>
+                            </div>
+                        </label>
+
+                        <label class="permission-item">
+                            <input type="checkbox" name="permissions[pos_gifts]" class="perm-checkbox" <%-
+                                user?.permissions?.pos_gifts ? 'checked' : '' %>>
+                            <div class="perm-details">
+                                <span class="perm-name">Registrar Obsequios</span>
+                                <span class="perm-desc">Salida de dijes promocionales sin costo.</span>
+                            </div>
+                        </label>
+
+                    </div>
+                </div>
+
+                <div class="perm-category">
+                    <h4 class="category-title">Directorio de Clientes</h4>
+                    <div class="perm-grid">
+
+                        <label class="permission-item">
+                            <input type="checkbox" name="permissions[client_view]" class="perm-checkbox" <%-
+                                user?.permissions?.client_view ? 'checked' : '' %>>
+                            <div class="perm-details">
+                                <span class="perm-name">Ver Clientes</span>
+                                <span class="perm-desc">Acceso al listado general e historial de compras.</span>
+                            </div>
+                        </label>
+
+                        <label class="permission-item">
+                            <input type="checkbox" name="permissions[client_export]" class="perm-checkbox" <%-
+                                user?.permissions?.client_export ? 'checked' : '' %>>
+                            <div class="perm-details">
+                                <span class="perm-name">Exportar Base de Datos</span>
+                                <span class="perm-desc">Descargar datos de contacto en formato CSV o Excel.</span>
+                            </div>
+                        </label>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+</section>
+
+<script>
+    function filterPermissions() {
+        const searchInput = document.getElementById('permissionSearch').value.toLowerCase();
+        const categories = document.querySelectorAll('.perm-category');
+
+        categories.forEach(category => {
+            const items = category.querySelectorAll('.permission-item');
+            let hasVisibleItems = false;
+
+            items.forEach(item => {
+                // Busca en el nombre y en la descripción del permiso
+                const text = item.innerText.toLowerCase();
+
+                if (text.includes(searchInput)) {
+                    item.style.display = 'flex';
+                    hasVisibleItems = true;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Si la categoría no tiene ningún permiso visible que coincida, oculta la categoría entera
+            if (hasVisibleItems) {
+                category.style.display = 'block';
+            } else {
+                category.style.display = 'none';
+            }
+        });
+    }
+</script>

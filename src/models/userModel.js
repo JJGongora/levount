@@ -70,6 +70,23 @@ const userModel = {
         return result;        
     },
 
+    getAllUserData: async(userId) => {
+        const query = `
+            SELECT 
+                u.*,
+                s.name as storeName,
+                p.*
+            FROM 
+                users u
+                LEFT JOIN stores s ON u.storeId = s.id
+                LEFT JOIN persons p ON u.personId = p.id
+            WHERE 
+                u.id = ?
+        `;
+        const [result] = await db.query(query, [userId]);
+        return result[0];
+    },
+
 }
 
 export default userModel;
