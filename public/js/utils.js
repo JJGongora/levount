@@ -43,7 +43,8 @@ function getFlagEmoji(countryCode) {
 
 function toCurrency(number) {
     try {
-        return `$${parseFloat(number).toLocaleString("es-MX")}`;
+        if (!number) return null;
+        return `$${(Math.trunc(parseFloat(number))).toLocaleString("es-MX")}`;
     } catch (error) {
         throw error;
     }

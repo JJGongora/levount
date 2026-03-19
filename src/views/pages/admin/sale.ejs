@@ -116,7 +116,9 @@
             align-items: end;
             /* Alinea los inputs abajo cuando no hay label */
 
-            &.itemsContainer, &.payments, &#warrantyItems {
+            &.itemsContainer,
+            &.payments,
+            &#warrantyItems {
                 grid-template-columns: none;
             }
         }
@@ -153,6 +155,11 @@
                     outline: none;
                     border-color: var(--lv-gold);
                     box-shadow: 0 0 0 3px var(--lv-gold-light);
+                }
+
+                &:read-only {
+                    background-color: var(--gray-20);
+                    pointer-events: none;
                 }
             }
 
@@ -405,6 +412,11 @@
                     border-color: var(--lv-gold);
                     box-shadow: 0 0 0 3px var(--lv-gold-light);
                 }
+
+                &:read-only {
+                    background-color: var(--gray-20);
+                    pointer-events: none;
+                }
             }
 
             & textarea {
@@ -472,7 +484,7 @@
 
 <section class="Content sys-form-panel">
     <div class="view-header">
-        <h1>Nota de venta</h1>
+        <h1><%- (document?.id) ? `Nota #${document?.documentNumber} | ${document?.branch}` : 'Nota de venta' %></h1>
     </div>
 
     <form onsubmit="registerClient(event)" id="clientData">
@@ -486,40 +498,51 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="documentType">Tipo de documento</label>
-                        <select name="documentType" id="documentType" disabled>
+                        <select name="documentType" id="documentType">
                             <option value="sale" selected>Nota de venta</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="documentNumber">Folio</label>
-                        <input type="number" value="<%- document?.documentNumber %>">
+                        <input type="number" value="<%- document?.documentNumber %>" min="0" max="9999"
+                            name="documentNumber" id="documentNumber" oninput="getDocumentData(event)">
                     </div>
 
                     <div class="form-group">
                         <label for="storeId">Sucursal</label>
-                        <select name="storeId" id="storeId" onchange="getDocumentData()">
+                        <select name="storeId" id="storeId" oninput="getDocumentData(event)">
                             <option value="" selected>Selecciona sucursal...</option>
-                            <% branches?.forEach(branch => { %>
-                                <option value="<%- branch?.id %>" <%- (branch?.id == document?.storeId) ? 'selected' : '' %>>
+                            <% branches?.forEach(branch=> { %>
+                                <option value="<%- branch.id %>" <%- (document?.storeId==branch?.id) ? 'selected' :'' %>
+                                    >
                                     <%- branch?.id + " - " + branch?.name %>
                                 </option>
-                            <% }); %>
+                                <% }); %>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="docDate">Fecha de emisión</label>
-                        <input type="date" max="<%- utils.dateToInputDate(Today) %>" name="docDate" value="<%- utils.dateToInputDate(document?.docDate) %>">
+                        <input type="date" oninput="getDocumentData(event)" max="<%- utils.dateToInputDate(Today) %>"
+                            name="docDate" id="docDate" value="<%- utils.dateToInputDate(document?.docDate) %>">
                     </div>
 
                     <div class="form-group">
                         <label for="docStatus">Status del documento</label>
                         <select name="docStatus" id="docStatus">
-                            <option value="active" <%- document?.status == 'active' ? 'selected' : '' %>>Activo</option>
-                            <option value="cancelled" <%- document?.status == 'cancelled' ? 'selected' : '' %>>Cancelado</option>
+                            <option value="active" <%- (document?.status=='active' ) ? 'selected' :'' %>>Activo</option>
+                            <option value="cancelled" <%- (document?.status=='canceled' ) ? 'selected' :'' %>>Cancelado
+                            </option>
                         </select>
                     </div>
+
+                    <% if (!document) { %>
+                        <div class="form-group" style="width: auto; flex-grow: 0;">
+                            <button type="button" class="btn-icon" onclick="getDocumentData(event)"
+                                title="Buscar Documento"><i>&#xe110D;</i></button>
+                        </div>
+                        <% } %>
                 </div>
             </div>
         </div>
@@ -533,61 +556,70 @@
                 <section class="saleItems inner-section" style="margin-top: 0; border-top: none; padding-top: 0;">
                     <div class="inner-header">
                         <h4>Artículos vendidos</h4>
-                        <button type="button" class="btn-outline" onclick="addItem()"><i>&#xe1041;</i> Añadir
-                            Artículo</button>
+                        <button type="button" class="btn-outline" onclick="addItem()"><i>&#xe1041;</i>
+                            Añadir artículo
+                        </button>
                     </div>
                     <div class="itemsContainer form-grid" id="itemsContainer">
-                        <% document?.items?.forEach(item => { %>
+                        <% document?.items?.forEach((item, index) => { %>
                             <div class="itemRow">
-
                                 <button type="button" onclick="removeItem(this)"><i>&#xe1118;</i></button>
                                 <input type="hidden" value="<%- item?.id %>" />
                                 <div class="inputContainer">
                                     <label>Cantidad</label>
-                                    <input type="number" name="sale[saleItems][${productIndex}][quantity]" min="1" value="<%- item?.quantity || 1 %>"/>
+                                    <input type="number" name="sale[saleItems][<%- index %>][quantity]" min="1"
+                                        value="<%- item?.quantity || 1 %>" />
                                 </div>
-                                
+
                                 <div class="inputContainer">
                                     <label>Cód. Le Vount</label>
-                                    <input type="text" name="sale[saleItems][${productIndex}][levCode]" onchange=setUnitPrice(this) value="<%- item?.levountCode %>"/>
-                                </div> 
+                                    <input type="text" name="sale[saleItems][<%- index %>][levCode]"
+                                        onchange="processItemCode(this);" value="<%- item?.levountCode %>" />
+                                </div>
 
                                 <div class="inputContainer">
                                     <label>Cód. alterno</label>
-                                    <input type="text" name="sale[saleItems][${productIndex}][altCode]" value="<%- item?.alternateCode %>"/>
-                                </div> 
+                                    <input type="text" name="sale[saleItems][<%- index %>][altCode]"
+                                        onfocus="skipCursorToEnd(this)" value="<%- item?.alternateCode %>" />
+                                </div>
 
                                 <div class="inputContainer">
                                     <label>Material</label>
-                                    <select name="sale[saleItems][${productIndex}][material]">
-                                        <option value="silver" <%- (item?.material == 'silver') ? 'selected' : ''%>>Plata</option>
-                                        <option value="gold" <%- (item?.material == 'gold') ? 'selected' : ''%>>Oro</option>
-                                        <option value="steel" <%- (item?.material == 'steel') ? 'selected' : ''%>>Acero</option>
+                                    <select name="sale[saleItems][<%- index %>][material]">
+                                        <option value="silver" <%- (item?.material == 'silver') ? 'selected' : '' %>>
+                                            Plata</option>
+                                        <option value="gold" <%- (item?.material == 'gold') ? 'selected' : '' %>>Oro
+                                        </option>
+                                        <option value="steel" <%- (item?.material == 'steel') ? 'selected' : '' %>>Acero
+                                        </option>
                                     </select>
-                                </div> 
-                                
+                                </div>
+
                                 <div class="inputContainer">
                                     <label>Descripción</label>
-                                    <input type="text" name="sale[saleItems][${productIndex}][description]" value="<%- item?.description %>" />
-                                </div> 
+                                    <input type="text" name="sale[saleItems][<%- index %>][description]"
+                                        value="<%- item?.description %>" />
+                                </div>
 
                                 <div class="inputContainer">
                                     <label>Precio etiqueta</label>
-                                    <input type="number" name="sale[saleItems][${productIndex}][tagPrice]" step="0.01" value="<%- item?.tagPrice %>"/>
-                                </div> 
+                                    <input type="number" name="sale[saleItems][<%- index %>][tagPrice]" step="0.01"
+                                        value="<%- item?.tagPrice %>" />
+                                </div>
 
                                 <div class="inputContainer">
                                     <label>Precio venta</label>
-                                    <input type="number" name="sale[saleItems][${productIndex}][unitPrice]" step="0.01" value="<%- item?.unitPrice%>"/>
-                                </div> 
+                                    <input type="number" name="sale[saleItems][<%- index %>][unitPrice]" step="0.01"
+                                        value="<%- item?.unitPrice %>" />
+                                </div>
 
                                 <div class="inputContainer">
-                                    <label>Subtotal</label>                
-                                    <input type="number" name="sale[saleItems][${productIndex}][subtotal]" step="0.01" value="<%- item?.unitPrice * item?.quantity || '' %>" readonly />
-                                </div>    
-
+                                    <label>Subtotal</label>
+                                    <input type="number" name="sale[saleItems][<%- index %>][subtotal]" step="0.01"
+                                        value="<%- (item?.quantity * item?.unitPrice) || '' %>" readonly/>
+                                </div>
                             </div>
-                        <% }); %>
+                            <% }); %>
                     </div>
                 </section>
 
@@ -597,7 +629,7 @@
                             <div class="inner-header">
                                 <h4>Forma de pago</h4>
                                 <button type="button" class="btn-outline" onclick="addPaymentMethod()"><i>&#xe1041;</i>
-                                    Añadir Pago</button>
+                                    Añadir pago</button>
                             </div>
                             <div class="payments form-grid" id="payments">
                             </div>
@@ -605,13 +637,13 @@
 
                         <div class="form-group">
                             <label for="salePreparedBy">Vendedor</label>
-                            <input type="text" name="sale[preparedBy]" id="salePreparedBy" autocomplete="on" value="<%- document?.preparedBy %>">
+                            <input type="text" name="sale[preparedBy]" id="salePreparedBy" autocomplete="on">
                         </div>
 
                         <div class="form-group">
                             <label for="saleShift">Turno</label>
                             <select name="sale[shift]" id="saleShift">
-                                <option value="" selected>Selecciona un turno...</option>
+                                <option value="">Selecciona un turno...</option>
                                 <option value="morning">Mañana</option>
                                 <option value="afternoon">Tarde</option>
                             </select>
@@ -621,80 +653,18 @@
             </div>
         </div>
 
-        <div class="sys-card" id="personDataContainer">
-            <div class="card-header">
-                <h2>Datos del cliente</h2>
-            </div>
-            <div class="card-body">
-                <div class="personalData form-grid" id="personalData">                    
-
-                    <div class="form-group">
-                        <label for="clientName">Nombre Completo</label>
-                        <input type="text" name="client[name]" id="clientName" value="<%- document?.name %>">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="clientRoom">Habitación</label>
-                        <input type="number" name="client[room]" id="clientRoom" value="<%- document?.roomNumber %>">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="clientEmail">Correo electrónico</label>
-                        <input type="email" name="client[email]" id="clientEmail" value="<%- document?.email %>">
-                    </div>                    
-
-                    <div class="form-group">
-                        <label for="clientPhone">Teléfono</label>
-                        <input type="tel" id="client[phone]" name="client[phone]" class="iti-phone" value="<%- document?.phone %>">
-                    </div>
-
-                    <div class="custom-select-container" style="position: relative;">
-                        <label for="countrySearch">País</label>
-                        <select name="client[country]">
-                            <% countries.forEach(country=> { %>
-                                <option value="<%- country?.code %>" <%- (document?.country == country?.code) ? 'selected' : '' %>>
-                                    <%- country.name %>
-                                </option>
-                            <% }); %>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="clientState">Estado/Provincia</label>
-                        <input type="text" name="client[state]" id="clientState" value="<%- document?.state %>">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="clientBirthday">Cumpleaños</label>
-                        <input onchange="searchClient(event)" type="date" max="<%- utils.dateToInputDate(Today) %>"
-                            name="client[birthday]" id="clientBirthday" value="<%- utils.dateToInputDate(document?.birthday) %>">
-                    </div>
-
-                    <div class="form-group" style="grid-column: 1 / -1;">
-                        <label for="clientRemarks">Notas del registro</label>
-                        <textarea name="client[remarks]" id="clientRemarks"
-                            placeholder="Comentarios adicionales sobre el cliente o la venta..."><%- document?.remarks %></textarea>
-                    </div>
-
-                    <div class="form-group" style="grid-column: 1 / -1; display: flex; flex-direction: row; align-items: center; gap: 8px;">
-                        <input type="checkbox" name="client[sendEmail]" id="client[sendEmail]">
-                        <label for="client[sendEmail]">Enviar correo</label>
-                    </div>
-
-                </div>
-            </div>
+        <div class="responseMessage" id="responseMessage">
+            <ul></ul>
         </div>
 
         <div class="form-actions">
-            <button onclick="registerClient(event)" type="submit" class="btn-primary"><i>&#xe1052;</i> Guardar
-                Registro</button>
+            <button onclick="registerClient(event)" type="submit" class="btn-primary">
+                <i>&#xe1052;</i>
+                Guardar registro
+            </button>
         </div>
 
     </form>
-
-    <div class="responseMessage" id="responseMessage">
-        <ul></ul>
-    </div>
 </section>
 
 <script src="https://assets.levount.com/intl-input/build/js/intlTelInput.js"></script>
@@ -702,14 +672,6 @@
     let productIndex = 0;
     let paymentIndex = 0;
     let warrantyItemIndex = 0;
-
-    /*const input = document.getElementById("phoneInput");
-    const iti = window.intlTelInput(document.getElementById("phoneInput"), {
-        initialCountry: "us",
-        separateDialCode: false,
-        strictMode: true,
-        loadUtils: () => import('/intl-input/build/js/utils.js'),
-    });*/
 
     var itiInstances = [];
     const telInputs = document.querySelectorAll(".iti-phone");
@@ -723,7 +685,6 @@
         itiInstances.push(instance);
     });
 
-
     async function registerClient(event) {
         event.preventDefault();
 
@@ -731,7 +692,6 @@
 
             let form = document.getElementById("clientData");
             let documentNumber = document.getElementById("documentNumber");
-            let clientName = document.getElementById("clientName");
             const formData = new FormData(form);
 
             let errorFound = false;
@@ -757,7 +717,7 @@
             }*/
 
             const data = Object.fromEntries(formData.entries()); //console.log(data);
-            const res = await fetch("/api/clients", {
+            const res = await fetch("/api/documents", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
                 body: JSON.stringify(data)
@@ -771,33 +731,23 @@
                 paymentIndex = 0;
                 guestIndex = 0;
                 documentNumber.stepUp();
-                clientName.focus();
                 document.getElementById('itemsContainer').innerHTML = "";
                 document.getElementById('payments').innerHTML = "";
                 resetFormExcept(form,
                     [
                         'documentType', 'storeId', 'docDate', 'documentNumber', 'telCountryCode', 'countrySearch',
-                        'docStatus', 'sale[preparedBy]', 'sale[shift]', 'client[sendEmail]', 'client[country]'
+                        'docStatus', 'sale[preparedBy]', 'sale[shift]'
                     ]
                 );
             }
             showResponse("responseMessage", resJson);
-            setTimeout(hideMessage, 6000);
+            if (timeoutBackend) { clearTimeout(timeoutBackend); }
+            timeoutBackend = setTimeout(hideMessage, 6000);
 
         } catch (error) {
             showResponse("responseMessage", error);
-            setTimeout(hideMessage, 6000);
-        }
-    }
-
-    function setUnitPrice(element) {
-        const levountCode = element.value;
-        const index = (element.name.match(/\[saleItems\]\[(\d+)\]/)) ? element.name.match(/\[saleItems\]\[(\d+)\]/)[1] : 0;
-        const match = levountCode.match(/(\d+)$/);
-        const unitPrice = match ? match[0] : null;
-
-        if (unitPrice) {
-            document.getElementsByName(`sale[saleItems][${index}][tagPrice]`)[0].value = unitPrice;
+            if (timeoutBackend) { clearTimeout(timeoutBackend); }
+            timeoutBackend = setTimeout(hideMessage, 6000);
         }
     }
 
@@ -873,80 +823,6 @@
         element.parentElement.remove();
     }
 
-    async function getDocumentData() {
-        try {
-            const form = document.getElementById("clientData");
-            const formData = new FormData(form);
-
-            const documentType = formData.get('documentType') || null;
-            const documentNumber = formData.get('documentNumber') || null;
-            const storeId = formData.get('storeId') || null;
-            const docDate = formData.get('docDate') || null;
-
-            if (documentType && documentNumber && storeId && docDate) {
-                const fetchUrl = `/api/documents/${documentType}/${docDate}/${documentNumber}/${storeId}`;
-                const res = await fetch(fetchUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                const resJson = await res.json();
-
-                if (resJson.success == true) {
-
-                    if (documentType == 'sale') {
-                        const inputsContainerDiv = document.getElementById(`${documentType}Form`);
-
-                        fillContainer(inputsContainerDiv, resJson?.data, 'sale');
-
-                        document.getElementById('itemsContainer').innerHTML = "";
-                        resJson?.data?.items?.forEach((item) => {
-                            addItem(item);
-                        });
-
-                        document.getElementById('payments').innerHTML = "";
-                        resJson?.data?.payments?.forEach((payment) => {
-                            addPaymentMethod(payment);
-                        });
-                    }
-
-                    fillContainer(document.getElementById('personalData'), resJson?.data, 'client');
-                    const clientPhoneInputId = "client[phone]";
-                    const phoneindex = Array.from(telInputs).findIndex(input => input.id === clientPhoneInputId);
-                    if (phoneindex !== -1) {
-                        itiInstances[phoneindex].setNumber(resJson?.data?.phone);
-                    }
-
-
-                } else {
-                    resetFormExcept(form, [
-                        'documentType', 'documentNumber', 'storeId', 'docDate', 'docStatus', 'client[sendEmail]', 'client[country]',
-                        'sale[preparedBy]'
-                    ]);
-
-                    if (documentType == 'sale') {
-                        document.getElementById("itemsContainer").innerHTML = "";
-                        document.getElementById("payments").innerHTML = "";
-                        productIndex = 0;
-                        paymentIndex = 0;
-                    } else if (documentType == 'warranty') {
-                        document.getElementById("warrantyItems").innerHTML = "";
-                        warrantyItemIndex = 0;
-                    }
-                }
-
-                showResponse("responseMessage", resJson);
-                setTimeout(hideMessage, 6000);
-            }
-
-        } catch (error) {
-            console.error(error);
-            showResponse("responseMessage", error);
-            setTimeout(hideMessage, 6000);
-        }
-    }
-
     function fillContainer(container, data, prefix = '') {
         if (!container || !data) return;
 
@@ -972,7 +848,7 @@
         });
     }
 
-
+    let timeoutBackend;
 
     function resetFormExcept(formElement, fieldsToKeep = []) {
         Array.from(formElement.elements).forEach(input => {
@@ -1004,8 +880,9 @@
                     `;
             });
         } else {
-            const icon = (response.success == true) ? '&#xe1062;' : ((response.sucess == 'warning') ? '&#xe1063;' : '&#xe1064;');
-            const color = (response.success == true) ? '--custom-back: #c6dfc7; --custom-font: #416b4b;' : ((response.success == 'warning') ? '--custom-back: #ffedb2; --custom-font: #e65100;' : '--custom-back: #E9ADAD; --custom-font: #881414;');
+            const success = (response.success == true || response.status == "success") ? true : false;
+            const icon = (success) ? '&#xe1062;' : ((response.sucess == 'warning') ? '&#xe1063;' : '&#xe1064;');
+            const color = (success) ? '--custom-back: #c6dfc7; --custom-font: #416b4b;' : ((response.success == 'warning') ? '--custom-back: #ffedb2; --custom-font: #e65100;' : '--custom-back: #E9ADAD; --custom-font: #881414;');
             htmlResponse += `
                     <li style="${color}">
                         <i>${icon}</i>
@@ -1022,19 +899,6 @@
         element.classList.toggle("open", false);
     }
 
-    function switchForm(id) {
-        const forms = document.querySelectorAll('.containerDocForm');
-        forms.forEach(form => form.classList.toggle('active', false));
-        const docForm = document.getElementById(id + "Form");
-        docForm.classList.toggle('active', true);
-
-        if (id == 'gift') {
-            document.getElementById("personDataContainer").style.display = 'none';
-        } else {
-            document.getElementById("personDataContainer").style.display = 'block';
-        }
-    }
-
     function addItem(itemData) {
         const itemsContainer = document.getElementById('itemsContainer');
 
@@ -1042,7 +906,51 @@
         itemDiv.classList.add('itemRow');
 
         itemDiv.innerHTML = `
-             
+            <button type="button" onclick="removeItem(this)"><i>&#xe1118;</i></button>
+            <input type="hidden" value="${itemData?.id || ''}" />
+            <div class="inputContainer">
+                <label>Cantidad</label>
+                <input type="number" name="sale[saleItems][${productIndex}][quantity]" min="1" value="${itemData?.quantity || 1}"/>
+            </div>
+            
+            <div class="inputContainer">
+                <label>Cód. Le Vount</label>
+                <input type="text" name="sale[saleItems][${productIndex}][levCode]" onchange="processItemCode(this);" value="${itemData?.levountCode || ''}"/>
+            </div> 
+
+            <div class="inputContainer">
+                <label>Cód. alterno</label>
+                <input type="text" name="sale[saleItems][${productIndex}][altCode]" onfocus="skipCursorToEnd(this)" value="${itemData?.alternateCode || ''}"/>
+            </div> 
+
+            <div class="inputContainer">
+                <label>Material</label>
+                <select name="sale[saleItems][${productIndex}][material]">
+                    <option value="silver" ${(itemData?.material == 'silver') ? 'selected' : ''}>Plata</option>
+                    <option value="gold" ${(itemData?.material == 'gold') ? 'selected' : ''}>Oro</option>
+                    <option value="steel" ${(itemData?.material == 'steel') ? 'selected' : ''}>Acero</option>
+                </select>
+            </div> 
+            
+            <div class="inputContainer">
+                <label>Descripción</label>
+                <input type="text" name="sale[saleItems][${productIndex}][description]" value="${itemData?.description || ''}" />
+            </div> 
+
+            <div class="inputContainer">
+                <label>Precio etiqueta</label>
+                <input type="number" name="sale[saleItems][${productIndex}][tagPrice]" step="0.01" value="${itemData?.tagPrice || ''}"/>
+            </div> 
+
+            <div class="inputContainer">
+                <label>Precio venta</label>
+                <input type="number" name="sale[saleItems][${productIndex}][unitPrice]" step="0.01" value="${itemData?.unitPrice || ''}"/>
+            </div> 
+
+            <div class="inputContainer">
+                <label>Subtotal</label>                
+                <input type="number" name="sale[saleItems][${productIndex}][subtotal]" step="0.01" value="${(itemData?.unitPrice * itemData?.quantity) || ''}" readonly />
+            </div>     
         `;
         productIndex++;
 
@@ -1050,7 +958,145 @@
         itemDiv.children[3].children[1].focus();
     }
 
+    function processItemCode(element) {
+        const levountCode = element.value;
+
+        const indexMatch = element.name.match(/\[saleItems\]\[(\d+)\]/);
+        const index = indexMatch ? indexMatch[1] : 0;
+
+        const match = levountCode.match(/^(.*)([a-zA-Z])(\d+)$/);
+
+        if (match) {
+            // Código de ejemplo: FA000G230
+            const itemLeftSection = match[1]; // FA000
+            const unitPrice = match[3]; // 230
+            const itemShape = match[2]; // G
+
+            const itemProvider = itemLeftSection.charAt(0); // F
+            const itemMaterial = itemLeftSection.charAt(1); // A
+            const itemLine = itemLeftSection.substring(2); // 000
+
+            const priceInput = document.getElementsByName(`sale[saleItems][${index}][tagPrice]`)[0];
+            if (priceInput) priceInput.value = unitPrice;
+
+            const altCodeInput = document.getElementsByName(`sale[saleItems][${index}][altCode]`)[0];
+            if (altCodeInput) altCodeInput.value = `${itemLeftSection}G`;
+        }
+    }
+
+    function skipCursorToEnd(element) {
+        setTimeout(function () {
+            const length = element.value.length;
+            element.setSelectionRange(length, length);
+        }, 0);
+    }
+
     function removeItem(button) {
         button.parentElement.remove();
     }
+
+    document.addEventListener('keydown', function (event) {
+
+        if (event.altKey && event.key.toLowerCase() == 'a') {
+            if (document.getElementById("documentType").value == 'sale') {
+                addItem();
+            } else if (document.getElementById("documentType").value == 'gift') {
+                addGuest();
+            } else if (document.getElementById("documentType").value == 'warranty') {
+                addWarrantyItem();
+            }
+        };
+
+        if (event.altKey && event.key.toLowerCase() == 'c') {
+            document.getElementById("clientName").focus();
+        };
+
+        if (event.altKey && event.key.toLowerCase() == 'x') {
+            if (document.getElementById("documentType").value == 'sale') {
+                addPaymentMethod();
+            }
+        };
+
+    });
 </script>
+
+<% if(!document) { %>
+    <script>
+        async function getDocumentData(event) {
+            try {
+                event.preventDefault();
+                const form = document.getElementById("clientData");
+                const formData = new FormData(form);
+
+                const documentType = formData.get('documentType') || null;
+                const documentNumber = formData.get('documentNumber') || null;
+                const storeId = formData.get('storeId') || null;
+                const docDate = formData.get('docDate') || null;
+
+                if (documentType && documentNumber && storeId && docDate) {
+                    const fetchUrl = `/api/documents/${documentType}/${docDate}/${documentNumber}/${storeId}`;
+                    const res = await fetch(fetchUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    const resJson = await res.json();
+
+                    if (resJson.success == true) {
+
+                        if (documentType == 'sale') {
+                            const inputsContainerDiv = document.getElementById(`${documentType}Form`);
+
+                            fillContainer(inputsContainerDiv, resJson?.data, 'sale');
+
+                            document.getElementById('itemsContainer').innerHTML = "";
+                            resJson?.data?.items?.forEach((item) => {
+                                addItem(item);
+                            });
+
+                            document.getElementById('payments').innerHTML = "";
+                            resJson?.data?.payments?.forEach((payment) => {
+                                addPaymentMethod(payment);
+                            });
+                        }
+
+                        fillContainer(document.getElementById('personalData'), resJson?.data, 'client');
+                        const clientPhoneInputId = "client[phone]";
+                        const phoneindex = Array.from(telInputs).findIndex(input => input.id === clientPhoneInputId);
+                        if (phoneindex !== -1) {
+                            itiInstances[phoneindex].setNumber(resJson?.data?.phone);
+                        }
+
+
+                    } else {
+                        resetFormExcept(form, [
+                            'documentType', 'documentNumber', 'storeId', 'docDate', 'docStatus', 'client[sendEmail]', 'client[country]',
+                            'sale[preparedBy]'
+                        ]);
+
+                        if (documentType == 'sale') {
+                            document.getElementById("itemsContainer").innerHTML = "";
+                            document.getElementById("payments").innerHTML = "";
+                            productIndex = 0;
+                            paymentIndex = 0;
+                        } else if (documentType == 'warranty') {
+                            document.getElementById("warrantyItems").innerHTML = "";
+                            warrantyItemIndex = 0;
+                        }
+                    }
+
+                    showResponse("responseMessage", resJson);
+                    if (timeoutBackend) { clearTimeout(timeoutBackend); }
+                    timeoutBackend = setTimeout(hideMessage, 6000);
+                }
+
+            } catch (error) {
+                console.error(error);
+                showResponse("responseMessage", error);
+                if (timeoutBackend) { clearTimeout(timeoutBackend); }
+                timeoutBackend = setTimeout(hideMessage, 6000);
+            }
+        }
+    </script>
+    <% } %>

@@ -196,13 +196,50 @@ const adminController = {
     sales: {
         get: async(req, res, next) => {
             try {
-                const branches = await storesModel.getAll();
+                const saleId = req?.params?.id; //console.log(saleId);
+                const branches = await storesModel.getAll();     
                 const document = await documentModel.getAllData({documentType: 'sale', id: req?.params?.id});
-                //console.log(document);
+                const branch = branches?.find(branch => branch?.id == document?.storeId);
+                if (document) document.branch = branch?.name;
+                
                 return res.render('pages/admin/sale', {
                     title: `Venta | ${ pageTitle }`,
                     page: 'sale',
                     utils, Today, branches, countries: countries.getData(), document
+                });
+            } catch (error) {
+                next(error);
+            }
+        },
+
+        getAll: async(req, res, next) => {
+            try {
+                const saleId = req?.params?.id; console.log(saleId);
+                const branches = await storesModel.getAll();   
+                
+                let filters = req?.query;
+                filters.docDate = (!filters?.docDate) ? Today : filters?.docDate;
+                const sales = await documentModel.get.sales(filters); //console.log(sales?.sales, sales?.pagination);
+
+                const pag = sales?.pagination || { page: 1, limit: 30, totalItems: 0 };
+                let startItem = 0;
+                let endItem = 0;
+
+                if (pag.totalItems > 0) {
+                    startItem = (pag.page - 1) * pag.limit + 1;
+                    endItem = Math.min(pag.page * pag.limit, pag.totalItems); 
+                }
+                if (sales.pagination) {
+                    sales.pagination.startItem = startItem;
+                    sales.pagination.endItem = endItem;
+                    sales.pagination.pagesArray = utilities.generatePaginationArray(pag.page, pag.totalPages);
+                }
+
+                return res.render('pages/admin/sales', {
+                    title: `Ventas | ${ pageTitle }`,
+                    page: 'sales',
+                    utils, Today, branches,
+                    filters, sales
                 });
             } catch (error) {
                 next(error);

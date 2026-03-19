@@ -1,0 +1,557 @@
+<style>
+    body {
+        & main {
+            padding: 25px;
+
+            & * {
+                box-sizing: border-box !important;
+            }
+
+            /* Estilos encapsulados para el panel de Notas de Venta */
+            .Content.sys-sales-panel {
+                background-color: transparent;
+                width: 100%;
+                max-width: 1300px;
+                /* Un poco más ancho para las columnas */
+                margin: 0 auto;
+
+                /* Cabecera de la vista */
+                & .view-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                    padding-bottom: 16px;
+                    border-bottom: 1px solid var(--lv-border);
+
+                    & .title-area {
+                        & h1 {
+                            font-size: 1.5rem;
+                            color: var(--lv-obsidian);
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                        }
+
+                        & p {
+                            font-size: 0.9rem;
+                            color: var(--gray-70);
+                        }
+                    }
+
+                    & .header-actions {
+                        display: flex;
+                        gap: 12px;
+
+                        & .btn-outline {
+                            padding: 8px 16px;
+                            background-color: var(--bg-white);
+                            border: 1px solid var(--gray-40);
+                            color: var(--lv-slate);
+                            border-radius: 4px;
+                            font-weight: 600;
+                            font-size: 0.875rem;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+
+                            &:hover {
+                                background-color: var(--gray-20);
+                            }
+                        }
+                    }
+                }
+
+                /* KPIs Rápidos */
+                & .quick-stats {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 16px;
+                    margin-bottom: 20px;
+
+                    & .stat-card {
+                        background-color: var(--bg-white);
+                        border: 1px solid var(--lv-border);
+                        border-radius: 6px;
+                        padding: 16px;
+                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+                        border-left: 4px solid var(--lv-gold);
+
+                        & .stat-title {
+                            font-size: 0.75rem;
+                            text-transform: uppercase;
+                            color: var(--gray-70);
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                        }
+
+                        & .stat-value {
+                            font-size: 1.25rem;
+                            color: var(--lv-obsidian);
+                            font-weight: bold;
+                            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+                        }
+                    }
+                }
+
+                /* Panel de Filtros */
+                & .filter-bar {
+                    background-color: var(--bg-white);
+                    border: 1px solid var(--lv-border);
+                    border-radius: 6px;
+                    padding: 16px 20px;
+                    margin-bottom: 20px;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+                    & .filter-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                        gap: 10px;
+                        row-gap: 8px;
+                        align-items: end;
+
+                        & .form-group {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 3px;
+
+                            & label {
+                                font-size: 0.7rem;
+                                font-weight: 600;
+                                color: var(--gray-70);
+                                text-transform: uppercase;
+                            }
+
+                            & input,
+                            & select {
+                                width: 100%;
+                                padding: 8px 10px;
+                                border: 1px solid var(--gray-40);
+                                border-radius: 4px;
+                                background-color: var(--bg-white);
+                                color: var(--text-dark);
+                                font-size: 0.85rem;
+                                font-family: inherit;
+                                height: 36px;
+                                /* Más compacto que los formularios normales */
+                                transition: border-color 0.15s ease;
+
+                                &:focus {
+                                    outline: none;
+                                    border-color: var(--lv-gold);
+                                    box-shadow: 0 0 0 3px var(--lv-gold-light);
+                                }
+                            }
+
+                            /* Buscador principal */
+                            &.search-group {
+                                grid-column: span 2;
+                                /* Ocupa más espacio */
+                            }
+                        }
+
+                        & .filter-actions {
+                            display: flex;
+                            gap: 8px;
+
+                            & button {
+                                height: 36px;
+                                padding: 0 16px;
+                                border-radius: 4px;
+                                font-size: 0.85rem;
+                                font-weight: 600;
+                                cursor: pointer;
+                                border: none;
+                                transition: background-color 0.2s;
+
+                                &.btn-apply {
+                                    background-color: var(--lv-obsidian);
+                                    color: var(--lv-white);
+                                    flex: 1;
+
+                                    &:hover {
+                                        background-color: var(--lv-slate);
+                                    }
+                                }
+
+                                &.btn-reset {
+                                    background-color: var(--gray-20);
+                                    color: var(--gray-80);
+
+                                    &:hover {
+                                        background-color: var(--gray-30);
+                                        color: var(--lv-obsidian);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                /* Tabla Compacta (Alta Densidad) */
+                & .table-card {
+                    background-color: var(--bg-white);
+                    border: 1px solid var(--lv-border);
+                    border-radius: 6px;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                    overflow: hidden;
+
+                    & .table-container {
+                        width: 100%;
+                        /* Scroll interno si hay demasiados registros */
+
+                        /* Fija la cabecera al hacer scroll */
+                        & table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            text-align: left;
+
+                            & thead th {
+                                position: sticky;
+                                top: 0;
+                                background-color: var(--gray-10);
+                                z-index: 10;
+                                padding: 10px 16px;
+                                /* Padding reducido */
+                                font-size: 0.75rem;
+                                text-transform: uppercase;
+                                letter-spacing: 0.05em;
+                                color: var(--gray-70);
+                                font-weight: 600;
+                                border-bottom: 2px solid var(--lv-border);
+                                white-space: nowrap;
+                                box-shadow: 0 1px 0 var(--lv-border);
+                                /* Fix para el borde sticky */
+                            }
+
+                            & tbody td {
+                                padding: 10px 16px;
+                                /* Padding reducido para alta densidad */
+                                border-bottom: 1px solid var(--gray-20);
+                                vertical-align: middle;
+                                font-size: 0.85rem;
+                                /* Fuente un punto más pequeña */
+                                color: var(--text-dark);
+                                white-space: nowrap;
+
+                                /* Elementos monoespaciados para alinear números */
+                                & .mono {
+                                    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+                                }
+
+                                & .folio {
+                                    font-weight: bold;
+                                    color: var(--lv-obsidian);
+                                }
+
+                                & .amount {
+                                    font-weight: 600;
+                                    text-align: right;
+                                    display: block;
+                                }
+
+                                & .sub-text {
+                                    display: block;
+                                    font-size: 0.75rem;
+                                    color: var(--gray-60);
+                                    margin-top: 2px;
+                                }
+
+                                /* Botones de acción */
+                                & .action-links {
+                                    display: flex;
+                                    gap: 12px;
+                                    justify-content: flex-end;
+
+                                    & button {
+                                        background: none;
+                                        border: none;
+                                        cursor: pointer;
+                                        font-size: 0.8rem;
+                                        font-weight: 600;
+                                        padding: 2px;
+                                        transition: color 0.2s;
+
+                                        &.view-btn {
+                                            color: var(--lv-gold-dim);
+
+                                            &:hover {
+                                                color: var(--lv-gold);
+                                            }
+                                        }
+
+                                        &.print-btn {
+                                            color: var(--gray-60);
+
+                                            &:hover {
+                                                color: var(--lv-obsidian);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            & tbody tr {
+                                transition: background-color 0.1s ease;
+                                cursor: pointer;
+
+                                &:hover {
+                                    background-color: var(--bg-alabaster);
+                                }
+
+                                /* Estilo para notas canceladas */
+                                &.is-cancelled {
+                                    background-color: rgba(239, 68, 68, 0.02);
+
+                                    & td {
+                                        color: var(--gray-60);
+                                    }
+
+                                    & .folio,
+                                    & .amount {
+                                        color: var(--gray-70);
+                                        text-decoration: line-through;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    /* Badges de Estado más pequeños */
+                    & .badge {
+                        display: inline-flex;
+                        align-items: center;
+                        padding: 2px 8px;
+                        border-radius: 12px;
+                        font-size: 0.7rem;
+                        font-weight: 600;
+                        text-transform: uppercase;
+
+                        &.status-active {
+                            background-color: rgba(16, 185, 129, 0.1);
+                            color: var(--lv-green);
+                        }
+
+                        &.status-cancelled {
+                            background-color: rgba(239, 68, 68, 0.1);
+                            color: var(--lv-error);
+                        }
+                    }
+
+                    /* Paginación Compacta */
+                    & .pagination-footer {
+                        padding: 12px 20px;
+                        border-top: 1px solid var(--lv-border);
+                        background-color: var(--bg-white);
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        & .results-info {
+                            font-size: 0.8rem;
+                            color: var(--gray-70);
+                        }
+
+                        & .page-controls {
+                            display: flex;
+                            gap: 4px;
+
+                            & button {
+                                padding: 4px 10px;
+                                border: 1px solid var(--gray-40);
+                                background-color: var(--bg-white);
+                                color: var(--text-dark);
+                                border-radius: 4px;
+                                font-size: 0.8rem;
+                                cursor: pointer;
+
+                                &:hover:not(:disabled) {
+                                    background-color: var(--gray-20);
+                                }
+
+                                &:disabled {
+                                    color: var(--gray-50);
+                                    cursor: not-allowed;
+                                    background-color: var(--gray-10);
+                                }
+
+                                &.active {
+                                    background-color: var(--lv-obsidian);
+                                    color: var(--lv-white);
+                                    border-color: var(--lv-obsidian);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<section class="Content sys-sales-panel">
+
+    <div class="view-header">
+        <div class="title-area">
+            <h1>Notas de venta</h1>
+        </div>
+        <div class="header-actions">
+            <button class="btn-outline"><i>&#xe1014;</i>Exportar Reporte</button>
+            <button class="btn-outline" onclick="window.location.href='/admin/sales/create'"><i>&#xe1014;</i>Nueva</button>
+        </div>
+    </div>
+
+    <div class="quick-stats">
+        <div class="stat-card">
+            <div class="stat-title">Ventas del período</div>
+            <div class="stat-value"><%- utils.toCurrency(sales?.metrics?.grandTotal) || '$0.00' %> MXN</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Notas Generadas</div>
+            <div class="stat-value"><%- sales?.metrics?.total_documents?.toLocaleString("es-MX") || '0' %></div>
+        </div>
+        <div class="stat-card" style="border-left-color: var(--lv-error);">
+            <div class="stat-title">Notas Canceladas</div>
+            <div class="stat-value"><%- sales?.metrics?.cancelled %></div>
+        </div>
+    </div>
+
+    <div class="filter-bar">
+        <form method="get" id="searchFilters" class="filter-grid">
+
+            <div class="form-group search-group">
+                <label for="searchQuery">Búsqueda rápida</label>
+                <input type="search" id="searchQuery" name="search" placeholder="Buscar por folio o vendedor..."
+                    value="<%- filters?.search|| '' %>">
+            </div>
+
+            <div class="form-group">
+                <label for="branchFilter">Sucursal</label>
+                <select id="branchFilter" name="storeId">
+                    <option value="">Todas las sucursales</option>
+                    <% branches?.forEach(branch=> { %>
+                        <option value="<%- branch?.id %>" <%- filters?.branch == branch?.id ? 'selected' : '' %>>
+                            <%- branch.name %>
+                        </option>
+                    <% }); %>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="dateFrom">Desde</label>
+                <input type="date" id="dateFrom" name="dateFrom" value="<%- filters?.dateFrom %>">
+            </div>
+
+            <div class="form-group">
+                <label for="dateTo">Hasta</label>
+                <input type="date" id="dateUntil" name="dateUntil" value="<%- filters?.dateUntil %>">
+            </div>
+
+            <div class="form-group">
+                <label for="statusFilter">Estado</label>
+                <select id="statusFilter" name="status">
+                    <option value="">Todos</option>
+                    <option value="active" <%- filters?.status=='active' ? 'selected' : '' %>>Activas</option>
+                    <option value="cancelled" <%- filters?.status=='cancelled' ? 'selected' : '' %>>Canceladas</option>
+                </select>
+            </div>
+
+            <div class="filter-actions form-group" style="flex-direction: row;">
+                <button type="button" class="btn-reset" onclick="window.location.href='/admin/sales'"
+                    title="Limpiar Filtros">✕</button>
+                <button type="submit" class="btn-apply">Filtrar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-card">
+        <div class="table-container">
+            <table id="salesTable">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Folio</th>
+                        <th>Fecha y Hora</th>
+                        <th>Sucursal</th>
+                        <th>Cliente</th>
+                        <th>Vendedor</th>
+                        <th>Estado</th>
+                        <th style="text-align: right;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% sales?.sales?.forEach(sale => { %>
+                        <tr class="<%- sale.status === 'cancelled' ? 'is-cancelled' : '' %>" onclick="window.open('/admin/sales/<%- sale?.id %>')">
+                            <td><span class="mono folio">#<%- sale?.documentNumber %></span></td>
+                            <td>
+                                <span><%- sale?.docDate?.toLocaleDateString('es-MX', {day: 'numeric' , year: 'numeric', month: 'short' }) %></span>
+                                <span class="sub-text"><%- sale?.timeFormatted %></span>
+                            </td>
+                            <td>
+                                <span><%- sale?.store?.name %></span>
+                                <span class="sub-text"><%- sale?.shift %></span>
+                            </td>
+                            <td>
+                                <span><%- sale?.client?.name %></span>
+                            </td>
+                            <td><%- sale?.preparedBy %></td>
+                            <td>
+                                <% if(sale?.status == 'active' ) { %>
+                                    <span class="badge status-active">Activa</span>
+                                <% } else { %>
+                                    <span class="badge status-cancelled">Cancelada</span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <span class="mono amount"><%- utils.toCurrency(sale?.saleTotal) %> MXN</span>
+                            </td>
+                        </tr>
+                    <% }) %>                            
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination-footer">
+            <div class="results-info">
+                Mostrando <strong><%- `${sales?.pagination?.startItem} - ${sales?.pagination?.endItem}` %></strong> de <strong><%- sales?.pagination?.totalItems %></strong>
+            </div>
+            <% const p = sales?.pagination; if (p && p.totalPages > 1) { %>
+                <div class="page-controls">
+                    
+                    <button 
+                        <%- p.page == 1 ? 'disabled' : '' %> 
+                        onclick="changePage('<%- p.page - 1 %>')">
+                        Anterior
+                    </button>
+
+                    <% p.pagesArray.forEach(item => { %>
+                        <% if (item === '...') { %>
+                            <button disabled>...</button>
+                        <% } else { %>
+                            <button 
+                                class="<%- p.page === item ? 'active' : '' %>"
+                                onclick="changePage('<%- item %>')">
+                                <%- item %>
+                            </button>
+                        <% } %>
+                    <% }) %>
+
+                    <button 
+                        <%= p.page === p.totalPages ? 'disabled' : '' %> 
+                        onclick="changePage('<%- p.page + 1 %>')">
+                        Siguiente
+                    </button>
+                    
+                </div>
+            <% } %>
+        </div>
+    </div>
+</section>
+
+<script>
+    function changePage(newPage) {
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('page', newPage);
+        window.location.href = currentUrl.toString();
+    }
+</script>

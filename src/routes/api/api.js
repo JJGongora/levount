@@ -77,7 +77,12 @@ router.post('/newsletter', apiController.newsletter.post);
 // ===================================
 //          GESTIÓN DE DOCUMENTOS
 // ===================================
+router.post('/documents',
+    permissionsVerification.checkPermission("sales:create"),
+    apiController.documents.post
+);
 router.get('/documents/sale/:docDate/:documentNumber/:storeId', apiController.sales.get);
+
 
 
 //router.use(apiVerification);

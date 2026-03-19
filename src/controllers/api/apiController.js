@@ -491,6 +491,22 @@ const apiController = {
                 next(error);
             }
         },
+    },
+
+    documents: {
+        post: async(req, res, next) => {
+            try {
+                const data = filterHelper.cleanEmptyFields(req.body);
+                const containsGold = Object.values(data?.sale?.saleItems || {}).some(item => item.material == 'gold');
+                if (data?.sale) {data.sale.containsGold = containsGold; }
+
+                const result = await documentModel.register(data, res.locals.userSession.name, null);
+                const response = filterHelper.dbResultStatus(result, "el documento");
+                return res.status(200).send(response);
+            } catch (error) {
+                next(error);
+            }
+        },
     }
 
 };

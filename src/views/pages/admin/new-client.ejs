@@ -785,7 +785,7 @@
         itiInstances.push(instance);
     });
 
-
+    let timeoutBackend;
     async function registerClient(event) {
         event.preventDefault();
 
@@ -844,11 +844,13 @@
                 );
             }
             showResponse("responseMessage", resJson);
-            setTimeout(hideMessage, 6000);
+            if (timeoutBackend) { clearTimeout(timeoutBackend); }
+            timeoutBackend = setTimeout(hideMessage, 6000);
 
         } catch (error) {
             showResponse("responseMessage", error);
-            setTimeout(hideMessage, 6000);
+            if (timeoutBackend) { clearTimeout(timeoutBackend); }
+            timeoutBackend= setTimeout(hideMessage, 6000);
         }
     }
 
@@ -971,19 +973,20 @@
         const match = levountCode.match(/^(.*)([a-zA-Z])(\d+)$/);
 
         if (match) {
-            const itemLeftSection = match[1];
-            const unitPrice = match[3];
-            const itemShape = match[2];
+            // Código de ejemplo: FA000G230
+            const itemLeftSection = match[1]; // FA000
+            const unitPrice = match[3]; // 230
+            const itemShape = match[2]; // G
 
-            const itemProvider = itemLeftSection.charAt(0);
-            const itemMaterial = itemLeftSection.charAt(1);
-            const itemLine = itemLeftSection.substring(2);
+            const itemProvider = itemLeftSection.charAt(0); // F
+            const itemMaterial = itemLeftSection.charAt(1); // A
+            const itemLine = itemLeftSection.substring(2); // 000
             
             const priceInput = document.getElementsByName(`sale[saleItems][${index}][tagPrice]`)[0];
             if (priceInput) priceInput.value = unitPrice;
 
             const altCodeInput = document.getElementsByName(`sale[saleItems][${index}][altCode]`)[0];
-            if (altCodeInput) altCodeInput.value = itemLine;
+            if (altCodeInput) altCodeInput.value = `${itemLeftSection}G`;
         }
     }
 
@@ -1130,13 +1133,15 @@
                 }
 
                 showResponse("responseMessage", resJson);
-                setTimeout(hideMessage, 6000);
+                if (timeoutBackend) { clearTimeout(timeoutBackend); }
+                timeoutBackend = setTimeout(hideMessage, 6000);
             }
 
         } catch (error) {
             console.error(error);
             showResponse("responseMessage", error);
-            setTimeout(hideMessage, 6000);
+            if (timeoutBackend) { clearTimeout(timeoutBackend); }
+            timeoutBackend = setTimeout(hideMessage, 6000);
         }
     }
 

@@ -63,7 +63,11 @@ router.get([`/labels`, `/labels/:material`],
 // ===========================
 //            VENTAS
 // ===========================
-router.get(`/sales/:id`, 
+router.get([`/sales`], 
+    permissionsVerification.checkPermission("sales:read"),
+    adminController.sales.getAll
+);
+router.get([`/sales/create`, `/sales/:id`], 
     permissionsVerification.checkPermission("sales:read"),
     adminController.sales.get
 );

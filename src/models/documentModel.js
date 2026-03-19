@@ -1,3 +1,4 @@
+import { count } from "console";
 import db from "../config/db.js";
 import appError from "../utils/appError.js";
 
@@ -14,7 +15,15 @@ const documentModel = {
         try {
 
             if (data?.documentType == 'sale') {
-            
+                
+                // =================================
+                //       Condiciones de emisión
+                // =================================
+                if (!data?.documentNumber) { throw(new appError("<strong>Error en el modelo de documentos</strong>: Por favor, ingrese un número de documento mayor a 0.", 400)); }
+                if (!data?.storeId) { throw(new appError("<strong>Error en el modelo de documentos</strong>: Por favor, seleccione una sucursal de emisión.", 400)); }
+                if (!data?.docDate) { throw(new appError("<strong>Error en el modelo de documentos</strong>: Por favor, ingrese la fecha de emisión del documento.", 400)); }
+                if (data?.docStatus == 'active' && (data?.sale?.saleItems?.length == 0 || !data?.sale?.saleItems)) { throw(new appError("<strong>Error en el modelo de documentos</strong>: Por favor, ingrese mínimo un artículo vendido.", 400)); }
+                
                 // Se inserta el registro de la nota de venta.
                 query = `
                     INSERT INTO sales
@@ -239,6 +248,170 @@ const documentModel = {
         }
 
         return result;
+    },
+
+    get: {
+        sales: async(filters) => {
+
+            //console.log(filters);
+            let limit = filters?.limit ? parseInt(filters?.limit) : 30;
+            const page = filters?.page ? parseInt(filters?.page) : 1;        
+            const offset = (page - 1) * limit;
+
+            let conditions = [];
+            let params = [];   
+            let sort = "ORDER BY s.registeredAt DESC";    
+
+            if (filters?.id) {
+                conditions.push("s.id = ?");
+                params.push(filters?.id);
+            } if (filters?.dateFrom) {
+                conditions.push("s.docDate >= ?");
+                params.push(filters?.dateFrom);
+            } if (filters?.dateUntil) {
+                conditions.push("s.docDate <= ?");
+                params.push(filters?.dateUntil);
+            } if (filters?.status) {
+                conditions.push("s.status = ?");
+                params.push(filters?.status);
+            } if (filters?.storeId) {
+                conditions.push("s.storeId = ?");
+                params.push(filters?.storeId);
+            }
+
+            // ====================================
+            //          Filtro del buscador
+            // ====================================
+            if (filters?.search) {
+
+                const searchWords = filters?.search?.trim()?.split(/\s+/); // Se separan las palabras ingresadas en el buscador.
+                
+                searchWords?.forEach(word => { // Por cada palabra ingresada...
+                    const searchTerm = `%${word}%`
+
+                    conditions.push(`
+                        (
+                            s.documentNumber LIKE ? OR
+                            s.preparedBy LIKE ?
+                        )
+                    `);
+
+                    for (let i=0; i < 2; i++) { // Se inserta el término de búsqueda una vez por cada columna en la que se buscará.
+                        params.push(searchTerm);
+                    };
+                });       
+
+            }
+
+            let whereClause = ``;
+            if (conditions.length > 0) {
+                whereClause += " WHERE " + conditions.join(" AND ");
+            }
+
+            let query = ""; let queryParams = [];
+            queryParams = [...params, limit, offset];      
+
+            query = `
+                SELECT
+                    ${
+                        (filters?.id)
+                            ? 's.*'
+                            : `
+                                s.id,
+                                s.documentNumber,
+                                s.storeId,
+                                s.status,
+                                s.preparedBy,
+                                s.containsGold,
+                                s.docDate,
+                            `
+                    }
+                    IFNULL(sp_agg.totalSaleMXN, 0) as saleTotal,
+                    JSON_OBJECT(
+                        'id', c.id,
+                        'name', c.clientName
+                    ) AS client,
+                    JSON_OBJECT(
+                        'id', st.id,
+                        'name', st.name
+                    ) AS store
+                FROM
+                    sales s
+                LEFT JOIN
+                    clients c
+                        ON c.id = s.clientId
+                LEFT JOIN
+                    stores st
+                        ON st.id = s.storeId
+                LEFT JOIN (
+                    SELECT 
+                        saleId,
+                        SUM(
+                            IF(exchangeRate IS NOT NULL, amount * exchangeRate, amount)
+                        ) as totalSaleMXN
+                    FROM 
+                        salePayments
+                    GROUP BY 
+                        saleId
+                ) sp_agg ON sp_agg.saleId = s.id
+                ${whereClause}
+                ${ sort }
+                LIMIT ? OFFSET ?;
+            `; //console.log(queryParams, query);
+
+            const sqlCount = `
+                SELECT
+                    COUNT(s.id) as total,
+                    SUM(CASE WHEN s.status = 'cancelled' THEN 1 ELSE 0 END) AS cancelled,
+                    COALESCE(SUM(sp_agg.totalSaleMXN), 0) AS grandTotal
+                FROM 
+                    sales s
+                LEFT JOIN (
+                    SELECT 
+                        saleId,
+                        SUM(
+                            IF(exchangeRate IS NOT NULL, amount * exchangeRate, amount)
+                        ) as totalSaleMXN
+                    FROM 
+                        salePayments
+                    GROUP BY 
+                        saleId
+                ) sp_agg ON sp_agg.saleId = s.id
+                ${whereClause}
+            `;
+            const paramsCount = [...params];
+
+            const [result, countResult] = await Promise.all([
+                db.query(query, queryParams),
+                db.query(sqlCount, paramsCount)
+            ]);
+
+            const rows = result[0]; 
+            const totalItems = countResult[0][0]?.total || 0;
+
+            const formattedSales = rows.map(sale => {
+                return {
+                    ...sale,
+                    client: sale.client ? JSON.parse(sale.client) : null,
+                    store: sale.store ? JSON.parse(sale.store) : null
+                };
+            });
+
+            return {
+                sales: formattedSales, 
+                metrics: {
+                    cancelled: parseInt(countResult?.[0]?.[0]?.cancelled),
+                    total_documents: totalItems,
+                    grandTotal: parseInt(countResult?.[0]?.[0]?.grandTotal)
+                },
+                pagination: {
+                    page: page,
+                    limit: limit,
+                    totalItems: totalItems,
+                    totalPages: Math.ceil(totalItems / limit)
+                }
+            };
+        }
     }
 
 }

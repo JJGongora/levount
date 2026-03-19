@@ -223,7 +223,7 @@ const clientModel = {
         if (result?.affectedRows != 0 && data?.client?.email && data?.client?.sendEmail) {
             newsletterRow = await newsletterModel.registerClientEmail(result?.insertId, data?.client?.email, storeId);
             responseSteps.push(filterHelper.dbResultStatus(newsletterRow, "el correo al newsletter"));
-            console.log(newsletterRow);
+            //console.log(newsletterRow);
         } 
         
         //Si se insertó el cliente como nuevo...
